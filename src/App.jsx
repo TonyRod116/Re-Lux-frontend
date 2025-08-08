@@ -1,33 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from 'react-router'
+
+
+// Global components
+import Navbar from './components/Navbar/Navbar'
+import Footer from './components/Footer/Footer'
+
+// Page components
+import HomePage from './components/HomePage/HomePage'
+import SignUpPage from './components/SignUpPage/SignUpPage'
+import SignInPage from './components/SignInPage/SignInPage'
+import ItemIndex from './components/ItemIndex/ItemIndex'
+import ItemShow from './components/ItemShow/ItemShow'
+import ItemCreatePage from './components/CreateItemPage/CreateItemPage'
+import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar />
+      
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/Items" element={<ItemIndex />} />
+        <Route path="/Items/create" element={<ItemCreatePage />} />
+        <Route path="/Items/:ItemId/edit" element={<ItemUpdatePage />} />
+        <Route path="/Items/:ItemId" element={<ItemShow />} />
+      </Routes>
+
+      <Footer />
     </>
   )
 }
