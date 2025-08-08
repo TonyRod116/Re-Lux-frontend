@@ -1,5 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import router from 'react-router'
+// import '/components/ItemShow/ItemShow.css'
 
 const ItemShow = () => {
   const { ItemId } = useParams()

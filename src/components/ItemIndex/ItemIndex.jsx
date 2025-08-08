@@ -1,5 +1,5 @@
 import React from 'react'
-import './ItemIndex.css'
+// import '/components/ItemIndex/ItemIndex.css'
 
 const ItemIndex = () => {
   return (

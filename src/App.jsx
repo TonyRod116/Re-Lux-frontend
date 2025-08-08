@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router'
+import router from 'react-router'
 
 
 // Global components
@@ -11,14 +11,13 @@ import SignUpPage from './components/SignUpPage/SignUpPage'
 import SignInPage from './components/SignInPage/SignInPage'
 import ItemIndex from './components/ItemIndex/ItemIndex'
 import ItemShow from './components/ItemShow/ItemShow'
-import ItemCreatePage from './components/CreateItemPage/CreateItemPage'
+import ItemCreatePage from './components/ItemCreatePage/ItemCreatePage'
 import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
 
 function App() {
   return (
     <>
       <Navbar />
-      
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
@@ -28,7 +27,6 @@ function App() {
         <Route path="/Items/:ItemId/edit" element={<ItemUpdatePage />} />
         <Route path="/Items/:ItemId" element={<ItemShow />} />
       </Routes>
-
       <Footer />
     </>
   )
