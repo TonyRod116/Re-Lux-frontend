@@ -4,16 +4,16 @@ const Navbar = () => {
   return (
     <nav>
       <nav id="main-pages">
-      <a href="/">Re-Lux</a>
-      <a href="/Items">Men</a>
-      <a href="/Items">Women</a>
-      <a href="/Items">Accessories</a>
-      <a href="/Items">Tech</a>
-      <a href="/Items">Lifestyle</a>
+      <a href="/" class="home-link">Re-Lux</a>
+      <a href="/Items" class="page-link">Men</a>
+      <a href="/Items" class="page-link">Women</a>
+      <a href="/Items" class="page-link">Accessories</a>
+      <a href="/Items" class="page-link">Tech</a>
+      <a href="/Items" class="page-link">Lifestyle</a>
       </nav>
       <nav id="user-access">
-      <a href="/sign-in">Sign In</a>
-      <a href="/sign-up">Sign Up</a>
+      <a href="/sign-in" class="nav-button">Sign In</a>
+      <a href="/sign-up" class="nav-button">Sign Up</a>
       </nav>
     </nav>
   )

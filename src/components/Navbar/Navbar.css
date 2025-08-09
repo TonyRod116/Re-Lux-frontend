@@ -18,3 +18,36 @@ nav {
     gap: 15px;
     align-items: center;
 }
+
+a.home-link {
+    font-family: 'Parisienne', cursive;
+    font-weight: 400;
+    color: #000;
+    font-size: 1.8rem;
+    text-decoration: none;
+}
+
+a.home-link:hover {
+    color: grey;
+}
+
+a.page-link {
+    color: grey;
+    text-decoration: none;
+}
+
+a.nav-button {
+    padding: 0.5rem 1rem;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+a.nav-button:hover {
+    color: white;
+    background-color: black;
+}
