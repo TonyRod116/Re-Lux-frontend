@@ -1,4 +1,4 @@
-const tokenName = 'sapling-token'
+const tokenName = 'relux-token'
 
 export const setToken = (token) => {
   localStorage.setItem(tokenName, token)
