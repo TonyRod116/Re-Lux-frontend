@@ -1,7 +1,16 @@
-import React from 'react'
 import './CreateItemPage.css'
 
+import { useState } from 'react'
+import { itemCreate } from '../../services/items'
+import { useNavigate } from 'react-router'
+
 const ItemCreatePage = () => {
+// State
+
+// Location Variables
+
+// Functions
+
   return (
     <div>
       <h1>Create New Item</h1>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { itemIndex } from '../../services/items.js'
 
-// import '/components/ItemIndex/ItemIndex.css'
+import './ItemsIndex.css'
 
 const ItemIndex = () => {
   return (
