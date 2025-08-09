@@ -1,5 +1,5 @@
-import React from 'react'
-import router from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
 // import '/components/ItemShow/ItemShow.css'
 
 const ItemShow = () => {

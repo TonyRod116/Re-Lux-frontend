@@ -1,5 +1,7 @@
-import router from 'react-router'
+import './App.css';
 
+import { useState } from 'react'
+import { Routes, Route } from 'react-router'
 
 // Global components
 import Navbar from './components/Navbar/Navbar'
