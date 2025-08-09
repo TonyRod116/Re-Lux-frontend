@@ -1,1 +1,20 @@
+nav {
+    background-color: white;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 
+#main-pages {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#user-access {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
