@@ -1,15 +1,13 @@
 import React from 'react'
+import SignInForm from '../SignInForm/SignInForm'
 import './SignInPage.css'
 
 const SignInPage = () => {
   return (
     <div>
-      <h1>Sign In</h1>
-      <form>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <button type="submit">Sign In</button>
-      </form>
+     <section className='form '>
+      <SignInForm />
+     </section>
     </div>
   )
 }
