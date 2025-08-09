@@ -1,5 +1,3 @@
-import React from 'react'
-import router from 'react-router'
 // import '/components/ItemUpdatePage/ItemUpdatePage.css'
 
 const ItemUpdatePage = () => {
