@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <main>
     <section className="hero">
-      <h1>Welcome to Re-Lux</h1>
+      <h1>The No #1 Marketplace for Luxury Goods</h1>
       <p>Discover amazing items and experiences.</p>
     </section>
     <section className="page-content">
