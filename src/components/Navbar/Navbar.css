@@ -36,6 +36,11 @@ a.page-link {
     text-decoration: none;
 }
 
+a.page-link-sell {
+    color: rgb(243, 108, 108);
+    text-decoration: none;
+}
+
 a.nav-button {
     padding: 0.5rem 1rem;
     background-color: black;
