@@ -25,14 +25,18 @@ export default function SignUpForm(){
   // * Functions
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('Form submitted with data:', formData)
     try {
+      console.log('Calling signUp...')
       const { data } = await signUp(formData)
+      console.log('SignUp response:', data)
       setToken(data.token)
       setUser(getUser())
+      console.log('Navigating to home...')
       navigate('/')
     } catch (error) {
-      console.log(error)
-      setErrors(error.response.data)
+      console.log('SignUp error:', error)
+      setErrors(error.response?.data || {})
     }
   }
 
@@ -43,7 +47,7 @@ export default function SignUpForm(){
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='form' onSubmit={handleSubmit}>
       <h2>Join <span className='brand-font'>Re-lux</span> today</h2>
       <label htmlFor="email">Email</label>
       <input type="email" name="email" id="email" placeholder='yourname@example.com' value={formData.email} onChange={handleChange} />
