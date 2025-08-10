@@ -27,8 +27,6 @@ const ItemCreateForm = () => {
     const fetchTypes = async () => {
       try {
         const res = await getItemTypes()
-              console.log('Types from backend:', res.data, Array.isArray(res.data));
-
         setTypes(res.data)
       } catch (error) {
         setErrors(error.response?.data || { general: 'Something went wrong' })
