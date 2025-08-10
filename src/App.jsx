@@ -26,10 +26,10 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/Items" element={<ItemsIndex />} />
-        <Route path="/Items/create" element={<ItemCreatePage />} />
-        <Route path="/Items/:ItemId/edit" element={<ItemUpdatePage />} />
-        <Route path="/Items/:ItemId" element={<ItemShow />} />
+        <Route path="/items" element={<ItemsIndex />} />
+        <Route path="/items/new" element={<ItemCreatePage />} />
+        <Route path="/items/:itemId/edit" element={<ItemUpdatePage />} />
+        <Route path="/items/:itemId" element={<ItemShow />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <Footer />

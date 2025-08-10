@@ -7,6 +7,10 @@ export const itemsIndex = () => {
 
 }
 
+export const getItemTypes = () => {
+  return axios.get(`${BASE_URL}/types`)
+}
+
 export const itemShow = () => {
     return axios.get(`${BASE_URL}/${projectId}`)
 }

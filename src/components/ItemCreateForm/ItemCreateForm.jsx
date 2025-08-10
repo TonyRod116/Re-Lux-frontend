@@ -1,11 +1,12 @@
 import './ItemCreateForm.css'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { itemCreate } from '../../services/items'
 import { useNavigate } from 'react-router'
 
 const ItemCreateForm = () => {
   // State
+  const [productTypes, setProductTypes] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     type: '',
@@ -23,19 +24,7 @@ const ItemCreateForm = () => {
 
   // Functions
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const { data } = await itemCreate(formData)
-      navigate(`/items/${data._id}`)
-    } catch (error) {
-      console.log(error)
-      setErrors(errors.response.data)
-    } finally {
-      setSubmitting(false)
-    }
-
-    const handleChange = (e) => {
+      const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -47,11 +36,22 @@ const ItemCreateForm = () => {
       });
     };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const { data } = await itemCreate(formData)
+      navigate(`/items/${data._id}`)
+    } catch (error) {
+      console.log(error)
+      setErrors(errors.response.data)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
     return (
       <div>
-        <h1>Sell an item</h1>
         <form className='form' onSubmit={handleSubmit}>
-          <p>Create your listing below. Please provide as many details as you can about the product, including its dimensions, condition, origin, and brand.</p>
 
           <label htmlFor="title">Product name</label>
           <input type="text" name="title" id="title" placeholder='Enter your product name here' value={formData.title} onChange={handleChange} />
@@ -86,10 +86,8 @@ const ItemCreateForm = () => {
 
           <button type='submit'>{submitting ? 'Please wait' : 'Create listing'}</button>
         </form>
-        <Link to="/items">Back to Items</Link>
       </div>
     )
   }
-}
 
 export default ItemCreateForm
