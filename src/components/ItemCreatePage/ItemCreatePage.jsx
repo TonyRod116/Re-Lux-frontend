@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 const ItemCreatePage = () => {
   return (
     <div className="page-content">
-      <h1>List your item</h1>
-      <p>Please enter your product details, including its dimensions, condition, origin, and brand.</p>
+      <h1>Sell an item</h1>
+      <p>Want to trade in your luxury goods? Create a listing below.</p>
       <section className='form'>
         <ItemCreateForm />
       </section>
