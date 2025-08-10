@@ -7,10 +7,10 @@ import '../../styles/forms.css'
 
 export default function SignInForm(){
   
-  // * Context
+  // Context
   const { setUser } = useContext(UserContext)
 
-  // * State
+  // State
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -18,10 +18,10 @@ export default function SignInForm(){
   const [errors, setErrors] = useState({})
 
 
-  // * Location variables
+  // Nav
   const navigate = useNavigate()
 
-  // * Functions
+  // Functions
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
