@@ -5,7 +5,6 @@ import '../../styles/forms.css'
 const ProfileForm = ({ user, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     bio: '',
     location: '',
     profilePic: ''
@@ -15,7 +14,6 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
   useEffect(() => {
     setFormData({
       username: user?.username || '',
-      email: user?.email || '',
       bio: user?.Bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
@@ -55,7 +53,6 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
     // Reset data
     setFormData({
       username: user?.username || '',
-      email: user?.email || '',
       bio: user?.Bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
@@ -95,17 +92,7 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         />
       </div>
 
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
+
 
       <div className="form-group">
         <label htmlFor="bio">Bio</label>

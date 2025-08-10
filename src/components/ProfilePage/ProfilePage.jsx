@@ -45,13 +45,15 @@ const ProfilePage = () => {
         </button>
       </div>
 
-      {isEditing ? (
+      {isEditing 
+      ? (
         <ProfileForm 
           user={user}
           onSave={handleSave}
           onCancel={handleCancel}
         />
-      ) : (
+        ) 
+      : (
         <div className="profile-sections">
           <section>
             <h2>Items for Sale (0)</h2>
@@ -67,7 +69,7 @@ const ProfilePage = () => {
             </div>
           </section>
         </div>
-      )}
+        )}
     </div>
   )
 }
