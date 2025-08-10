@@ -36,8 +36,30 @@ const ItemShow = () => {
 
   // Functions
 
+  const handleDelete = async () => {
+    try {
+      await itemDelete(itemId)
+      navigate('/items')
+    } catch (error) {
+      setError(error)
+    }
+  }
+
   return (
-    <div>
+    <div className="page-content">
+      <div>
+      <h1>{item.name}</h1>
+      <p>Seller: {item.seller}</p>
+      <p>Location: {item.location}</p>
+      <p>Description: {item.description}</p>
+      <p> {item.price}</p>
+      <button className="page-button">Buy now</button>
+      <button className="page-button">Make an offer</button>
+      </div>
+      <div className="images"> 
+        {/* Need to style this div */}
+        {/* {item.images} */}
+        </div>
 
     </div>
   )
