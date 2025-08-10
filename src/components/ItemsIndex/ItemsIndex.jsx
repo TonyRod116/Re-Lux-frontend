@@ -25,11 +25,10 @@ useEffect(() => {
     }
   }
   getItems()
-})
+}, [])
 
   return <div className="page-content">
       <h1>Pre-owned luxury</h1>
-      <Link to="/items/new">Sell an item</Link>
       <p>Browse all the latest items for sale and grab your deal.</p>
       <div>
         <h2>All items</h2>
