@@ -61,8 +61,10 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
   }
 
   return (
-    <form className="profile-edit-form" onSubmit={handleSubmit}>
-      <div className="form-group">
+    <form className="form" onSubmit={handleSubmit}>
+      <h2>Edit Profile</h2>
+      
+      <div>
         <label htmlFor="profilePic">Profile Picture</label>
         <input
           type="file"
@@ -80,7 +82,7 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         )}
       </div>
 
-      <div className="form-group">
+      <div>
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -92,9 +94,7 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         />
       </div>
 
-
-
-      <div className="form-group">
+      <div>
         <label htmlFor="bio">Bio</label>
         <textarea
           id="bio"
@@ -106,20 +106,20 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         />
       </div>
 
-      <div className="form-group">
+      <div>
         <label htmlFor="location">Location</label>
         <input
           type="text"
           id="location"
           name="location"
           value={formData.location}
-          onChange={handleChange}
           placeholder="City, Country"
+          onChange={handleChange}
         />
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="save-button">
+        <button type="submit">
           Save Changes
         </button>
         <button type="button" className="cancel-button" onClick={handleCancel}>

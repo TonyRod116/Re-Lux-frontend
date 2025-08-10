@@ -42,7 +42,7 @@ export default function SignInForm(){
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
       <h2>Welcome back to <span className='brand-font'>Re-lux</span></h2>
       <label htmlFor="email">Email</label>
       <input type="email" name="email" id="email" placeholder='yourname@example.com' value={formData.email} onChange={handleChange} />
