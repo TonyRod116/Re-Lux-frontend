@@ -1,27 +1,45 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from './ProfileForm'
+import { updateUserProfile } from '../../services/users'
+import { getToken } from '../../utils/auth'
 import './ProfilePage.css'
 import '../../styles/forms.css'
 
-
-
 const ProfilePage = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   if (!user) return <div>Please sign in to view profile</div>
 
   const handleSave = async (formData) => {
-    // Update profile
-    console.log('Form data:', formData)
-    setIsEditing(false)
-    // TODO: API call
-    // await updateUserProfile(formData)
+    try {
+      setIsLoading(true)
+      setError(null)
+      
+      const token = getToken()
+      const response = await updateUserProfile(user.username, formData, token)
+      
+      // Update user context with new data
+      setUser(response.data.user)
+      
+      // Close edit mode
+      setIsEditing(false)
+      
+      console.log('Profile updated successfully:', response.data)
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      setError(error.response?.data?.message || 'Error updating profile')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleCancel = () => {
     setIsEditing(false)
+    setError(null)
   }
 
   return (
@@ -51,6 +69,8 @@ const ProfilePage = () => {
           user={user}
           onSave={handleSave}
           onCancel={handleCancel}
+          isLoading={isLoading}
+          error={error}
         />
         ) 
       : (

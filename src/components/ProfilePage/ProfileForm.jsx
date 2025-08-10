@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './ProfilePage.css'
 import '../../styles/forms.css'
 
-const ProfileForm = ({ user, onSave, onCancel }) => {
+const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({
     username: '',
     bio: '',
@@ -119,13 +119,17 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
       </div>
 
       <div className="form-actions">
-        <button type="submit">
-          Save Changes
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Saving...' : 'Save Changes'}
         </button>
-        <button type="button" className="cancel-button" onClick={handleCancel}>
+        <button type="button" className="cancel-button" onClick={handleCancel} disabled={isLoading}>
           Cancel
         </button>
       </div>
+      
+      {error && (
+        <p className="error-message">{error}</p>
+      )}
     </form>
   )
 }

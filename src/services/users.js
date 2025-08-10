@@ -9,3 +9,15 @@ export const signUp = async (formData) => {
 export const signIn = async (formData) => {
   return axios.post(BASE_URL + '/sign-in', formData)
 }
+
+export const updateUserProfile = async (username, formData, token) => {
+  return axios.put(
+    import.meta.env.VITE_API_URL + `/users/${username}`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  )
+}
