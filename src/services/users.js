@@ -11,13 +11,14 @@ export const signIn = async (formData) => {
 }
 
 export const updateUserProfile = async (username, formData, token) => {
-  return axios.put(
-    import.meta.env.VITE_API_URL + `/users/${username}`,
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  const url = import.meta.env.VITE_API_URL + `/users/${username}`
+  console.log('🌐 API URL:', url)
+  console.log('📤 Request data:', formData)
+  console.log('🔑 Token:', token ? 'Present' : 'Missing')
+  
+  return axios.put(url, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  )
+  })
 }
