@@ -1,0 +1,146 @@
+import React, { useState, useEffect } from 'react'
+import './ProfilePage.css'
+import '../../styles/forms.css'
+
+const ProfileForm = ({ user, onSave, onCancel }) => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    bio: '',
+    location: '',
+    profilePic: ''
+  })
+
+  // Init form data
+  useEffect(() => {
+    setFormData({
+      username: user?.username || '',
+      email: user?.email || '',
+      bio: user?.Bio || '',
+      location: user?.location || '',
+      profilePic: user?.profilePic || ''
+    })
+  }, [user])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      // Store URL
+      // TODO: Upload image
+      setFormData(prev => ({
+        ...prev,
+        profilePic: URL.createObjectURL(file)
+      }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      await onSave(formData)
+    } catch (error) {
+      console.error('Error saving profile:', error)
+    }
+  }
+
+  const handleCancel = () => {
+    // Reset data
+    setFormData({
+      username: user?.username || '',
+      email: user?.email || '',
+      bio: user?.Bio || '',
+      location: user?.location || '',
+      profilePic: user?.profilePic || ''
+    })
+    onCancel()
+  }
+
+  return (
+    <form className="profile-edit-form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="profilePic">Profile Picture</label>
+        <input
+          type="file"
+          id="profilePic"
+          name="profilePic"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {formData.profilePic && (
+          <img 
+            src={formData.profilePic} 
+            alt="Preview" 
+            className="image-preview"
+          />
+        )}
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="bio">Bio</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={formData.bio}
+          onChange={handleChange}
+          rows="3"
+          placeholder="Tell us about yourself..."
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="location">Location</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
+          placeholder="City, Country"
+        />
+      </div>
+
+      <div className="form-actions">
+        <button type="submit" className="save-button">
+          Save Changes
+        </button>
+        <button type="button" className="cancel-button" onClick={handleCancel}>
+          Cancel
+        </button>
+      </div>
+    </form>
+  )
+}
+
+export default ProfileForm

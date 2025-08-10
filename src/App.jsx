@@ -3,11 +3,11 @@ import './App.css';
 import { useState } from 'react'
 import { Routes, Route } from 'react-router'
 
-// Global components
+// Global
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 
-// Page components
+// Pages
 import HomePage from './components/HomePage/HomePage'
 import SignUpPage from './components/SignUpPage/SignUpPage'
 import SignInPage from './components/SignInPage/SignInPage'

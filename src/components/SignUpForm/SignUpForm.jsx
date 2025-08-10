@@ -6,10 +6,10 @@ import { UserContext } from '../../Contexts/UserContext'
 import '../../styles/forms.css'
 
 export default function SignUpForm(){
-  // * Context
+  // Context
   const { setUser } = useContext(UserContext)
 
-  // * State
+  // State
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -19,10 +19,10 @@ export default function SignUpForm(){
   const [errors, setErrors] = useState({})
 
 
-  // * Location variables
+  // Nav
   const navigate = useNavigate()
 
-  // * Functions
+  // Functions
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log('Form submitted with data:', formData)
