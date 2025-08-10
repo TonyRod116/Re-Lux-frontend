@@ -11,7 +11,7 @@ import Footer from './components/Footer/Footer'
 import HomePage from './components/HomePage/HomePage'
 import SignUpPage from './components/SignUpPage/SignUpPage'
 import SignInPage from './components/SignInPage/SignInPage'
-import ItemIndex from './components/ItemIndex/ItemIndex'
+import ItemsIndex from './components/ItemsIndex/ItemsIndex'
 import ItemShow from './components/ItemShow/ItemShow'
 import ItemCreatePage from './components/ItemCreatePage/ItemCreatePage'
 import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
@@ -26,7 +26,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/Items" element={<ItemIndex />} />
+        <Route path="/Items" element={<ItemsIndex />} />
         <Route path="/Items/create" element={<ItemCreatePage />} />
         <Route path="/Items/:ItemId/edit" element={<ItemUpdatePage />} />
         <Route path="/Items/:ItemId" element={<ItemShow />} />

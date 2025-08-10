@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { itemIndex } from '../../services/items.js'
+import { itemsIndex } from '../../services/items.js'
 
 import './ItemsIndex.css'
 
