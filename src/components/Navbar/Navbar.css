@@ -5,6 +5,7 @@ nav {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-family: "Lato", sans-serif;
 }
 
 #main-pages {
