@@ -4,7 +4,6 @@ import '../../styles/forms.css'
 
 const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({
-    username: '',
     bio: '',
     location: '',
     profilePic: ''
@@ -13,8 +12,7 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   // Init form data
   useEffect(() => {
     setFormData({
-      username: user?.username || '',
-      bio: user?.Bio || '',
+      bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
     })
@@ -52,8 +50,7 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const handleCancel = () => {
     // Reset data
     setFormData({
-      username: user?.username || '',
-      bio: user?.Bio || '',
+      bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
     })
@@ -82,17 +79,7 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
         )}
       </div>
 
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-      </div>
+
 
       <div>
         <label htmlFor="bio">Bio</label>
@@ -127,8 +114,11 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
         </button>
       </div>
       
+      {/* Show general error message prominently */}
       {error && (
-        <p className="error-message">{error}</p>
+        <div className="error-message general-error">
+          ❌ {error.message || error}
+        </div>
       )}
     </form>
   )
