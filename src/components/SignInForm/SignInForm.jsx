@@ -52,17 +52,8 @@ export default function SignInForm(){
       <input type="password" name="password" id="password" placeholder='Your password' value={formData.password} onChange={handleChange} />
       {errors.password && <p className='error-message'>{errors.password}</p>}
 
-      {/* Show general error message prominently */}
       {errors.message && (
-        <div className="error-message" style={{ 
-          textAlign: 'center', 
-          fontSize: '1rem', 
-          padding: '1rem', 
-          backgroundColor: '#fdf2f2', 
-          border: '1px solid #fecaca', 
-          borderRadius: '4px',
-          marginBottom: '1rem'
-        }}>
+        <div className="error-message general-error">
           ❌ {errors.message}
         </div>
       )}
