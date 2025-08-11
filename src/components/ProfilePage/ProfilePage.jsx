@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
-import ProfileForm from './ProfileForm'
+import ProfileForm from '../ProfileForm/ProfileForm'
 import { updateUserProfile } from '../../services/users'
 import { getToken } from '../../utils/auth'
 import './ProfilePage.css'
@@ -29,7 +29,7 @@ const ProfilePage = () => {
             setIsEditing(false)
           } catch (error) {
             // setError(error.response?.data?.message || 'Error updating profile')
-            setErrors(error.response.data)
+            setError(error.response.data)
           } finally {
             setIsLoading(false)
           }

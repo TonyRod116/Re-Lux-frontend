@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './ProfilePage.css'
+import './ProfileForm.css'
 import '../../styles/forms.css'
 
 const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
@@ -61,7 +61,7 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   }
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="profile-form" onSubmit={handleSubmit}>
       <h2>Edit Profile</h2>
       
       <div>
