@@ -1,10 +1,16 @@
 import './ItemCreateForm.css'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { itemCreate, getItemTypes } from '../../services/items'
 import { useNavigate } from 'react-router'
+import { UserContext } from '../../Contexts/UserContext'
 
 const ItemCreateForm = () => {
+
+  const { user } = useContext(UserContext)
+
+  // if (!user) return <Navigate to= ''
+
   // State
   const [types, setTypes] = useState([]);
   const [formData, setFormData] = useState({
@@ -91,9 +97,8 @@ return (
       <input type="location" name="location" id="location" value={formData.location} onChange={handleChange} />
       {errors.location && <p className='error-message'>{errors.location}</p>}
 
-      <label htmlFor="images">Photos</label>
-      <input type="file" name="images" id="images" multiple accept="image/*" onChange={handleImageChange} />
-      {errors.images && <p className='error-message'>{errors.images}</p>}
+      {/* <ImageUpload /> */}
+
 
       <label htmlFor="price">Price</label>
       <input type="number" name="price" id="price" placeholder='Please set your price' value={formData.price} onChange={handleChange} />
