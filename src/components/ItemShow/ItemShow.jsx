@@ -9,11 +9,11 @@ const ItemShow = () => {
 
   // Context
   const { user } = useContext(UserContext)
-  
+
   // State
   const [item, setItem] = useState({})
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState()
+  const [loading, setLoading] = useState(false)
 
   const { itemId } = useParams()
   const navigate = useNavigate()
@@ -24,6 +24,7 @@ const ItemShow = () => {
       setLoading(true)
       try {
         const { data } = await itemShow(itemId)
+        console.log("API response:", data);
         setItem(data)
       } catch (error) {
         setError(error)
@@ -45,26 +46,33 @@ const ItemShow = () => {
     }
   }
 
-  return (
-    <div className="page-content">
-      {/* Need to add conditional express depending on logged/ownership status */}
-      <button className="seller-button">Edit</button>
-      <button className="seller-button">Delete</button>
-      {/* Add icons from react icons package */}
-      <div>
-      <h1>{item.name}</h1>
-      <p>Seller: {item.seller}</p>
-      <p>Location: {item.location}</p>
-      <p>Description: {item.description}</p>
-      <p> {item.price}</p>
-      <button className="page-button">Buy now</button>
-      <button className="page-button">Make an offer</button>
-      </div>
-      <div className="images"> 
-        {/* Need to style this div */}
-        {/* {item.images} */}
-        </div>
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Something went wrong: {error.message}</p>;
+  if (!item) return <p>No item found</p>;
 
+  return (
+    <div className="item-content">
+      <div className="images">
+        {/* Need to style this div */}
+        {item.images}
+      </div>
+      <div className="item-details">
+        <div className="user-controls">
+          {/* Need to add conditional express depending on logged/ownership status */}
+          <button className="seller-button">Edit</button>
+          <button className="seller-button">Delete</button>
+          {/* Add icons from react icons package */}
+        </div>
+        <div>
+          <h1>{item.title}</h1>
+          <p> {item.price}</p>
+          <p>Seller: {item.seller}</p>
+          <p>Location: {item.location}</p>
+          <p>Description: {item.description}</p>
+          <button className="purchase-button">Buy now</button>
+          <button className="offer-button">Make an offer</button>
+        </div>
+      </div>
     </div>
   )
 }
