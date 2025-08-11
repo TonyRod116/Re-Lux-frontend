@@ -25,18 +25,13 @@ export default function SignUpForm(){
   // Functions
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted with data:', formData)
     try {
-      console.log('Calling signUp...')
       const { data } = await signUp(formData)
-      console.log('SignUp response:', data)
       setToken(data.token)
       setUser(getUser())
-      console.log('Navigating to home...')
       navigate('/')
     } catch (error) {
-      console.log('SignUp error:', error)
-      setErrors(error.response?.data || {})
+      setErrors(error.response?.data || { message: 'Sign-up failed' })
     }
   }
 
@@ -64,6 +59,12 @@ export default function SignUpForm(){
       <label htmlFor="passwordConfirmation">Type your password again</label>
       <input type="password" name='passwordConfirmation' id='passwordConfirmation' placeholder='Confirm password' value={formData.passwordConfirmation} onChange={handleChange} />
       {errors.passwordConfirmation && <p className='error-message'>{errors.passwordConfirmation}</p>}
+
+      {errors.message && (
+        <div className="error-message general-error">
+          ❌ {errors.message}
+        </div>
+      )}
 
       <button type="submit">Submit</button>
     </form>

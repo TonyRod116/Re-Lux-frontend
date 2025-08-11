@@ -5,18 +5,17 @@ import '../../styles/forms.css'
 const ProfileForm = ({ user, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     bio: '',
     location: '',
     profilePic: ''
   })
 
+
   // Init form data
   useEffect(() => {
     setFormData({
       username: user?.username || '',
-      email: user?.email || '',
-      bio: user?.Bio || '',
+      bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
     })
@@ -55,8 +54,7 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
     // Reset data
     setFormData({
       username: user?.username || '',
-      email: user?.email || '',
-      bio: user?.Bio || '',
+      bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
     })
@@ -96,18 +94,6 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
         <label htmlFor="bio">Bio</label>
         <textarea
           id="bio"
@@ -132,10 +118,10 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="save-button">
+        <button type="submit">
           Save Changes
         </button>
-        <button type="button" className="cancel-button" onClick={handleCancel}>
+        <button type="button" onClick={handleCancel}>
           Cancel
         </button>
       </div>
