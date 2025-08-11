@@ -2,7 +2,7 @@ import './ImageUpload.css'
 import { uploadImage } from '../../services/cloudinary'
 import { useState } from 'react'
 
-const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setImage, imageURL, setUploading }) => {
+const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setFormData, imageURLs, setUploading }) => {
 
     // State
 
@@ -11,7 +11,13 @@ const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setIma
     // Functions
 
     const handleUpload = async (e) => {
+
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
         setUploading(true)
+        setError('')
+
         try {
             const files = Array.from(e.target.files);
 
@@ -21,9 +27,18 @@ const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setIma
 
             // This gets just the URLs from the response
             const justURLs = responses.map(response => response.data.secure_url)
+            console.log(justURLs)
 
             // 'prev' gives you access to the previous state. This means 'if there is a previous state, use this or if there isn't, use an empty array. Then append new URLs to the "justURls" array.
-            setImage(prev => [...(prev || []), ...justURLs])
+            setFormData(formData => {
+                return {
+                    ...formData,
+                    [fieldName]: [...formData.images, ...justURLs]
+                }
+            })
+
+            // Clears the file input afterwards
+             e.target.value = ''
 
         } catch (error) {
             console.log(error)
@@ -35,12 +50,12 @@ const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setIma
 
     return (
         <>
-            {Array.isArray(imageURL)
-                ? imageURL.map((url, idx) => (
+            {imageURLs.length > 0
+                ? imageURLs.map((url, idx) => (
                     <img key={idx} className='uploaded-image' src={url} alt={`Uploaded ${idx}`} />
                 ))
-                : imageURL
-                    ? <img className='uploaded-image' src={imageURL} alt="Uploaded" />
+                : imageURLs
+                    ? <img className='uploaded-image' src={imageURLs} alt="Uploaded" />
                     : null
             }
             {/* The above code adds a preview of the img or multiple images that have been uploaded by mapping the array */}

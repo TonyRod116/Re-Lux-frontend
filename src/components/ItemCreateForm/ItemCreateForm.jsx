@@ -94,8 +94,8 @@ return (
      <ImageUpload
       labelText="Upload photos"
       fieldName="images"
-      setImage={(urls) => setFormData(prev => ({ ...prev, images: urls }))}
-      imageURL={formData.images}
+      setFormData={ setFormData }
+      imageURLs={formData.images}
       setUploading={setUploading}
        />
 
