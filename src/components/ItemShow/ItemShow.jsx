@@ -47,6 +47,10 @@ const ItemShow = () => {
 
   return (
     <div className="page-content">
+      {/* Need to add conditional express depending on logged/ownership status */}
+      <button className="seller-button">Edit</button>
+      <button className="seller-button">Delete</button>
+      {/* Add icons from react icons package */}
       <div>
       <h1>{item.name}</h1>
       <p>Seller: {item.seller}</p>
