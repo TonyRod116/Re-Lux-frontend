@@ -1,19 +1,19 @@
-// import '/components/ItemUpdatePage/ItemUpdatePage.css'
+import './ItemUpdatePage.css'
+
+import ItemUpdateForm from '../ItemUpdateForm/ItemUpdateForm'
+import { Link } from 'react-router-dom'
 
 const ItemUpdatePage = () => {
   const { ItemId } = useParams()
 
   return (
-    <div>
-      <h1>Edit Item</h1>
-      <p>Editing Item ID: {ItemId}</p>
-      <form>
-        <input type="text" placeholder="Item Name" />
-        <textarea placeholder="Item Description"></textarea>
-        <input type="number" placeholder="Price" />
-        <button type="submit">Update Item</button>
-      </form>
-      <a href={`/Items/${ItemId}`}>Back to Item</a>
+    <div className="page-content">
+      <h1>Edit an item</h1>
+      <p>Update your details below and click save.</p>
+      <section className='form'>
+        <ItemUpdateForm />
+      </section>
+      <Link to='/:itemID'>Back to your item</Link> 
     </div>
   )
 }
