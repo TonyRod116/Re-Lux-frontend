@@ -12,8 +12,8 @@ export const getItemTypes = () => {
   return axios.get(`${BASE_URL}/types`)
 }
 
-export const itemShow = () => {
-    return axios.get(`${BASE_URL}/${projectId}`)
+export const itemShow = (itemId) => {
+    return axios.get(`${BASE_URL}/${itemId}`)
 }
 
 export const itemCreate = (formData) => {
