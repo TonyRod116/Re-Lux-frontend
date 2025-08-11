@@ -14,38 +14,26 @@ const ProfilePage = () => {
 
   if (!user) return <div>Please sign in to view profile</div>
 
-  const handleSave = async (formData) => {
-    try {
-      console.log('🚀 Starting profile update...')
-      console.log('📝 Form data received:', formData)
-      console.log('👤 Current user:', user)
-      
-      setIsLoading(true)
-      setError(null)
-      
-      const token = getToken()
-      console.log('🔑 Token obtained:', token ? 'Yes' : 'No')
-      
-      console.log('📡 Calling API...')
-      const response = await updateUserProfile(user.username, formData, token)
-      console.log('✅ API response:', response.data)
-      
-      // Update user context with new data
-      console.log('🔄 Updating user context...')
-      setUser(response.data.user)
-      
-      // Close edit mode
-      setIsEditing(false)
-      
-      console.log('🎉 Profile updated successfully!')
-    } catch (error) {
-      console.error('❌ Error updating profile:', error)
-      console.error('❌ Error details:', error.response?.data)
-      setError(error.response?.data?.message || 'Error updating profile')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+          const handleSave = async (formData) => {
+          try {
+            setIsLoading(true)
+            setError(null)
+            
+            const token = getToken()
+            const response = await updateUserProfile(user.username, formData, token)
+            
+            // Update user context with new data
+            setUser(response.data.user)
+            
+            // Close edit mode
+            setIsEditing(false)
+          } catch (error) {
+            // setError(error.response?.data?.message || 'Error updating profile')
+            setErrors(error.response.data)
+          } finally {
+            setIsLoading(false)
+          }
+        }
 
   const handleCancel = () => {
     setIsEditing(false)
