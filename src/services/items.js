@@ -17,7 +17,7 @@ export const itemShow = () => {
 }
 
 export const itemCreate = (formData) => {
-    return axios.post(`${BASE_URL}/new`, formData, {
+    return axios.post(BASE_URL, formData, {
         headers: {
             Authorization: `Bearer ${getToken()}`
         }

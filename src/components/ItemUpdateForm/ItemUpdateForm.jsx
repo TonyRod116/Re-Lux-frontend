@@ -1,72 +1,75 @@
-import './ItemCreateForm.css'
+import './ItemUpdateForm.css'
 
-import { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router'
+import { useState, useEffect } from 'react'
+import { itemUpdate, itemShow, getItemTypes } from '../../services/items'
+import { useNavigate, useParams } from 'react-router'
 
-import { itemCreate, getItemTypes } from '../../services/items'
-import { UserContext } from '../../Contexts/UserContext'
-import ImageUpload from '../ImageUpload/ImageUpload'
 
-const ItemCreateForm = () => {
+const ItemUpdateForm = () => {
 
-  const { user } = useContext(UserContext)
-
-  // if (!user) return <Navigate to= ''
-
-  // State
-  const [types, setTypes] = useState([]);
+// State
+ const [types, setTypes] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     type: '',
     description: '',
     location: '',
-    images: [],
+    images: '',
     price: 1,
   })
 
-  const [uploading, setUploading] = useState(false)
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
+  const [prefillError, setPrefillError] = useState('')
 
-  // Location Variables
-  const navigate = useNavigate()
 
-  // Fetch item types for the dropdown
-  useEffect(() => {
-    const fetchTypes = async () => {
-      try {
-        const res = await getItemTypes()
-        setTypes(res.data)
-      } catch (error) {
-        setErrors(error.response?.data || { general: 'Something went wrong' })
-      }
+// Location variables
+
+const navigate = useNavigate()
+const { projectId } = useParams()
+
+// Fetching data
+
+useEffect (() => {
+    const getItemData = async () => {
+        try {
+            const { data } = await itemShow(itemId)
+            setFormData(data)
+        } catch (error) {
+            console.log(error)
+            setPrefillError('There was a problem loading this item. Please refresh the page and try again.')
+        }
     }
-    fetchTypes()
-  }, [])
+    getItemData()
+}, [itemId])
 
 // Functions
 
-const handleChange = (e) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value })
+const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSubmitting(true)
+    setErrors({})
+    try {
+        const { data } = await itemUpdate(itemId, formData)
+        navigate(`/items/${data._id}`)
+    } catch (error) {
+        console.log(error)
+        setErrors(error.response.data)
+    } finally {
+        setSubmitting(false)
+    }
 }
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-  setUploading(true)
-  try {
-    const { data } = await itemCreate(formData)
-    navigate(`/items/${data._id}`)
-  } catch (error) {
-    console.log(error)
-    setErrors(error.response?.data || { general: 'Something went wrong' })
-
-  } finally {
-    setUploading(false)
-  }
+const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
 }
 
 return (
-  <div>
+      <div>
     <form className='form' onSubmit={handleSubmit}>
+
+    {prefillError && <p className="error-message">{prefillError}</p>}
+
 
       <label htmlFor="title">Product name</label>
       <input type="text" name="title" id="title" placeholder='Enter your product name here' value={formData.title} onChange={handleChange} />
@@ -91,23 +94,21 @@ return (
       <input type="location" name="location" id="location" value={formData.location} onChange={handleChange} />
       {errors.location && <p className='error-message'>{errors.location}</p>}
 
-     <ImageUpload
-      labelText="Upload photos"
-      fieldName="images"
-      setFormData={ setFormData }
-      imageURLs={formData.images}
-      setUploading={setUploading}
-       />
-
+      <label htmlFor="images">Photos</label>
+      <input type="file" name="images" id="images" multiple accept="image/*" onChange={handleImageChange} />
+      {errors.images && <p className='error-message'>{errors.images}</p>}
 
       <label htmlFor="price">Price</label>
       <input type="number" name="price" id="price" placeholder='Please set your price' value={formData.price} onChange={handleChange} />
       {errors.price && <p className='error-message'>{errors.price}</p>}
 
-      <button type='submit'>{uploading ? 'Please wait...' : 'Create listing'}</button>
+      <button type='submit'>{submitting ? 'Please wait' : 'Create listing'}</button>
     </form>
   </div>
+
 )
+
+
 }
 
-export default ItemCreateForm
+export default ItemUpdateForm
