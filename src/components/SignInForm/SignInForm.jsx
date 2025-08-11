@@ -12,7 +12,7 @@ export default function SignInForm(){
 
   // State
   const [formData, setFormData] = useState({
-    email: '',
+    identifier: '',
     password: ''
   })
   const [errors, setErrors] = useState({})
@@ -30,8 +30,7 @@ export default function SignInForm(){
       setUser(getUser())
       navigate('/')
     } catch (error) {
-      console.log(error)
-      setErrors(error.response.data)
+      setErrors(error.response?.data || { message: 'Sign-in failed' })
     }
   }
 
@@ -44,13 +43,20 @@ export default function SignInForm(){
   return (
     <form className="form" onSubmit={handleSubmit}>
       <h2>Welcome back to <span className='brand-font'>Re-lux</span></h2>
-      <label htmlFor="email">Email</label>
-      <input type="email" name="email" id="email" placeholder='yourname@example.com' value={formData.email} onChange={handleChange} />
-      { errors.email && <p className='error-message'>{errors.email}</p>}
+      
+      <label htmlFor="identifier">Email or Username</label>
+      <input type="text" name="identifier" id="identifier" placeholder='yourname@example.com or username' value={formData.identifier} onChange={handleChange} />
+      {errors.identifier && <p className='error-message'>{errors.identifier}</p>}
 
       <label htmlFor="password">Password</label>
       <input type="password" name="password" id="password" placeholder='Your password' value={formData.password} onChange={handleChange} />
       {errors.password && <p className='error-message'>{errors.password}</p>}
+
+      {errors.message && (
+        <div className="error-message general-error">
+          ❌ {errors.message}
+        </div>
+      )}
 
       <button type="submit">Sign In</button>
     </form>

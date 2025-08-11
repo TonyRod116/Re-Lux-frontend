@@ -124,3 +124,13 @@
   margin: -0.5rem 0 1rem 0;
   font-weight: 500;
 }
+
+.general-error {
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  background-color: #fdf2f2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
