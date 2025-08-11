@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import './ProfilePage.css'
+import './ProfileForm.css'
 import '../../styles/forms.css'
 
-const ProfileForm = ({ user, onSave, onCancel }) => {
+const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({
-    username: '',
     bio: '',
     location: '',
     profilePic: ''
   })
 
-
   // Init form data
   useEffect(() => {
     setFormData({
-      username: user?.username || '',
       bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
@@ -53,7 +50,6 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
   const handleCancel = () => {
     // Reset data
     setFormData({
-      username: user?.username || '',
       bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
@@ -62,8 +58,10 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
   }
 
   return (
-    <form className="profile-edit-form" onSubmit={handleSubmit}>
-      <div className="form-group">
+    <form className="profile-form" onSubmit={handleSubmit}>
+      <h2>Edit Profile</h2>
+      
+      <div>
         <label htmlFor="profilePic">Profile Picture</label>
         <input
           type="file"
@@ -81,19 +79,9 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         )}
       </div>
 
-      <div className="form-group">
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-        />
-      </div>
 
-      <div className="form-group">
+
+      <div>
         <label htmlFor="bio">Bio</label>
         <textarea
           id="bio"
@@ -105,26 +93,33 @@ const ProfileForm = ({ user, onSave, onCancel }) => {
         />
       </div>
 
-      <div className="form-group">
+      <div>
         <label htmlFor="location">Location</label>
         <input
           type="text"
           id="location"
           name="location"
           value={formData.location}
-          onChange={handleChange}
           placeholder="City, Country"
+          onChange={handleChange}
         />
       </div>
 
       <div className="form-actions">
-        <button type="submit">
-          Save Changes
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Saving...' : 'Save Changes'}
         </button>
-        <button type="button" onClick={handleCancel}>
+        <button type="button" className="cancel-button" onClick={handleCancel} disabled={isLoading}>
           Cancel
         </button>
       </div>
+      
+      {/* Show general error message prominently */}
+      {error && (
+        <div className="error-message general-error">
+          ❌ {error.message || error}
+        </div>
+      )}
     </form>
   )
 }

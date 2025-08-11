@@ -1,23 +1,27 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
-import ProfileForm from './ProfileForm'
+import ProfileForm from '../ProfileForm/ProfileForm'
 import { updateUserProfile } from '../../services/users'
 import { getToken } from '../../utils/auth'
 import './ProfilePage.css'
 import '../../styles/forms.css'
 
-
-
 const ProfilePage = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   if (!user) return <div>Please sign in to view profile</div>
 
   const handleSave = async (formData) => {
     try {
+      setIsLoading(true)
+      setError(null)
+      
       const token = getToken()
-      const response = await updateUserProfile(user.username, formData, token)
+      
+      const response = await updateUserProfile(user._id, formData, token)
       
       // Update user context with new data
       setUser(response.data.user)
@@ -25,12 +29,26 @@ const ProfilePage = () => {
       // Close edit mode
       setIsEditing(false)
     } catch (error) {
-      console.error('Error updating profile:', error)
+      console.error('❌ Profile update error:', error)
+      console.error('❌ Error response:', error.response)
+      console.error('❌ Error message:', error.message)
+      
+      // Handle different types of errors
+      if (error.response?.data) {
+        setError(error.response.data)
+      } else if (error.message) {
+        setError({ message: error.message })
+      } else {
+        setError({ message: 'Error updating profile' })
+      }
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const handleCancel = () => {
     setIsEditing(false)
+    setError(null)
   }
 
   return (
@@ -43,7 +61,7 @@ const ProfilePage = () => {
         />
         <div className="profile-info">
           <h1>@{user.username}</h1>
-          <p className="bio">{user?.Bio || 'No bio yet'}</p>
+          <p className="bio">{user?.bio || 'No bio yet'}</p>
           {user?.location && <p className="location">📍 {user.location}</p>}
         </div>
         <button 
@@ -54,13 +72,17 @@ const ProfilePage = () => {
         </button>
       </div>
 
-      {isEditing ? (
+      {isEditing 
+      ? (
         <ProfileForm 
           user={user}
           onSave={handleSave}
           onCancel={handleCancel}
+          isLoading={isLoading}
+          error={error}
         />
-      ) : (
+        ) 
+      : (
         <div className="profile-sections">
           <section>
             <h2>Items for Sale (0)</h2>
@@ -76,7 +98,7 @@ const ProfilePage = () => {
             </div>
           </section>
         </div>
-      )}
+        )}
     </div>
   )
 }
