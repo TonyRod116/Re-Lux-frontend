@@ -5,6 +5,9 @@ import { itemShow, itemDelete } from '../../services/items.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 
+import { MdModeEdit } from "react-icons/md"
+import { MdDelete } from "react-icons/md"
+
 const ItemShow = () => {
 
   // Context
@@ -52,25 +55,35 @@ const ItemShow = () => {
 
   return (
     <div className="item-content">
-      <div className="images">
-        {/* Need to style this div */}
-        {item.images}
+      <div className="image-grid">
+        {item.images?.length > 0 ? (
+          item.images.map((url, i) => (
+          <img
+          key={i}
+          src={url}
+          alt={`${item.title} image ${i + 1}`}/>
+        ))
+      ) : (
+        <p>No images available</p>
+      )}
       </div>
       <div className="item-details">
         <div className="user-controls">
           {/* Need to add conditional express depending on logged/ownership status */}
-          <button className="seller-button">Edit</button>
-          <button className="seller-button">Delete</button>
+          <Link to={`/items/${itemId}/edit`} className="edit-icon"><MdModeEdit /></Link>
+          <button onClick={handleDelete} className="delete-icon"><MdDelete /></button>
           {/* Add icons from react icons package */}
         </div>
         <div>
           <h1>{item.title}</h1>
           <p> {item.price}</p>
-          <p>Seller: {item.seller}</p>
-          <p>Location: {item.location}</p>
-          <p>Description: {item.description}</p>
+          <p>Sold by {item.seller}</p>
+          <p>{item.location}</p>
+          <p>{item.description}</p>
+          <div className="button-row">
           <button className="purchase-button">Buy now</button>
           <button className="offer-button">Make an offer</button>
+          </div>
         </div>
       </div>
     </div>
