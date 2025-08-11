@@ -1,5 +1,4 @@
-h1,
-h2 {
+h1 {
     text-align: left;
 }
 
@@ -46,15 +45,19 @@ h2 {
     margin-top: auto 1rem;
 }
 
-.delete-icon {
-    text-decoration: none;
-    border-color: black;
-    padding: 5px;
-}
-
-.edit-icon {
+.edit-icon,
+.delete-icon,
+.save-icon {
+    display: inline-flex;          
+    align-items: center;
+    gap: 0.3rem;                 
+    font-size: 1rem;            
+    cursor: pointer;             
+    border: none;                
+    background: none;            
     color: black;
     text-decoration: none;
+    padding: 0;                   
 }
 
 .button-row {
