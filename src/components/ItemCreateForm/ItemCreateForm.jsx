@@ -1,9 +1,11 @@
 import './ItemCreateForm.css'
 
 import { useState, useEffect, useContext } from 'react'
-import { itemCreate, getItemTypes } from '../../services/items'
 import { useNavigate } from 'react-router'
+
+import { itemCreate, getItemTypes } from '../../services/items'
 import { UserContext } from '../../Contexts/UserContext'
+import ImageUpload from '../ImageUpload/ImageUpload'
 
 const ItemCreateForm = () => {
 
@@ -18,11 +20,11 @@ const ItemCreateForm = () => {
     type: '',
     description: '',
     location: '',
-    images: '',
+    images: [],
     price: 1,
   })
 
-  const [submitting, setSubmitting] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [errors, setErrors] = useState({})
 
   // Location Variables
@@ -47,17 +49,9 @@ const handleChange = (e) => {
   setFormData({ ...formData, [e.target.name]: e.target.value })
 }
 
-const handleImageChange = (e) => {
-  const files = Array.from(e.target.files);
-  setFormData({
-    ...formData,
-    images: files,
-  });
-};
-
 const handleSubmit = async (e) => {
   e.preventDefault()
-  setSubmitting(true)
+  setUploading(true)
   try {
     const { data } = await itemCreate(formData)
     navigate(`/items/${data._id}`)
@@ -66,7 +60,7 @@ const handleSubmit = async (e) => {
     setErrors(error.response?.data || { general: 'Something went wrong' })
 
   } finally {
-    setSubmitting(false)
+    setUploading(false)
   }
 }
 
@@ -97,14 +91,20 @@ return (
       <input type="location" name="location" id="location" value={formData.location} onChange={handleChange} />
       {errors.location && <p className='error-message'>{errors.location}</p>}
 
-      {/* <ImageUpload /> */}
+     <ImageUpload
+      labelText="Upload photos"
+      fieldName="images"
+      setImage={(urls) => setFormData(prev => ({ ...prev, images: urls }))}
+      imageURL={formData.images}
+      setUploading={setUploading}
+       />
 
 
       <label htmlFor="price">Price</label>
       <input type="number" name="price" id="price" placeholder='Please set your price' value={formData.price} onChange={handleChange} />
       {errors.price && <p className='error-message'>{errors.price}</p>}
 
-      <button type='submit'>{submitting ? 'Please wait' : 'Create listing'}</button>
+      <button type='submit'>{uploading ? 'Please wait...' : 'Create listing'}</button>
     </form>
   </div>
 )
