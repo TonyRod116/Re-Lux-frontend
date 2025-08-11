@@ -5,8 +5,7 @@ import { itemShow, itemDelete } from '../../services/items.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 
-import { MdModeEdit } from "react-icons/md"
-import { MdDelete } from "react-icons/md"
+import { MdModeEdit, MdDelete, MdFavorite } from "react-icons/md"
 
 const ItemShow = () => {
 
@@ -14,7 +13,7 @@ const ItemShow = () => {
   const { user } = useContext(UserContext)
 
   // State
-  const [item, setItem] = useState({})
+  const [item, setItem] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -52,6 +51,9 @@ const ItemShow = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong: {error.message}</p>;
   if (!item) return <p>No item found</p>;
+  
+  console.log('Item at render:', item);
+  console.log('Seller at render:', item.seller);
 
   return (
     <div className="item-content">
@@ -68,16 +70,19 @@ const ItemShow = () => {
       )}
       </div>
       <div className="item-details">
+        {user && item.seller._id === user._id ? (
         <div className="user-controls">
-          {/* Need to add conditional express depending on logged/ownership status */}
-          <Link to={`/items/${itemId}/edit`} className="edit-icon"><MdModeEdit /></Link>
-          <button onClick={handleDelete} className="delete-icon"><MdDelete /></button>
-          {/* Add icons from react icons package */}
+          <Link to={`/items/${itemId}/edit`} className="edit-icon">Edit <MdModeEdit /></Link>
+          <button onClick={handleDelete} className="delete-icon">Delete <MdDelete /></button>
         </div>
+        ) : (
+          <button className="save-icon"><MdFavorite /></button>
+
+        )}
         <div>
           <h1>{item.title}</h1>
-          <p> {item.price}</p>
-          <p>Sold by {item.seller}</p>
+          <p> ${item.price}</p>
+          <p>Sold by {item.seller.username}</p>
           <p>{item.location}</p>
           <p>{item.description}</p>
           <div className="button-row">

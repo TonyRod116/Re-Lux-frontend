@@ -3,8 +3,9 @@ import './ItemUpdatePage.css'
 import ItemUpdateForm from '../ItemUpdateForm/ItemUpdateForm'
 import { Link } from 'react-router-dom'
 
+
 const ItemUpdatePage = () => {
-  const { ItemId } = useParams()
+  // const { ItemId } = useParams()
 
   return (
     <div className="page-content">
@@ -13,7 +14,7 @@ const ItemUpdatePage = () => {
       <section className='form'>
         <ItemUpdateForm />
       </section>
-      <Link to='/:itemID'>Back to your item</Link> 
+      {/* <Link to='/:itemID'>Back to your item</Link>  */}
     </div>
   )
 }
