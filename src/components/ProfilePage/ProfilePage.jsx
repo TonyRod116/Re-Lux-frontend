@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from './ProfileForm'
+import { updateUserProfile } from '../../services/users'
+import { getToken } from '../../utils/auth'
 import './ProfilePage.css'
 import '../../styles/forms.css'
 
@@ -13,11 +15,18 @@ const ProfilePage = () => {
   if (!user) return <div>Please sign in to view profile</div>
 
   const handleSave = async (formData) => {
-    // Update profile
-    console.log('Form data:', formData)
-    setIsEditing(false)
-    // TODO: API call
-    // await updateUserProfile(formData)
+    try {
+      const token = getToken()
+      const response = await updateUserProfile(user.username, formData, token)
+      
+      // Update user context with new data
+      setUser(response.data.user)
+      
+      // Close edit mode
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Error updating profile:', error)
+    }
   }
 
   const handleCancel = () => {
