@@ -1,5 +1,5 @@
 import './CheckoutPage.css'
-import CheckoutForm from './CheckoutForm/CheckoutForm'
+import CheckoutForm from '../CheckoutForm/CheckoutForm'
 
 import { useState, useEffect } from 'react'
 import { Elements } from '@stripe/react-stripe-js'
@@ -29,9 +29,12 @@ const CheckoutPage = () => {
     if (!clientSecret) return <div>Please wait...</div>;
 
     return (
+        <>
+        <h1> Checkout </h1>
         <Elements stripe={stripePromise} options={{ clientSecret }}>
             <CheckoutForm />
         </Elements>
+        </>
     )
 
 

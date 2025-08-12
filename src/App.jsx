@@ -16,6 +16,7 @@ import ItemShow from './components/ItemShow/ItemShow'
 import ItemCreatePage from './components/ItemCreatePage/ItemCreatePage'
 import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
 import ProfilePage from './components/ProfilePage/ProfilePage'
+import CheckoutPage from './components/CheckoutPage/CheckoutPage'
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/items/:itemId/edit" element={<ItemUpdatePage />} />
         <Route path="/items/:itemId" element={<ItemShow />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
       <Footer />
     </>
