@@ -10,9 +10,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <CheckoutProvider stripe={ stripePromise }>
         <App />
-        </CheckoutProvider>
       </UserProvider>
     </BrowserRouter>
   </StrictMode>,
