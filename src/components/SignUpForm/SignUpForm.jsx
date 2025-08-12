@@ -16,7 +16,7 @@ export default function SignUpForm(){
     username: '',
     password: '',
     passwordConfirmation: '',
-    profileImage: ''
+    profilePic: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -43,13 +43,19 @@ export default function SignUpForm(){
     setFormData(newFormData)
   }
 
+const setProfileImage = (imageUrl) => {
+  setFormData({ ...formData, profilePic: imageUrl })
+}
+
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h2>Join <span className='brand-font'>Re-lux</span> today</h2>
 
     <SignUpImgForm
     labelText='Upload a profile image (optional)'
-    fieldName='profileImage'
+    fieldName='profilePic'
+    setImage={setProfileImage}
+    imageURLs={formData.profilePic}
     />
 
       <label htmlFor="email">Email</label>

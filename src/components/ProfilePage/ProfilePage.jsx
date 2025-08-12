@@ -29,26 +29,16 @@ const ProfilePage = () => {
       // Close edit mode
       setIsEditing(false)
     } catch (error) {
-      console.error('❌ Profile update error:', error)
-      console.error('❌ Error response:', error.response)
-      console.error('❌ Error message:', error.message)
-      
-      // Handle different types of errors
-      if (error.response?.data) {
-        setError(error.response.data)
-      } else if (error.message) {
-        setError({ message: error.message })
+      const backendError = error.response?.data
+      if (backendError && Object.keys(backendError).length > 0) {
+        const firstValue = Object.values(backendError)[0]
+        setError({ message: firstValue })
       } else {
         setError({ message: 'Error updating profile' })
       }
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const handleCancel = () => {
-    setIsEditing(false)
-    setError(null)
   }
 
   return (
@@ -72,17 +62,15 @@ const ProfilePage = () => {
         </button>
       </div>
 
-      {isEditing 
-      ? (
+      {isEditing ? (
         <ProfileForm 
           user={user}
           onSave={handleSave}
-          onCancel={handleCancel}
+          onCancel={() => setIsEditing(false)}
           isLoading={isLoading}
           error={error}
         />
-        ) 
-      : (
+      ) : (
         <div className="profile-sections">
           <section>
             <h2>Items for Sale (0)</h2>
@@ -98,7 +86,7 @@ const ProfilePage = () => {
             </div>
           </section>
         </div>
-        )}
+      )}
     </div>
   )
 }
