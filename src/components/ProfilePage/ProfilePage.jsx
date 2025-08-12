@@ -7,11 +7,14 @@ import './ProfilePage.css'
 import '../../styles/forms.css'
 
 const ProfilePage = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, isLoading: userLoading } = useContext(UserContext)
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // Show loading while user context is loading
+  if (userLoading) return <div>Loading profile...</div>
+  
   if (!user) return <div>Please sign in to view profile</div>
 
   const handleSave = async (formData) => {

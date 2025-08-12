@@ -13,15 +13,17 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [uploading, setUploading] = useState(false)
   const [imageError, setImageError] = useState('')
 
-  // Init form data
+  // Init form data when user is available
   useEffect(() => {
-    setFormData({
-      username: user?.username || '',
-      bio: user?.bio || '',
-      location: user?.location || '',
-      profilePic: user?.profilePic || ''
-    })
-  }, [user])
+    if (user) {
+      setFormData({
+        username: user.username || '',
+        bio: user.bio || '',
+        location: user.location || '',
+        profilePic: user.profilePic || ''
+      })
+    }
+  }, [user]) // Run when user object changes (not just ID)
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))

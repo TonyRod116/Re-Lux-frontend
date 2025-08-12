@@ -22,6 +22,7 @@ const ItemCreateForm = () => {
     location: '',
     images: [],
     price: 1,
+    sellerUsername: user?.username || '', // Add seller username
   })
 
   const [uploading, setUploading] = useState(false)
@@ -53,12 +54,18 @@ const handleSubmit = async (e) => {
   e.preventDefault()
   setUploading(true)
   try {
-    const { data } = await itemCreate(formData)
+    // Add seller ID and username to formData
+    const itemData = {
+      ...formData,
+      seller: user._id, // Add seller ID
+      sellerUsername: user.username // Add seller username
+    }
+    console.log('🔍 Creating item with data:', itemData)
+    const { data } = await itemCreate(itemData)
     navigate(`/items/${data._id}`)
   } catch (error) {
     console.log(error)
     setErrors(error.response?.data || { general: 'Something went wrong' })
-
   } finally {
     setUploading(false)
   }
@@ -91,13 +98,13 @@ return (
       <input type="location" name="location" id="location" value={formData.location} onChange={handleChange} />
       {errors.location && <p className='error-message'>{errors.location}</p>}
 
-     <ImageUpload
+      <ImageUpload
       labelText="Upload photos"
       fieldName="images"
       setFormData={ setFormData }
       imageURLs={formData.images}
       setUploading={setUploading}
-       />
+      />
 
 
       <label htmlFor="price">Price</label>
