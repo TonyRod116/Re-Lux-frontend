@@ -44,6 +44,7 @@ const ItemShow = () => {
       await itemDelete(itemId)
       navigate('/items')
     } catch (error) {
+      console.log(error)
       setError(error)
     }
   }
@@ -81,7 +82,7 @@ const ItemShow = () => {
         )}
         <div>
           <h1>{item.title}</h1>
-          <p> ${item.price}</p>
+          <p> €{item.price}</p>
           <p>Sold by {item.seller.username}</p>
           <p>{item.location}</p>
           <p>{item.description}</p>
