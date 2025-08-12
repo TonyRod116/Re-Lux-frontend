@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { signUp } from '../../services/users'
 import { setToken, getUser } from '../../utils/auth'
 import { UserContext } from '../../Contexts/UserContext'
+import SignUpImgForm from '../SignUpImgForm/SignUpImgForm'
 import '../../styles/forms.css'
 
 export default function SignUpForm(){
@@ -14,7 +15,8 @@ export default function SignUpForm(){
     email: '',
     username: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    profileImage: ''
   })
   const [errors, setErrors] = useState({})
 
@@ -44,6 +46,12 @@ export default function SignUpForm(){
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h2>Join <span className='brand-font'>Re-lux</span> today</h2>
+
+    <SignUpImgForm
+    labelText='Upload a profile image (optional)'
+    fieldName='profileImage'
+    />
+
       <label htmlFor="email">Email</label>
       <input type="email" name="email" id="email" placeholder='yourname@example.com' value={formData.email} onChange={handleChange} />
       { errors.email && <p className='error-message'>{errors.email}</p>}
