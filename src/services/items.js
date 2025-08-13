@@ -5,7 +5,6 @@ const BASE_URL = import.meta.env.VITE_API_URL + '/items'
 
 export const itemsIndex = () => {
     return axios.get(BASE_URL)
-
 }
 
 export const getItemTypes = () => {
@@ -38,4 +37,9 @@ export const itemDelete = (itemId) => {
             Authorization: `Bearer ${getToken()}`
         }
     })
+}
+
+// Get user's items for sale
+export const getUserItems = (userId) => {
+    return axios.get(`${BASE_URL}/user/${userId}`)
 }

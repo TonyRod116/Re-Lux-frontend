@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
 import { updateUserProfile } from '../../services/users'
+import { getUserItems } from '../../services/items'
 import { getToken } from '../../utils/auth'
+import { Link } from 'react-router-dom'
 import './ProfilePage.css'
 import '../../styles/forms.css'
 
@@ -11,6 +13,33 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [userItems, setUserItems] = useState([])
+  const [itemsLoading, setItemsLoading] = useState(true)
+
+  // Fetch user's items when component mounts
+  useEffect(() => {
+    const fetchUserItems = async () => {
+      if (user?._id) {
+        try {
+          setItemsLoading(true)
+          console.log('🔍 Fetching items for user:', user._id)
+          const response = await getUserItems(user._id)
+          console.log('🔍 Response from getUserItems:', response.data)
+          setUserItems(response.data)
+        } catch (error) {
+          console.error('🔍 Error fetching user items:', error)
+          setUserItems([])
+        } finally {
+          setItemsLoading(false)
+        }
+      }
+    }
+
+    fetchUserItems()
+  }, [user?._id])
+
+  console.log('🔍 Current userItems state:', userItems)
+  console.log('🔍 Items loading state:', itemsLoading)
 
   // Show loading while user context is loading
   if (userLoading) return <div>Loading profile...</div>
@@ -26,8 +55,28 @@ const ProfilePage = () => {
       
       const response = await updateUserProfile(user._id, formData, token)
       
-      // Update user context with new data
-      setUser(response.data.user)
+      // Verify response data and decode token
+      if (response.data && response.data.token) {
+        try {
+          // Decode the new token to get user data
+          const payloadString = response.data.token.split('.')[1]
+          const payload = JSON.parse(atob(payloadString))
+          const userData = payload.user
+          
+          // Update user context with decoded user data
+          setUser(userData)
+          
+          // Update token in localStorage
+          localStorage.setItem('relux-token', response.data.token)
+          
+        } catch (decodeError) {
+          setError({ message: 'Error processing server response' })
+          return
+        }
+      } else {
+        setError({ message: 'Invalid response from server' })
+        return
+      }
       
       // Close edit mode
       setIsEditing(false)
@@ -46,49 +95,92 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <div className="profile-header">
-        <img 
-          src={user?.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-          alt="Profile Image" 
-          className="profile-pic"
-        />
-        <div className="profile-info">
-          <h1>@{user.username}</h1>
-          <p className="bio">{user?.bio || 'No bio yet'}</p>
-          {user?.location && <p className="location">📍 {user.location}</p>}
-        </div>
-        <button 
-          className="edit-button"
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          {isEditing ? 'Cancel' : 'Edit Profile'}
-        </button>
-      </div>
-
-      {isEditing ? (
-        <ProfileForm 
-          user={user}
-          onSave={handleSave}
-          onCancel={() => setIsEditing(false)}
-          isLoading={isLoading}
-          error={error}
-        />
-      ) : (
-        <div className="profile-sections">
-          <section>
-            <h2>Items for Sale (0)</h2>
-            <div className="items-grid">
-              <p>No items for sale yet</p>
+      {user && (
+        <>
+          <div className="profile-header">
+            <img 
+              src={user?.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
+              alt="Profile Image" 
+              className="profile-pic"
+            />
+            <div className="profile-info">
+              <h1>@{user.username}</h1>
+              <p className="bio">{user?.bio || 'No bio yet'}</p>
+              {user?.location && <p className="location">📍 {user.location}</p>}
             </div>
-          </section>
+            <button 
+              className="edit-button"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              {isEditing ? 'Cancel' : 'Edit Profile'}
+            </button>
+          </div>
 
-          <section>
-            <h2>Favorites (0)</h2>
-            <div className="items-grid">
-              <p>No favorites yet</p>
+          {isEditing ? (
+            <ProfileForm 
+              user={user}
+              onSave={handleSave}
+              onCancel={() => setIsEditing(false)}
+              isLoading={isLoading}
+              error={error}
+            />
+          ) : (
+            <div className="profile-sections">
+              <section>
+                <h2>Items for Sale ({userItems.length})</h2>
+                {itemsLoading ? (
+                  <div className="items-loading">Loading your items...</div>
+                ) : userItems.length > 0 ? (
+                  <div className="items-grid">
+                    {userItems.map((item) => (
+                      <div key={item._id} className="item-card">
+                        <div className="item-image">
+                          <img 
+                            src={item.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"} 
+                            alt={item.title} 
+                          />
+                        </div>
+                        <div className="item-info">
+                          <div className="item-header">
+                            <h3 className="item-title">{item.title}</h3>
+                            <span className="item-type">{item.type}</span>
+                          </div>
+                          <p className="item-description">{item.description}</p>
+                          <div className="item-details">
+                            <span className="item-location">📍 {item.location}</span>
+                            <span className="item-price">€{item.price.toLocaleString()}</span>
+                          </div>
+                          <div className="item-actions">
+                            <Link to={`/items/${item._id}`} className="view-item-btn">
+                              View Details
+                            </Link>
+                            <Link to={`/items/${item._id}/edit`} className="edit-item-btn">
+                              Edit
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="items-grid">
+                    <p>No items for sale yet</p>
+                    <Link to="/items/new" className="create-item-btn">
+                      + Create Your First Item
+                    </Link>
+                  </div>
+                )}
+              </section>
+
+              <section>
+                <h2>Favorites (0)</h2>
+                <div className="items-grid">
+                  <p>No favorites yet</p>
+                </div>
+              </section>
             </div>
-          </section>
-        </div>
+          )}
+        </>
       )}
     </div>
   )
