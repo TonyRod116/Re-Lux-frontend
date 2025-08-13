@@ -20,21 +20,26 @@ const Cart = () => {
 
 
     return (
-         <div className="bag-content">
-            <h1>Your bag</h1>
-              <div className="cart-items">
-                <p>Your bag is empty</p>
-                <Link to="/items" className="page-button">Continue shopping</Link>
- 
-              </div>
-              <div className="order-summary">
-                <h3>Order summary</h3>
-                <p> Total will appear here </p>
-                  <div className="button-row">
-                  <button className="page-button">Go to checkout</button>
-                  </div>
+        <div className="bag-content">
+            <div className="bag-header">
+                <h1>Your bag</h1>
+            </div>
+            <div className="bag-columns">
+                <div className="cart-items">
+                    <p>Your bag is empty</p>
+                    <div className="button-row">
+                    <Link to="/items" className="page-button">Continue shopping</Link>
+                    </div>
                 </div>
-              </div>
+                <div className="order-summary">
+                    <h3>Order summary</h3>
+                    <p> Total will appear here </p>
+                    <div className="button-row">
+                        <Link to="/checkout" className="page-button">Go to checkout</Link>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 
