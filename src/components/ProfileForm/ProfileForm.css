@@ -1,4 +1,3 @@
-/* ProfileForm specific styles */
 .profile-form {
   background: white;
   padding: 2rem;
@@ -16,10 +15,6 @@
   padding-bottom: 0.5rem;
 }
 
-.profile-form .form-group {
-  margin-bottom: 1.5rem;
-}
-
 .profile-form label {
   display: block;
   margin-bottom: 0.5rem;
@@ -34,7 +29,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .profile-form input:focus,
@@ -51,33 +46,72 @@
   cursor: pointer;
 }
 
-.profile-form input[type="file"]:hover {
-  border-color: #007bff;
-  background: #f0f8ff;
+.image-preview {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+  margin-top: 0.5rem;
 }
 
-.image-preview {
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 8px;
-  margin-top: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.image-preview-container {
+  text-align: center;
+  margin: 1rem 0;
+  position: relative;
+  display: inline-block;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 5px;
+  right: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.remove-image-btn::before {
+  content: "×";
+  font-size: 16px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.remove-image-btn:hover {
+  background-color: #c82333;
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.remove-image-btn:active {
+  transform: scale(0.95);
 }
 
 .form-actions {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   margin-top: 2rem;
 }
 
 .form-actions button {
+  flex: 1;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .form-actions button[type="submit"] {
@@ -85,30 +119,40 @@
   color: white;
 }
 
-.form-actions button[type="submit"]:hover {
+.form-actions button[type="submit"]:hover:not(:disabled) {
   background: #0056b3;
 }
 
 .form-actions button[type="submit"]:disabled {
-  background: #ccc;
+  background: #6c757d;
   cursor: not-allowed;
 }
 
-.form-actions .cancel-button {
+.cancel-button {
   background: #6c757d;
   color: white;
 }
 
-.form-actions .cancel-button:hover {
+.cancel-button:hover:not(:disabled) {
   background: #545b62;
 }
 
 .error-message {
   color: #dc3545;
-  text-align: center;
-  margin-top: 1rem;
-  padding: 0.75rem;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
   background: #f8d7da;
   border: 1px solid #f5c6cb;
   border-radius: 4px;
+}
+
+.general-error {
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  background-color: #fdf2f2;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  margin-bottom: 1rem;
 }

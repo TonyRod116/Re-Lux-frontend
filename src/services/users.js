@@ -8,8 +8,8 @@ export const signIn = async (formData) => {
   return axios.post(import.meta.env.VITE_API_URL + '/api/auth/sign-in', formData)
 }
 
-export const updateUserProfile = async (username, formData, token) => {
-  const url = import.meta.env.VITE_API_URL + `/api/auth/users/${username}`
+export const updateUserProfile = async (userId, formData, token) => {
+  const url = import.meta.env.VITE_API_URL + `/api/auth/users/${userId}`
   
   return axios.put(url, formData, {
     headers: {

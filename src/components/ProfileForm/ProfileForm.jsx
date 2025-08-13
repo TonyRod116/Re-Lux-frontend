@@ -1,65 +1,105 @@
 import React, { useState, useEffect } from 'react'
 import './ProfileForm.css'
 import '../../styles/forms.css'
+import { uploadImage } from '../../services/tonyCloudinary'
 
 const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({
+    username: '',
     bio: '',
     location: '',
     profilePic: ''
   })
+  const [uploading, setUploading] = useState(false)
+  const [imageError, setImageError] = useState('')
 
-  // Init form data
+  // Init form data when user is available
   useEffect(() => {
-    setFormData({
-      bio: user?.bio || '',
-      location: user?.location || '',
-      profilePic: user?.profilePic || ''
-    })
-  }, [user])
+    if (user) {
+      setFormData({
+        username: user.username || '',
+        bio: user.bio || '',
+        location: user.location || '',
+        profilePic: user.profilePic || ''
+      })
+    }
+  }, [user]) // Run when user object changes (not just ID)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0]
-    if (file) {
-      // Store URL
-      // TODO: Upload image
+    if (!file) return
+
+    // Reset previous errors
+    setImageError('')
+    
+    // Max file size 5MB
+    if (file.size > 5 * 1024 * 1024) {
+      setImageError('Image size must be less than 5MB')
+      return
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setImageError('Please select a valid image file')
+      return
+    }
+
+    try {
+      setUploading(true)
+      const { data } = await uploadImage(file)
       setFormData(prev => ({
         ...prev,
-        profilePic: URL.createObjectURL(file)
+        profilePic: data.secure_url
       }))
+      console.log('Profile image uploaded successfully:', data.secure_url)
+    } catch (error) {
+      console.error('Error uploading profile image:', error)
+      setImageError('Failed to upload image. Please try again.')
+    } finally {
+      setUploading(false)
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try {
-      await onSave(formData)
-    } catch (error) {
-      console.error('Error saving profile:', error)
-    }
+    await onSave(formData)
   }
 
   const handleCancel = () => {
-    // Reset data
     setFormData({
+      username: user?.username || '',
       bio: user?.bio || '',
       location: user?.location || '',
       profilePic: user?.profilePic || ''
     })
+    setImageError('')
     onCancel()
+  }
+
+  const removeImage = () => {
+    setFormData(prev => ({ ...prev, profilePic: '' }))
+    setImageError('')
   }
 
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
       <h2>Edit Profile</h2>
+      
+      <div>
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Enter your username"
+        />
+      </div>
       
       <div>
         <label htmlFor="profilePic">Profile Picture</label>
@@ -69,17 +109,11 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
           name="profilePic"
           accept="image/*"
           onChange={handleImageChange}
+          disabled={uploading}
         />
-        {formData.profilePic && (
-          <img 
-            src={formData.profilePic} 
-            alt="Preview" 
-            className="image-preview"
-          />
-        )}
+        {uploading && <p>Uploading image...</p>}
+        {imageError && <div className="error-message">❌ {imageError}</div>}
       </div>
-
-
 
       <div>
         <label htmlFor="bio">Bio</label>
@@ -105,16 +139,27 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
         />
       </div>
 
+      {formData.profilePic && (
+        <div className="image-preview-container">
+          <img src={formData.profilePic} alt="Preview" className="image-preview" />
+          <button
+            type="button"
+            onClick={removeImage}
+            className="remove-image-btn"
+            >
+          </button>
+        </div>
+      )}
+
       <div className="form-actions">
-        <button type="submit" disabled={isLoading}>
+        <button type="submit" disabled={isLoading || uploading}>
           {isLoading ? 'Saving...' : 'Save Changes'}
         </button>
-        <button type="button" className="cancel-button" onClick={handleCancel} disabled={isLoading}>
+        <button type="button" className="cancel-button" onClick={handleCancel} disabled={isLoading || uploading}>
           Cancel
         </button>
       </div>
       
-      {/* Show general error message prominently */}
       {error && (
         <div className="error-message general-error">
           ❌ {error.message || error}
