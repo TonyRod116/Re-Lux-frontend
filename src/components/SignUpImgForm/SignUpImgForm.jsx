@@ -1,5 +1,5 @@
 import '../../styles/forms.css'
-import { uploadImage } from '../../services/tonyCloudinary'
+import { uploadImage } from '../../services/cloudinary'
 
 export default function SignUpImgForm({ labelText = 'Profile Image', fieldName = 'Image', setImage }){
 
