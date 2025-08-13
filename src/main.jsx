@@ -5,6 +5,7 @@ import './styles/forms.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router'
 import { UserProvider } from './Contexts/UserContext.jsx'
+import { CartProvider } from './Contexts/CartContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
