@@ -39,7 +39,12 @@ export const itemDelete = (itemId) => {
     })
 }
 
-// Get user's items for sale
 export const getUserItems = (userId) => {
-    return axios.get(`${BASE_URL}/user/${userId}`)
+    const token = getToken()
+        
+    return axios.get(`${BASE_URL}/user/${userId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
 }

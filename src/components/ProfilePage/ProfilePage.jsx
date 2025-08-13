@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
 import { updateUserProfile } from '../../services/users'
-import { getUserItems } from '../../services/items'
+import { getUserItems, itemDelete } from '../../services/items'
 import { getToken } from '../../utils/auth'
 import { Link } from 'react-router-dom'
 import './ProfilePage.css'
@@ -15,19 +15,18 @@ const ProfilePage = () => {
   const [error, setError] = useState(null)
   const [userItems, setUserItems] = useState([])
   const [itemsLoading, setItemsLoading] = useState(true)
+  const [deletingItem, setDeletingItem] = useState(null)
 
-  // Fetch user's items when component mounts
+  // Fetch user items when component mounts
   useEffect(() => {
     const fetchUserItems = async () => {
-      if (user?._id) {
+      if (user && user._id) {
         try {
           setItemsLoading(true)
-          console.log('🔍 Fetching items for user:', user._id)
           const response = await getUserItems(user._id)
-          console.log('🔍 Response from getUserItems:', response.data)
           setUserItems(response.data)
         } catch (error) {
-          console.error('🔍 Error fetching user items:', error)
+          console.error('Error fetching user items:', error)
           setUserItems([])
         } finally {
           setItemsLoading(false)
@@ -36,10 +35,7 @@ const ProfilePage = () => {
     }
 
     fetchUserItems()
-  }, [user?._id])
-
-  console.log('🔍 Current userItems state:', userItems)
-  console.log('🔍 Items loading state:', itemsLoading)
+  }, [user])
 
   // Show loading while user context is loading
   if (userLoading) return <div>Loading profile...</div>
@@ -93,6 +89,28 @@ const ProfilePage = () => {
     }
   }
 
+  const handleDeleteItem = async (itemId) => {
+    try {
+      const token = getToken()
+      await itemDelete(itemId)
+      
+      // Remove item from local state
+      setUserItems(prevItems => prevItems.filter(item => item._id !== itemId))
+      
+      // Close delete confirmation
+      setDeletingItem(null)
+    } catch (error) {
+      console.error('Error deleting item:', error)
+      alert('Error deleting item. Please try again.')
+    }
+  }
+
+  const confirmDelete = (item) => {
+    if (window.confirm(`Are you sure you want to delete "${item.title}"? This action cannot be undone.`)) {
+      handleDeleteItem(item._id)
+    }
+  }
+
   return (
     <div className="profile-page">
       {user && (
@@ -116,61 +134,75 @@ const ProfilePage = () => {
             </button>
           </div>
 
-          {isEditing ? (
-            <ProfileForm 
-              user={user}
-              onSave={handleSave}
-              onCancel={() => setIsEditing(false)}
-              isLoading={isLoading}
-              error={error}
-            />
-          ) : (
-            <div className="profile-sections">
-              <section>
-                <h2>Items for Sale ({userItems.length})</h2>
-                {itemsLoading ? (
-                  <div className="items-loading">Loading your items...</div>
-                ) : userItems.length > 0 ? (
-                  <div className="items-grid">
-                    {userItems.map((item) => (
-                      <div key={item._id} className="item-card">
-                        <div className="item-image">
-                          <img 
-                            src={item.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"} 
-                            alt={item.title} 
-                          />
+      {isEditing ? (
+        <ProfileForm 
+          user={user}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
+          isLoading={isLoading}
+          error={error}
+        />
+      ) : (
+        <div className="profile-sections">
+          <section>
+            <h2>Items for Sale ({userItems.length})</h2>
+            <div className="items-grid">
+              {itemsLoading ? (
+                <p>Loading items...</p>
+              ) : userItems.length > 0 ? (
+                userItems.map((item) => (
+                  <div key={item._id} className="item-card">
+                    <img 
+                      src={item.images?.[0] || "https://via.placeholder.com/200x200?text=No+Image"} 
+                      alt={item.title} 
+                      className="item-image"
+                    />
+                    <div className="item-info">
+                      <h3>{item.title}</h3>
+                      <p className="item-price">€{item.price}</p>
+                      <p className="item-description">{item.description}</p>
+                      
+                      {/* Show offers if any */}
+                      {item.offers && item.offers.length > 0 && (
+                        <div className="item-offers">
+                          <p className="offers-title">Offers received: {item.offers.length}</p>
+                          {item.offers.slice(0, 2).map((offer, index) => (
+                            <div key={index} className="offer-item">
+                              <div className="offer-info">
+                                <span className="offer-amount">€{offer.amount}</span>
+                                <span className="offer-buyer">by {offer.buyer?.username || 'Unknown'}</span>
+                              </div>
+                              <span className={`offer-status offer-${offer.status}`}>{offer.status}</span>
+                            </div>
+                          ))}
+                          {item.offers.length > 2 && (
+                            <p className="more-offers">+{item.offers.length - 2} more offers</p>
+                          )}
                         </div>
-                        <div className="item-info">
-                          <div className="item-header">
-                            <h3 className="item-title">{item.title}</h3>
-                            <span className="item-type">{item.type}</span>
-                          </div>
-                          <p className="item-description">{item.description}</p>
-                          <div className="item-details">
-                            <span className="item-location">📍 {item.location}</span>
-                            <span className="item-price">€{item.price.toLocaleString()}</span>
-                          </div>
-                          <div className="item-actions">
-                            <Link to={`/items/${item._id}`} className="view-item-btn">
-                              View Details
-                            </Link>
-                            <Link to={`/items/${item._id}/edit`} className="edit-item-btn">
-                              Edit
-                            </Link>
-                          </div>
-                        </div>
+                      )}
+                      
+                      <div className="item-actions">
+                        <Link 
+                          to={`/items/${item._id}/edit`} 
+                          className="edit-item-profile"
+                        >
+                          Edit
+                        </Link>
+                        <button 
+                          onClick={() => confirmDelete(item)}
+                          className="delete-item-profile"
+                        >
+                          Delete
+                        </button>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                ) : (
-                  <div className="items-grid">
-                    <p>No items for sale yet</p>
-                    <Link to="/items/new" className="create-item-btn">
-                      + Create Your First Item
-                    </Link>
-                  </div>
-                )}
-              </section>
+                ))
+              ) : (
+                <p>No items for sale yet</p>
+              )}
+            </div>
+          </section>
 
               <section>
                 <h2>Favorites (0)</h2>
