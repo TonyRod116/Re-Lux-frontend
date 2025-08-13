@@ -14,14 +14,18 @@ const ItemShow = () => {
 
   // Context
   const { user } = useContext(UserContext)
-  const { addItem } = useCart()
+  const { cart, addItem } = useCart()
 
   // State
   const [item, setItem] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [showMakeOffer, setShowMakeOffer] = useState(false)
-  const [offers, setOffers] = useState([]) 
+  const [offers, setOffers] = useState([])
+  const [message, setMessage] = useState('');
+
+  const isInCart = item ? cart.some(cartItem => cartItem.id === item._id) : false
+
 
   const { itemId } = useParams()
   const navigate = useNavigate()
@@ -69,10 +73,22 @@ const ItemShow = () => {
     }
   }
 
-  const handleAddToCart = () => {
-        
-
-    }
+const handleAddToCart = () => {
+  if (isInCart) {
+    setMessage('Item already added');
+    setTimeout(() => setMessage(''), 3000);
+  } else {
+    addItem({
+      id: item._id,
+      name: item.title,
+      seller: item.seller.username,
+      price: item.price,
+      image: item.images[0],
+    });
+    setMessage("It's in the bag!");
+    setTimeout(() => setMessage(''), 3000);
+  }
+};
 
   const handleMakeOffer = () => {
     setShowMakeOffer(true)
@@ -160,7 +176,7 @@ const ItemShow = () => {
             )}
             
             <div className="button-row">
-              <button className="purchase-button">Buy now</button>
+              <button onClick={handleAddToCart} className="purchase-button">Buy now</button>
               {/* Only show "Make an offer" if user is logged in and it's not their item */}
               {user && user._id !== item.seller._id && (
                 <button className="offer-button" onClick={handleMakeOffer}>Make an offer</button>

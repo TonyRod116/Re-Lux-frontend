@@ -9,7 +9,7 @@ const CartItem = ({ item }) => {
     return (
         <div className="cart-items">
             <h2>{ item.title } </h2>
-            <div className="image-preview">{item.image[0]}
+            <div className="image-preview">{item.images[0]}
                 </div>
             <ul>
                 <li>
