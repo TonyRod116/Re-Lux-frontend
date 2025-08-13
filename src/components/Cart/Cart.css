@@ -23,7 +23,17 @@
     gap: 1rem;
 }
 
-.cart-items,
+.bag-items {
+  display: flex;
+  flex-direction: column; 
+  gap: 1rem;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  min-width: 400px;
+}
+
 .order-summary {
     display: flex;
     flex: 1;
@@ -58,3 +68,5 @@
     color: white;
     background-color: grey;
 }
+
+

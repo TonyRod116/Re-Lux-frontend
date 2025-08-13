@@ -15,10 +15,8 @@ const CartSummary = () => {
                     return (
                         <ul key={cartItem.id}>
                             <li>
-                                {cartItem.title}
-                            </li>
-                            <li>
-                                {cartItem.price}
+                                {cartItem.name}
+                                €{cartItem.price.toFixed(2)}
                             </li>
                         </ul>
                     )

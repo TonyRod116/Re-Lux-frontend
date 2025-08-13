@@ -3,28 +3,27 @@ import './CartItem.css'
 import { useCart } from '../../Contexts/CartContext';
 
 const CartItem = ({ item }) => {
+    console.log(item)
 
     const { removeItem } = useCart();
 
     return (
-        <div className="cart-items">
-            <h2>{item.title} </h2>
-            <div className="image-thumbnail">
-                {item.images && item.images.length > 0 ? (
-                    <img src={item.images[0]} alt={item.title} />
-                ) : (
-                    <p>No image available</p>
-                )}
+        <div className="bag-item-card">
+            <div className="bag-item-main">
+                <div className="image-thumbnail">
+                    {item.image ? (
+                        <img src={item.image} alt={item.title} className="cart-item-image" />
+                    ) : (
+                        <p>No image available</p>
+                    )}
+                </div>
+                <div className="item-info">
+                    <h2>{item.name} </h2>
+                    <p>by {item.seller}</p>
+                    <p>€{item.price.toFixed(2)}</p>
+                </div>
+                <button onClick={() => removeItem(item.id)} className="page-button">Remove</button>
             </div>
-            <ul>
-                <li>
-                    {item.seller}
-                </li>
-                <li>
-                    {item.price}
-                </li>
-            </ul>
-            <button onClick={() => removeItem(item.id)}>Remove</button>
         </div>
     )
 }

@@ -22,8 +22,8 @@ const Cart = () => {
                 <h1>Your bag</h1>
             </div>
             <div className='bag-columns'>
-                <div className='cart-items'>
-
+                <div className='bag-items'>
+    
                     {cart.length > 0 ? (
                         cart.map((cartItem) => {
                             return (

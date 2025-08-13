@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { getUser } from '../utils/auth'
 
 const CartContext = createContext()
@@ -6,7 +6,15 @@ const CartContext = createContext()
 const CartProvider = ({ children }) => {
 
     // State
-    const [cart, setCart] = useState([]) // empty array for the initial cart
+    const [cart, setCart] = useState(() => {
+        const savedCart = localStorage.getItem('cart');
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    // Local storage
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
     // Functions
 
@@ -15,15 +23,15 @@ const CartProvider = ({ children }) => {
             const existingItem = currentCart.find(cartItem => cartItem.id === item.id)
 
             if (existingItem) {
-                return <p>Item already added to bag</p>
+                return currentCart
             } else {
-                return [...currentCart, item] // Direct reference, not a copy of the item, so if the product becomes unavailable or price changes etc. this appears in the cart.
+                return [...currentCart, item]
             }
         })
     }
 
     const removeItem = (itemId) => {
-        setCart(currentCart => currentCart.filter(item => item.id !== itemId)) // Searches by id and keeps everything except that item
+        setCart(currentCart => currentCart.filter(item => item.id !== itemId))
     }
 
     return (

@@ -185,6 +185,7 @@ const handleAddToCart = () => {
                 <button className="offer-button" onClick={handleMakeOffer}>Make an offer</button>
               )}
             </div>
+            {message && <p className="cart-message">{message}</p>}
           </div>
         </div>
       </div>
