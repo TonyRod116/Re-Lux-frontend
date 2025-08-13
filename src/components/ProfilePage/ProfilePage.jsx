@@ -13,6 +13,33 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [userItems, setUserItems] = useState([])
+  const [itemsLoading, setItemsLoading] = useState(true)
+
+  // Fetch user's items when component mounts
+  useEffect(() => {
+    const fetchUserItems = async () => {
+      if (user?._id) {
+        try {
+          setItemsLoading(true)
+          console.log('🔍 Fetching items for user:', user._id)
+          const response = await getUserItems(user._id)
+          console.log('🔍 Response from getUserItems:', response.data)
+          setUserItems(response.data)
+        } catch (error) {
+          console.error('🔍 Error fetching user items:', error)
+          setUserItems([])
+        } finally {
+          setItemsLoading(false)
+        }
+      }
+    }
+
+    fetchUserItems()
+  }, [user?._id])
+
+  console.log('🔍 Current userItems state:', userItems)
+  console.log('🔍 Items loading state:', itemsLoading)
 
   // Show loading while user context is loading
   if (userLoading) return <div>Loading profile...</div>
@@ -89,22 +116,61 @@ const ProfilePage = () => {
             </button>
           </div>
 
-      {isEditing ? (
-        <ProfileForm 
-          user={user}
-          onSave={handleSave}
-          onCancel={() => setIsEditing(false)}
-          isLoading={isLoading}
-          error={error}
-        />
-      ) : (
-        <div className="profile-sections">
-          <section>
-            <h2>Items for Sale (0)</h2>
-            <div className="items-grid">
-              <p>No items for sale yet</p>
-            </div>
-          </section>
+          {isEditing ? (
+            <ProfileForm 
+              user={user}
+              onSave={handleSave}
+              onCancel={() => setIsEditing(false)}
+              isLoading={isLoading}
+              error={error}
+            />
+          ) : (
+            <div className="profile-sections">
+              <section>
+                <h2>Items for Sale ({userItems.length})</h2>
+                {itemsLoading ? (
+                  <div className="items-loading">Loading your items...</div>
+                ) : userItems.length > 0 ? (
+                  <div className="items-grid">
+                    {userItems.map((item) => (
+                      <div key={item._id} className="item-card">
+                        <div className="item-image">
+                          <img 
+                            src={item.images?.[0] || "https://via.placeholder.com/300x200?text=No+Image"} 
+                            alt={item.title} 
+                          />
+                        </div>
+                        <div className="item-info">
+                          <div className="item-header">
+                            <h3 className="item-title">{item.title}</h3>
+                            <span className="item-type">{item.type}</span>
+                          </div>
+                          <p className="item-description">{item.description}</p>
+                          <div className="item-details">
+                            <span className="item-location">📍 {item.location}</span>
+                            <span className="item-price">€{item.price.toLocaleString()}</span>
+                          </div>
+                          <div className="item-actions">
+                            <Link to={`/items/${item._id}`} className="view-item-btn">
+                              View Details
+                            </Link>
+                            <Link to={`/items/${item._id}/edit`} className="edit-item-btn">
+                              Edit
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="items-grid">
+                    <p>No items for sale yet</p>
+                    <Link to="/items/new" className="create-item-btn">
+                      + Create Your First Item
+                    </Link>
+                  </div>
+                )}
+              </section>
 
               <section>
                 <h2>Favorites (0)</h2>
