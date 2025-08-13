@@ -98,7 +98,7 @@ const CheckoutForm = () => {
     }
 
     return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="form">
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Billing Details */}
         <input
@@ -106,7 +106,6 @@ const CheckoutForm = () => {
           placeholder="Full Name"
           value={billingDetails.name}
           onChange={(e) => updateBillingField('name', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
           required
         />
         <input
@@ -114,7 +113,6 @@ const CheckoutForm = () => {
           placeholder="Email"
           value={billingDetails.email}
           onChange={(e) => updateBillingField('email', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
           required
         />
         <input
@@ -122,16 +120,12 @@ const CheckoutForm = () => {
           placeholder="Phone"
           value={billingDetails.phone}
           onChange={(e) => updateBillingField('phone', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
         />
-
-        {/* Address Fields */}
         <input
           type="text"
           placeholder="Address Line 1"
           value={billingDetails.address.line1}
           onChange={(e) => updateAddressField('line1', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
           required
         />
         <input
@@ -139,14 +133,12 @@ const CheckoutForm = () => {
           placeholder="Address Line 2"
           value={billingDetails.address.line2}
           onChange={(e) => updateAddressField('line2', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
         />
         <input
           type="text"
           placeholder="City"
           value={billingDetails.address.city}
           onChange={(e) => updateAddressField('city', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
           required
         />
         <input
@@ -154,41 +146,34 @@ const CheckoutForm = () => {
           placeholder="State"
           value={billingDetails.address.state}
           onChange={(e) => updateAddressField('state', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
         />
         <input
           type="text"
           placeholder="Postal Code"
           value={billingDetails.address.postal_code}
           onChange={(e) => updateAddressField('postal_code', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
           required
         />
-        <select
+        <input
+        type="text"
+          placeholder="Country"
           value={billingDetails.address.country}
           onChange={(e) => updateAddressField('country', e.target.value)}
-          className="w-full border border-gray-300 rounded-md p-2"
-        >
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          {/* Add more countries if needed */}
-        </select>
+        />
 
         {/* Card Details */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label>
             Card Details
           </label>
-          <div className="border border-gray-300 rounded-md p-3 bg-white">
             <CardElement options={CARD_ELEMENT_OPTIONS} onChange={handleCardChange} />
           </div>
-        </div>
+  
 
         {/* Error Message */}
         {error && (
-          <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-md">
-            <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            <span className="text-sm">{error}</span>
+          <div className="error-message">
+            {error}
           </div>
         )}
 
