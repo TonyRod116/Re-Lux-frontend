@@ -87,8 +87,11 @@ const ItemShow = () => {
           <p>{item.location}</p>
           <p>{item.description}</p>
           <div className="button-row">
-          <button className="purchase-button">Buy now</button>
-          <button className="offer-button">Make an offer</button>
+            <button className="purchase-button">Buy now</button>
+            {/* Only show "Make an offer" if user is logged in and it's not their item */}
+            {user && user._id !== item.seller._id && (
+              <button className="offer-button">Make an offer</button>
+            )}
           </div>
         </div>
       </div>
