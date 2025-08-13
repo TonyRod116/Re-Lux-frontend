@@ -5,7 +5,6 @@ const BASE_URL = import.meta.env.VITE_API_URL + '/items'
 
 export const itemsIndex = () => {
     return axios.get(BASE_URL)
-
 }
 
 export const getItemTypes = () => {
@@ -36,6 +35,16 @@ export const itemDelete = (itemId) => {
     return axios.delete(`${BASE_URL}/${itemId}`, {
         headers: {
             Authorization: `Bearer ${getToken()}`
+        }
+    })
+}
+
+export const getUserItems = (userId) => {
+    const token = getToken()
+        
+    return axios.get(`${BASE_URL}/user/${userId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
         }
     })
 }
