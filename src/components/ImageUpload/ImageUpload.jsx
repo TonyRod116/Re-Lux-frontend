@@ -1,5 +1,5 @@
 import './ImageUpload.css'
-import { uploadImage } from '../../services/cloudinary'
+import { uploadImage } from '../../services/tonyCloudinary'
 import { useState } from 'react'
 
 const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setFormData, imageURLs, setUploading }) => {
@@ -38,7 +38,7 @@ const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setFor
             })
 
             // Clears the file input afterwards
-             e.target.value = ''
+            e.target.value = ''
 
         } catch (error) {
             console.log(error)

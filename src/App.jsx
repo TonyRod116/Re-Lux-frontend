@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Routes, Route } from 'react-router'
 
 // Global
@@ -16,6 +16,11 @@ import ItemShow from './components/ItemShow/ItemShow'
 import ItemCreatePage from './components/ItemCreatePage/ItemCreatePage'
 import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
 import ProfilePage from './components/ProfilePage/ProfilePage'
+import Cart from './components/Cart/Cart'
+import CheckoutPage from './components/CheckoutPage/CheckoutPage'
+
+// Contexts
+
 
 
 function App() {
@@ -31,6 +36,8 @@ function App() {
         <Route path="/items/:itemId/edit" element={<ItemUpdatePage />} />
         <Route path="/items/:itemId" element={<ItemShow />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
       <Footer />
     </>
