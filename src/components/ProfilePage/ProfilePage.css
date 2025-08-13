@@ -52,12 +52,10 @@
 }
 
 .items-grid p {
-  color: #999;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
 }
 
-/* Profile Edit Form Styles */
 .profile-edit-form {
   background: white;
   padding: 2rem;
@@ -151,7 +149,6 @@
   background: #545b62;
 }
 
-/* Items Grid Styles */
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -185,7 +182,7 @@
 }
 
 .item-info {
-  padding: 16px 16px 5px 16px;
+  padding: 16px 16px 16px 16px;
 }
 
 .item-info h3 {
@@ -197,7 +194,7 @@
 .item-price {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #2c5aa0;
+  color: #123974;
   margin: 0 0 4px 0;
   line-height: 1;
 }
@@ -210,7 +207,6 @@
   overflow: hidden;
 }
 
-/* Item Offers Styles */
 .item-offers {
   margin: 8px 0;
   padding: 10px;
