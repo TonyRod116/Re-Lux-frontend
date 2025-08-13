@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
 import { updateUserProfile } from '../../services/users'
+import { getUserItems } from '../../services/items'
 import { getToken } from '../../utils/auth'
 import { Link } from 'react-router-dom'
 import './ProfilePage.css'
@@ -12,8 +13,6 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-
-  console.log('🔍 ProfilePage - user recibido:', user)
 
   // Show loading while user context is loading
   if (userLoading) return <div>Loading profile...</div>
@@ -29,8 +28,28 @@ const ProfilePage = () => {
       
       const response = await updateUserProfile(user._id, formData, token)
       
-      // Update user context with new data
-      setUser(response.data.user)
+      // Verify response data and decode token
+      if (response.data && response.data.token) {
+        try {
+          // Decode the new token to get user data
+          const payloadString = response.data.token.split('.')[1]
+          const payload = JSON.parse(atob(payloadString))
+          const userData = payload.user
+          
+          // Update user context with decoded user data
+          setUser(userData)
+          
+          // Update token in localStorage
+          localStorage.setItem('relux-token', response.data.token)
+          
+        } catch (decodeError) {
+          setError({ message: 'Error processing server response' })
+          return
+        }
+      } else {
+        setError({ message: 'Invalid response from server' })
+        return
+      }
       
       // Close edit mode
       setIsEditing(false)
@@ -70,22 +89,22 @@ const ProfilePage = () => {
             </button>
           </div>
 
-          {isEditing ? (
-            <ProfileForm 
-              user={user}
-              onSave={handleSave}
-              onCancel={() => setIsEditing(false)}
-              isLoading={isLoading}
-              error={error}
-            />
-          ) : (
-            <div className="profile-sections">
-              <section>
-                <h2>Items for Sale (0)</h2>
-                <div className="items-grid">
-                  <p>No items for sale yet</p>
-                </div>
-              </section>
+      {isEditing ? (
+        <ProfileForm 
+          user={user}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
+          isLoading={isLoading}
+          error={error}
+        />
+      ) : (
+        <div className="profile-sections">
+          <section>
+            <h2>Items for Sale (0)</h2>
+            <div className="items-grid">
+              <p>No items for sale yet</p>
+            </div>
+          </section>
 
               <section>
                 <h2>Favorites (0)</h2>
