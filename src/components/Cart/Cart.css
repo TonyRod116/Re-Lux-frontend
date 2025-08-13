@@ -4,6 +4,7 @@
     font-style: normal;
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     text-align: center;
     padding: 1rem var(--content-padding);
     margin-top: 2rem;
@@ -38,7 +39,7 @@
     align-items: center;
 }
 
-.checkout-button {
+.cart .page-button {
     padding: 0.5rem 1rem;
     background-color: black;
     color: white;
@@ -50,7 +51,7 @@
     cursor: pointer;
 }
 
-.checkout-button:hover {
+.cart .page-button:hover {
     color: white;
     background-color: grey;
 }
