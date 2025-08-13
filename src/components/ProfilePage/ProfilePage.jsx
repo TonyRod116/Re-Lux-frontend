@@ -51,8 +51,13 @@ const ProfilePage = () => {
       
       const response = await updateUserProfile(user._id, formData, token)
       
-      // Update user context with new data
-      setUser(response.data.user)
+      // Update user context with new data, preserving existing fields
+      const updatedUser = {
+        ...user, // Keep all existing user data
+        ...response.data.user // Override with updated fields
+      }
+      
+      setUser(updatedUser)
       
       // Close edit mode
       setIsEditing(false)
@@ -105,8 +110,9 @@ const ProfilePage = () => {
           {user?.location && <p className="location">📍 {user.location}</p>}
         </div>
         <button 
-          className="edit-button"
+          className="edit-profile-btn"
           onClick={() => setIsEditing(!isEditing)}
+          style={{ display: isEditing ? 'none' : 'flex' }}
         >
           {isEditing ? 'Cancel' : 'Edit Profile'}
         </button>
