@@ -8,9 +8,14 @@ const CartItem = ({ item }) => {
 
     return (
         <div className="cart-items">
-            <h2>{ item.title } </h2>
-            <div className="image-preview">{item.images[0]}
-                </div>
+            <h2>{item.title} </h2>
+            <div className="image-thumbnail">
+                {item.images && item.images.length > 0 ? (
+                    <img src={item.images[0]} alt={item.title} />
+                ) : (
+                    <p>No image available</p>
+                )}
+            </div>
             <ul>
                 <li>
                     {item.seller}
@@ -19,7 +24,7 @@ const CartItem = ({ item }) => {
                     {item.price}
                 </li>
             </ul>
-             <button onClick={() => removeItem(item.id)}>Remove</button>
+            <button onClick={() => removeItem(item.id)}>Remove</button>
         </div>
     )
 }

@@ -74,6 +74,9 @@ const ItemShow = () => {
   }
 
 const handleAddToCart = () => {
+  console.log('Adding to cart', item, cart);
+  if (!item) return; // safeguard
+
   if (isInCart) {
     setMessage('Item already added');
     setTimeout(() => setMessage(''), 3000);
@@ -81,7 +84,7 @@ const handleAddToCart = () => {
     addItem({
       id: item._id,
       name: item.title,
-      seller: item.seller.username,
+      seller: item.seller?.username || 'Unknown',
       price: item.price,
       image: item.images[0],
     });
