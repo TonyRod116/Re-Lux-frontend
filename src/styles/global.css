@@ -1,0 +1,27 @@
+/* Global Typography */
+* {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Exceptions - Keep original fonts for specific elements */
+.brand-font,
+.logo,
+.logo-text,
+.brand-name {
+  font-family: 'Parisienne', cursive !important;
+}
+
+/* Ensure headings use the new font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Ensure buttons and form elements use the new font */
+button, input, textarea, select, label {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Ensure links use the new font */
+a {
+  font-family: 'Cormorant Garamond', serif;
+}
