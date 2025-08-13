@@ -26,8 +26,28 @@ const ProfilePage = () => {
       
       const response = await updateUserProfile(user._id, formData, token)
       
-      // Update user context with new data
-      setUser(response.data.user)
+      // Verify response data and decode token
+      if (response.data && response.data.token) {
+        try {
+          // Decode the new token to get user data
+          const payloadString = response.data.token.split('.')[1]
+          const payload = JSON.parse(atob(payloadString))
+          const userData = payload.user
+          
+          // Update user context with decoded user data
+          setUser(userData)
+          
+          // Update token in localStorage
+          localStorage.setItem('relux-token', response.data.token)
+          
+        } catch (decodeError) {
+          setError({ message: 'Error processing server response' })
+          return
+        }
+      } else {
+        setError({ message: 'Invalid response from server' })
+        return
+      }
       
       // Close edit mode
       setIsEditing(false)
