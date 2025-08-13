@@ -213,9 +213,9 @@
 /* Item Offers Styles */
 .item-offers {
   margin: 8px 0;
-  padding: 8px;
+  padding: 10px;
   background: #f8f9fa;
-  border-radius: 6px;
+  border-radius: 8px;
   border-left: 3px solid #2c5aa0;
 }
 
@@ -223,41 +223,58 @@
   font-size: 0.8rem;
   font-weight: 600;
   color: #2c5aa0;
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
 }
 
 .offer-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
+  padding: 6px 0;
   font-size: 0.8rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.offer-item:last-child {
+  border-bottom: none;
+}
+
+.offer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .offer-amount {
-  font-weight: 600;
+  font-weight: 700;
   color: #28a745;
+  font-size: 0.9rem;
+}
+
+.offer-buyer {
+  color: #6c757d;
+  font-size: 0.7rem;
 }
 
 .offer-status {
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: capitalize;
 }
 
-.offer-status:contains('pending') {
+.offer-pending {
   background: #fff3cd;
   color: #856404;
 }
 
-.offer-status:contains('accepted') {
+.offer-accepted {
   background: #d4edda;
   color: #155724;
 }
 
-.offer-status:contains('rejected') {
+.offer-rejected {
   background: #f8d7da;
   color: #721c24;
 }
@@ -265,7 +282,7 @@
 .more-offers {
   font-size: 0.7rem;
   color: #6c757d;
-  margin: 4px 0 0 0;
+  margin: 6px 0 0 0;
   text-align: center;
   font-style: italic;
 }

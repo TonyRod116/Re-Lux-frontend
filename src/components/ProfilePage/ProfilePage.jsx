@@ -146,8 +146,11 @@ const ProfilePage = () => {
                           <p className="offers-title">Offers received: {item.offers.length}</p>
                           {item.offers.slice(0, 2).map((offer, index) => (
                             <div key={index} className="offer-item">
-                              <span className="offer-amount">€{offer.amount}</span>
-                              <span className="offer-status">{offer.status}</span>
+                              <div className="offer-info">
+                                <span className="offer-amount">€{offer.amount}</span>
+                                <span className="offer-buyer">by {offer.buyer?.username || 'Unknown'}</span>
+                              </div>
+                              <span className={`offer-status offer-${offer.status}`}>{offer.status}</span>
                             </div>
                           ))}
                           {item.offers.length > 2 && (
