@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './ProfileForm.css'
 import '../../styles/forms.css'
-import { uploadImage } from '../../services/tonyCloudinary'
+import { uploadImage } from '../../services/cloudinary'
 
 const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
   const [formData, setFormData] = useState({

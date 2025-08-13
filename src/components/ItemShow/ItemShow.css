@@ -164,3 +164,9 @@ h1 {
   color: #6b7280;
   font-size: 0.9rem;
 }
+
+/* Message styling */
+
+.cart-message {
+  color: darkgoldenrod;
+}
