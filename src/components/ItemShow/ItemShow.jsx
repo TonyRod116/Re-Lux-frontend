@@ -180,6 +180,7 @@ const handleAddToCart = () => {
             
             <div className="button-row">
               <button onClick={handleAddToCart} className="purchase-button">Buy now</button>
+              
               {/* Only show "Make an offer" if user is logged in and it's not their item */}
               {user && user._id !== item.seller._id && (
                 <button className="offer-button" onClick={handleMakeOffer}>Make an offer</button>

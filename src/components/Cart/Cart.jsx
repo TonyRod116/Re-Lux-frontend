@@ -23,7 +23,6 @@ const Cart = () => {
             </div>
             <div className='bag-columns'>
                 <div className='bag-items'>
-    
                     {cart.length > 0 ? (
                         cart.map((cartItem) => {
                             return (
@@ -35,13 +34,11 @@ const Cart = () => {
                         <p>Your bag is empty</p>
                     )
                     }
-
                     <div className="button-row">
                         <Link to="/items" className="page-button">Continue shopping</Link>
                     </div>
                 </div>
                 <div className="order-summary">
-                    <h3>Order summary</h3>
                     <CartSummary />
                     <div className="button-row">
                         <Link to="/checkout" className="page-button">Go to checkout</Link>

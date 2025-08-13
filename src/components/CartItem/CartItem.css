@@ -10,7 +10,7 @@
   transition: transform 0.2s;
 }
 
-.cart-item-card:hover {
+.bag-item-card:hover {
   transform: translateY(-2px);
 }
 
