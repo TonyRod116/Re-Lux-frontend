@@ -7,6 +7,8 @@ const UserContext = createContext(null)
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(getUser())
 
+  console.log('🔍 UserContext - user actual:', user)
+
   const signOut = () => {
       removeToken()
       setUser(null)

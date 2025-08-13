@@ -1,0 +1,5 @@
+[33m3abeeb0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/TonyRod116/Re-Lux-frontend
+[33m6a1164d[m[33m ([m[1;31morigin/tony/userprofile[m[33m, [m[1;32mtony/userprofile[m[33m)[m own items show on items for sale on profile page
+[33mf216609[m profile page now saves info upon refresh
+[33m5c02493[m npm i stripe
+[33m1937fc1[m Merge branch 'main' of https://github.com/TonyRod116/Re-Lux-frontend
