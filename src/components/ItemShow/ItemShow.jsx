@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { itemShow, itemDelete } from '../../services/items.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
+import { useCart } from '../../Contexts/CartContext'
 
 import { MdModeEdit, MdDelete, MdFavorite } from "react-icons/md"
 
@@ -11,6 +12,7 @@ const ItemShow = () => {
 
   // Context
   const { user } = useContext(UserContext)
+  const { addItem } = useCart()
 
   // State
   const [item, setItem] = useState(null)
@@ -49,13 +51,15 @@ const ItemShow = () => {
     }
   }
 
+  const handleAddToCart = () => {
+        
+
+    }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Something went wrong: {error.message}</p>;
   if (!item) return <p>No item found</p>;
-  
-  console.log('Item at render:', item);
-  console.log('Seller at render:', item.seller);
-
+ 
   return (
     <div className="item-content">
       <div className="image-grid">
