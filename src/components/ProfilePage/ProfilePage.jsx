@@ -51,28 +51,13 @@ const ProfilePage = () => {
       
       const response = await updateUserProfile(user._id, formData, token)
       
-      // Verify response data and decode token
-      if (response.data && response.data.token) {
-        try {
-          // Decode the new token to get user data
-          const payloadString = response.data.token.split('.')[1]
-          const payload = JSON.parse(atob(payloadString))
-          const userData = payload.user
-          
-          // Update user context with decoded user data
-          setUser(userData)
-          
-          // Update token in localStorage
-          localStorage.setItem('relux-token', response.data.token)
-          
-        } catch (decodeError) {
-          setError({ message: 'Error processing server response' })
-          return
-        }
-      } else {
-        setError({ message: 'Invalid response from server' })
-        return
+      // Update user context with new data, preserving existing fields
+      const updatedUser = {
+        ...user, // Keep all existing user data
+        ...response.data.user // Override with updated fields
       }
+      
+      setUser(updatedUser)
       
       // Close edit mode
       setIsEditing(false)
@@ -113,26 +98,25 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      {user && (
-        <>
-          <div className="profile-header">
-            <img 
-              src={user?.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-              alt="Profile Image" 
-              className="profile-pic"
-            />
-            <div className="profile-info">
-              <h1>@{user.username}</h1>
-              <p className="bio">{user?.bio || 'No bio yet'}</p>
-              {user?.location && <p className="location">📍 {user.location}</p>}
-            </div>
-            <button 
-              className="edit-button"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              {isEditing ? 'Cancel' : 'Edit Profile'}
-            </button>
-          </div>
+      <div className="profile-header">
+        <img 
+          src={user?.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
+          alt="Profile Image" 
+          className="profile-pic"
+        />
+        <div className="profile-info">
+          <h1>@{user.username}</h1>
+          <p className="bio">{user?.bio || 'No bio yet'}</p>
+          {user?.location && <p className="location">📍 {user.location}</p>}
+        </div>
+        <button 
+          className="edit-profile-btn"
+          onClick={() => setIsEditing(!isEditing)}
+          style={{ display: isEditing ? 'none' : 'flex' }}
+        >
+          {isEditing ? 'Cancel' : 'Edit Profile'}
+        </button>
+      </div>
 
       {isEditing ? (
         <ProfileForm 
@@ -204,15 +188,13 @@ const ProfilePage = () => {
             </div>
           </section>
 
-              <section>
-                <h2>Favorites (0)</h2>
-                <div className="items-grid">
-                  <p>No favorites yet</p>
-                </div>
-              </section>
+          <section>
+            <h2>Favorites (0)</h2>
+            <div className="items-grid">
+              <p>No favorites yet</p>
             </div>
-          )}
-        </>
+          </section>
+        </div>
       )}
     </div>
   )

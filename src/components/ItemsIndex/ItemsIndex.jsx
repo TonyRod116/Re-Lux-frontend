@@ -51,7 +51,7 @@ const ItemsIndex = () => {
           + Create New Item
         </Link>
       </div>
-      <div className="items-grid">
+      <div className="items-listing">
         <h2>All items</h2>
         {items.length > 0 ? (
           <div className="items-container">

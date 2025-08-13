@@ -1,6 +1,5 @@
 .page-content {
   padding: 2rem;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -25,15 +24,24 @@
   background: #333;
 }
 
-.items-grid {
+.items-listing {
   margin-top: 2rem;
+  width: 100%;
+}
+
+.items-listing h2 {
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-size: 1.5rem;
 }
 
 .items-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   margin-top: 1.5rem;
+  width: 100%;
+  justify-content: center;
 }
 
 .item-card {
@@ -42,6 +50,37 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 400px;
+  max-width: 400px;
+  flex: 0 0 auto;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .item-card {
+    width: 380px;
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .item-card {
+    width: 350px;
+    max-width: 350px;
+  }
+  .items-container {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-card {
+    width: 100%;
+    max-width: 100%;
+  }
+  .items-container {
+    gap: 1rem;
+  }
 }
 
 .item-card:hover {
