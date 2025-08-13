@@ -13,10 +13,6 @@ const CartSummary = () => {
                 cart.map((cartItem) => {
                     return (
                         <div key={cartItem.id}>
-                            <h2 className="order-item">
-                                Order summary
-                         
-                            </h2>
                             <p className="order-item">
                                 {cartItem.name}
                             </p>
