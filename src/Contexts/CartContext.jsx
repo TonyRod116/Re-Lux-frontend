@@ -1,15 +1,23 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getUser } from '../utils/auth'
+import { UserContext } from './UserContext'
 
 const CartContext = createContext()
 
 const CartProvider = ({ children }) => {
+
+    const { user } = useContext(UserContext)
 
     // State
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
+
+    // Changes when user logs out
+     useEffect(() => {
+        setCart([])
+    }, [user])
 
     // Local storage
     useEffect(() => {

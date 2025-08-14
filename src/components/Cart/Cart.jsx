@@ -13,12 +13,8 @@ import CartSummary from '../CartSummary/CartSummary'
 const Cart = () => {
 
     const { user } = useContext(UserContext)
-    const { cart, setCart } = useCart()
-
-    useEffect(() => {
-    setCart([])
-}, [user])
-
+    const { cart } = useCart()
+    
     return (
         <div className='bag-content'>
             <div className='bag-header'>
