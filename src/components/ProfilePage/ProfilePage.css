@@ -6,13 +6,19 @@
 }
 
 .profile-header {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 3rem;
-  padding: 2rem;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  min-width: 400px;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
 }
 
@@ -21,6 +27,15 @@
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.profile-pic-container {
+  flex-shrink: 0;
+}
+
+.profile-details {
+  flex: 1;
+  text-align: left;
 }
 
 .profile-info h1 {
@@ -304,27 +319,62 @@
   font-size: 0.7rem;
 }
 
+.offer-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.accept-offer-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.accept-offer-btn:hover {
+  background: #059669;
+}
+
+.reject-offer-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reject-offer-btn:hover {
+  background: #dc2626;
+}
+
 .offer-status {
-  padding: 4px 8px;
+  font-weight: 600;
+  padding: 2px 8px;
   border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: capitalize;
+  font-size: 0.75rem;
 }
 
-.offer-pending {
-  background: #fff3cd;
-  color: #856404;
+.offer-status.pending {
+  background: #fbbf24;
+  color: #92400e;
 }
 
-.offer-accepted {
-  background: #d4edda;
-  color: #155724;
+.offer-status.accepted {
+  background: #10b981;
+  color: #064e3b;
 }
 
-.offer-rejected {
-  background: #f8d7da;
-  color: #721c24;
+.offer-status.rejected {
+  background: #ef4444;
+  color: #7f1d1d;
 }
 
 .more-offers {
@@ -397,6 +447,9 @@
 }
 
 .edit-profile-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -410,9 +463,6 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
 }
 
 .edit-profile-btn:hover {

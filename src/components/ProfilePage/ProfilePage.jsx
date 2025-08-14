@@ -60,6 +60,34 @@ const ProfilePage = () => {
     }
   }
 
+  // Handle offer actions (accept/reject)
+  const handleOfferAction = async (itemId, offerId, action) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/items/${itemId}/offers/${offerId}/${action}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('relux-token')}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        // Refresh user items to show updated offer status
+        const updatedResponse = await getUserItems(user._id)
+        setUserItems(updatedResponse.data)
+        
+        // Show success message
+        const actionText = action === 'accepted' ? 'accepted' : 'rejected'
+        alert(`Offer ${actionText} successfully!`)
+      } else {
+        throw new Error('Failed to update offer')
+      }
+    } catch (error) {
+      console.error('Error updating offer:', error)
+      alert(`Error ${action === 'accepted' ? 'accepting' : 'rejecting'} offer. Please try again.`)
+    }
+  }
+
   if (!user) {
     return <div>Please log in to view your profile.</div>
   }
@@ -67,26 +95,24 @@ const ProfilePage = () => {
   return (
     <div className="page-content">
       <div className="profile-header">
-        <div className="profile-info">
-          <div className="profile-pic-container">
-            <img 
-              src={user.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-              alt="Profile" 
-              className="profile-pic"
-            />
-          </div>
-          <div className="profile-details">
-            <h1>{user.username}</h1>
-            <p className="profile-bio">{user.bio || 'No bio yet'}</p>
-            <p className="profile-location">{user.location || 'No location set'}</p>
-            <button 
-              onClick={() => setShowEditForm(!showEditForm)}
-              className="edit-profile-btn"
-            >
-              {showEditForm ? 'Cancel Edit' : 'Edit Profile'}
-            </button>
-          </div>
+        <div className="profile-pic-container">
+          <img 
+            src={user.profilePic || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
+            alt="Profile" 
+            className="profile-pic"
+          />
         </div>
+        <div className="profile-details">
+          <h1>{user.username}</h1>
+          <p className="profile-bio">{user.bio || 'No bio yet'}</p>
+          <p className="profile-location">{user.location || 'No location set'}</p>
+        </div>
+        <button 
+          onClick={() => setShowEditForm(!showEditForm)}
+          className="edit-profile-btn"
+        >
+          {showEditForm ? 'Cancel Edit' : 'Edit Profile'}
+        </button>
       </div>
 
       {showEditForm && (
@@ -124,8 +150,24 @@ const ProfilePage = () => {
                           <div className="offer-info">
                             <span className="offer-buyer">{offer.buyer?.username || 'Unknown'}</span>
                             <span className="offer-amount">€{offer.amount}</span>
+                            <span className={`offer-status ${offer.status}`}>{offer.status}</span>
                           </div>
-                          <span className="offer-status">{offer.status}</span>
+                          {offer.status === 'pending' && (
+                            <div className="offer-actions">
+                              <button 
+                                onClick={() => handleOfferAction(item._id, offer._id, 'accepted')}
+                                className="accept-offer-btn"
+                              >
+                                Accept
+                              </button>
+                              <button 
+                                onClick={() => handleOfferAction(item._id, offer._id, 'rejected')}
+                                className="reject-offer-btn"
+                              >
+                                Reject
+                              </button>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
