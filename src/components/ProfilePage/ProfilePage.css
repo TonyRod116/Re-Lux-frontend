@@ -38,12 +38,17 @@
   text-align: left;
 }
 
-.profile-info h1 {
+.profile-details h1 {
   margin: 0 0 0.5rem 0;
   color: #333;
 }
 
-.bio {
+.profile-bio {
+  color: #666;
+  margin: 0 0 0.5rem 0;
+}
+
+.profile-location {
   color: #666;
   margin: 0;
 }
