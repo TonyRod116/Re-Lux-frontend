@@ -74,7 +74,6 @@ h2 {
 
 .recent-item-card {
   background: white;
-  border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   transition: all 0.3s ease;

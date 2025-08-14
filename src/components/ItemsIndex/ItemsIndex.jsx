@@ -63,13 +63,12 @@ const ItemsIndex = () => {
   return (
     <div className="page-content">
       <div className="page-header">
-        <div>
+        <div className="page-header">
           <h1>Pre-owned luxury</h1>
           <p>Browse all the latest items for sale and grab your deal.</p>
         </div>
       </div>
       <div className="items-listing">
-        <h2>All items</h2>
         {items.length > 0 ? (
           <div className="items-container">
             {items.map((item) => {

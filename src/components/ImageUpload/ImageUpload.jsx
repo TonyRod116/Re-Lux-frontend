@@ -50,23 +50,23 @@ const ImageUpload = ({ labelText = 'Upload a photo', fieldName = 'image', setFor
 
     return (
         <>
-            {imageURLs.length > 0
-                ? imageURLs.map((url, idx) => (
-                    <img key={idx} className='uploaded-image' src={url} alt={`Uploaded ${idx}`} />
-                ))
-                : imageURLs
-                    ? <img className='uploaded-image' src={imageURLs} alt="Uploaded" />
-                    : null
-            }
-            {/* The above code adds a preview of the img or multiple images that have been uploaded by mapping the array */}
-
+        {imageURLs.length > 0 && (
+            <div className="image-preview-container">
+                {imageURLs.map((url, idx) => (
+                    <img 
+                        key={idx} 
+                        className='uploaded-image' 
+                        src={url} 
+                        alt={`Preview ${idx + 1}`} 
+                    />
+                ))}
+            </div>
+        )}
 
             {error && <p className='error-message'>{error}</p>}
 
             <label htmlFor={fieldName}>{labelText}</label>
             <input type="file" name={fieldName} id={fieldName} onChange={handleUpload} multiple />
-
-            {/* This is the actual field that goes in the form */}
 
         </>
     )
