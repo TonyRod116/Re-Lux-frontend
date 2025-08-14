@@ -1,9 +1,9 @@
-import './CategoryAccessoriesPage.css'
+import './CategoryFashionPage.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { itemsIndex } from '../../services/items'
 
-const AccessoriesPage = () => {
+const FashionPage = () => {
 
     // State
     const [items, setItems] = useState([])
@@ -12,8 +12,7 @@ const AccessoriesPage = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const allowedTypes = ["handbag", "shoes", "watch", "jewelry", "scarf", "belt", "sunglasses", "wallet", "purse", "clutch"]
-
+    const allowedTypes = ["dress", "jacket", "trousers", "pants", "coat", "skirt", "suit", "shirt", "blouse", "sweater"]
 
     // Fetch items from API
     useEffect(() => {
@@ -41,8 +40,8 @@ const AccessoriesPage = () => {
     return (
         <div className="page-content">
             <div className="page-header">
-                <h1>Accessories</h1>
-                <p>Discover pieces from all your favorite designers.</p>
+                <h1>Fashion</h1>
+                <p>Discover a wide range of vintage and designer fashion.</p>
             </div>
             <div className="items-listings">
                 {filteredItems.length > 0 ? (
@@ -80,4 +79,4 @@ const AccessoriesPage = () => {
     )
 }
 
-export default AccessoriesPage
+export default FashionPage
