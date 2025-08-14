@@ -1,9 +1,9 @@
-import './CategoryAccessoriesPage.css'
+import './CategoryTechPage.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { itemsIndex } from '../../services/items'
 
-const AccessoriesPage = () => {
+const TechPage = () => {
 
     // State
     const [items, setItems] = useState([])
@@ -12,8 +12,7 @@ const AccessoriesPage = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const allowedTypes = ["handbag", "shoes", "watch", "jewelry", "scarf", "belt", "sunglasses", "wallet", "purse", "clutch"]
-
+    const allowedTypes = ["smart watch", "smart glasses", "fitness tracker", "smart ring", "wireless earbuds", "noise-canceling headphones", "smartphone", "tablet", "latop", "smart speaker", "VR headset"]
 
     // Fetch items from API
     useEffect(() => {
@@ -41,8 +40,8 @@ const AccessoriesPage = () => {
     return (
         <div className="page-content">
             <div className="page-header">
-                <h1>Accessories</h1>
-                <p>Discover pieces from all your favorite designers.</p>
+                <h1>Tech</h1>
+                <p>Browse luxury smart watches, smart glasses, fitness trackers and more.</p>
             </div>
             <div className="items-listings">
                 {filteredItems.length > 0 ? (
@@ -80,4 +79,4 @@ const AccessoriesPage = () => {
     )
 }
 
-export default AccessoriesPage
+export default TechPage
