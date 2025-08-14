@@ -69,12 +69,17 @@ const CheckoutForm = ({ clientSecret }) => {
       })
 
       if (error) {
+        // Displays the stripe error messages for network error/payment declined etc.
         setError(error.message);
-      } else {
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
         setSuccess(true);
+      } else if (paymentIntent && paymentIntent.status === 'requires_payment_method') {
+        // Declined card but no explicit error object
+        setError('Your payment was declined. Please try a different card.');
       }
     } catch (err) {
-      setError(err.message);
+      setError('Something went wrong. Please try again.');
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -99,125 +104,109 @@ const CheckoutForm = ({ clientSecret }) => {
   }
 
   return (
-    <div className="form">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Billing Details */}
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={billingDetails.name}
-          onChange={(e) => setBillingDetails(prev => ({ ...prev, name: e.target.value }))}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={billingDetails.email}
-          onChange={(e) => setBillingDetails(prev => ({ ...prev, email: e.target.value }))}
-          required
-        />
-        <input
-          type="tel"
-          placeholder="Phone"
-          value={billingDetails.phone}
-          onChange={(e) => setBillingDetails(prev => ({ ...prev, phone: e.target.value }))}
-        />
-        <input
-          type="text"
-          placeholder="Address Line 1"
-          value={billingDetails.address.line1}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, line1: e.target.value }
-          }))}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Address Line 2"
-          value={billingDetails.address.line2}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, line2: e.target.value }
-          }))}
-          required
-        />
-        <input
-          type="text"
-          placeholder="City"
-          value={billingDetails.address.city}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, city: e.target.value }
-          }))}
-          required
-        />
-        <input
-          type="text"
-          placeholder="State"
-          value={billingDetails.address.state}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, state: e.target.value }
-          }))}
-        />
-        <input
-          type="text"
-          placeholder="Postal Code"
-          value={billingDetails.address.postal_code}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, postal_code: e.target.value }
-          }))}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Country"
-          value={billingDetails.address.country}
-          onChange={(e) => setBillingDetails(prev => ({
-            ...prev,
-            address: { ...prev.address, country: e.target.value }
-          }))}
-        />
-
-        {/* Card Details */}
-        <div>
-          <label>
-            Card Details
-          </label>
-          <CardElement options={CARD_ELEMENT_OPTIONS} onChange={handleCardChange} />
-        </div>
-
-
-        {/* Error Message */}
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={!stripe || loading || !cardComplete || !clientSecret}
-        >
-          {loading ? (
-            <>
-              <span>Processing...</span>
-            </>
-          ) : (
-            <span>Pay Now</span>
-          )}
-        </button>
-      </form>
-
-      <div className="mt-4 text-center">
-        <p className="text-xs text-gray-500">
-          Secured by <span className="font-semibold">Stripe</span>
-        </p>
-      </div>
+<div className="form">
+  <form onSubmit={handleSubmit}>
+        <div className="billing-details">
+      <input
+        type="text"
+        placeholder="Full Name"
+        value={billingDetails.name}
+        onChange={(e) => setBillingDetails(prev => ({ ...prev, name: e.target.value }))}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={billingDetails.email}
+        onChange={(e) => setBillingDetails(prev => ({ ...prev, email: e.target.value }))}
+        required
+      />
+      <input
+        type="tel"
+        placeholder="Phone"
+        value={billingDetails.phone}
+        onChange={(e) => setBillingDetails(prev => ({ ...prev, phone: e.target.value }))}
+      />
+      <input
+        type="text"
+        placeholder="Address Line 1"
+        value={billingDetails.address.line1}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, line1: e.target.value }
+        }))}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Address Line 2"
+        value={billingDetails.address.line2}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, line2: e.target.value }
+        }))}
+      />
+      <input
+        type="text"
+        placeholder="City"
+        value={billingDetails.address.city}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, city: e.target.value }
+        }))}
+        required
+      />
+      <input
+        type="text"
+        placeholder="State"
+        value={billingDetails.address.state}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, state: e.target.value }
+        }))}
+      />
+      <input
+        type="text"
+        placeholder="Postal Code"
+        value={billingDetails.address.postal_code}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, postal_code: e.target.value }
+        }))}
+        required
+      />
+      <input
+        type="text"
+        placeholder="Country"
+        value={billingDetails.address.country}
+        onChange={(e) => setBillingDetails(prev => ({
+          ...prev,
+          address: { ...prev.address, country: e.target.value }
+        }))}
+      />
     </div>
+    <div className="payment-details">
+      <label>Card Details</label>
+      <CardElement options={CARD_ELEMENT_OPTIONS} onChange={handleCardChange} />
+
+      {error && <div className="error-message">{error}</div>}
+
+      <button
+        type="submit"
+        disabled={!stripe || loading || !cardComplete || !clientSecret}
+        className="submit-button"
+      >
+        {loading ? "Processing..." : "Pay Now"}
+      </button>
+    </div>
+
+  </form>
+
+  <div className="stripe-note">
+    Secured by <span className="font-semibold">Stripe</span>
+  </div>
+</div>
+
   );
 };
 

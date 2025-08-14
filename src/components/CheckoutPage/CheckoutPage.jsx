@@ -42,12 +42,12 @@ const CheckoutPage = () => {
     }
 
     return (
-        <>
+        <div className="page-content">
             <h1> Checkout </h1>
             <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm clientSecret={clientSecret} />
             </Elements>
-        </>
+        </div>
     )
 
 
