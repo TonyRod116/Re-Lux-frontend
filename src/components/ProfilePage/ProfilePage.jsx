@@ -5,14 +5,49 @@ import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
 import { getUserItems, itemDelete } from '../../services/items'
 import { getUserFavorites } from '../../services/favorites'
+import { updateUserProfile } from '../../services/users'
 
 const ProfilePage = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [userItems, setUserItems] = useState([])
   const [userFavorites, setUserFavorites] = useState([])
+  const [userOffers, setUserOffers] = useState([])
   const [itemsLoading, setItemsLoading] = useState(true)
   const [favoritesLoading, setFavoritesLoading] = useState(true)
+  const [offersLoading, setOffersLoading] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+  const [isSaving, setIsSaving] = useState(false)
+
+  // Handle profile save
+  const handleSaveProfile = async (formData) => {
+    try {
+      setIsSaving(true)
+      setSaveError(null)
+      
+      const response = await updateUserProfile(user._id, formData)
+      
+      // Update token if backend returns a new one
+      if (response.data.token) {
+        localStorage.setItem('relux-token', response.data.token)
+        
+        // Update user context with new data from the new token
+        const { getUser } = await import('../../utils/auth')
+        const updatedUser = getUser()
+        setUser(updatedUser)
+      }
+      
+      // Close form and show success
+      setShowEditForm(false)
+      alert('Profile updated successfully!')
+      
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      setSaveError(error.response?.data?.message || 'Failed to update profile')
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   // Fetch user's items
   useEffect(() => {
@@ -46,6 +81,30 @@ const ProfilePage = () => {
       }
     }
     fetchUserFavorites()
+  }, [user])
+
+  // Fetch user's offers
+  useEffect(() => {
+    const fetchUserOffers = async () => {
+      if (user?._id) {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/items/offers/user/${user._id}`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('relux-token')}`
+            }
+          })
+          if (response.ok) {
+            const offersData = await response.json()
+            setUserOffers(offersData)
+          }
+        } catch (error) {
+          console.error('Error fetching user offers:', error)
+        } finally {
+          setOffersLoading(false)
+        }
+      }
+    }
+    fetchUserOffers()
   }, [user])
 
   // Handle delete item
@@ -119,6 +178,9 @@ const ProfilePage = () => {
         <ProfileForm 
           user={user} 
           onClose={() => setShowEditForm(false)}
+          onSave={handleSaveProfile}
+          isSaving={isSaving}
+          saveError={saveError}
         />
       )}
 
@@ -175,6 +237,12 @@ const ProfilePage = () => {
                   
                   <div className="item-actions">
                     <Link 
+                      to={`/items/${item._id}`} 
+                      className="view-item-profile"
+                    >
+                      View
+                    </Link>
+                    <Link 
                       to={`/items/${item._id}/edit`} 
                       className="edit-item-profile"
                     >
@@ -225,7 +293,7 @@ const ProfilePage = () => {
                       to={`/items/${item._id}`} 
                       className="view-item-profile"
                     >
-                      View Details
+                      View
                     </Link>
                   </div>
                 </div>
@@ -233,6 +301,54 @@ const ProfilePage = () => {
             ))
           ) : (
             <p>No favorites yet</p>
+          )}
+        </div>
+      </section>
+
+      <section>
+        <h2>My Offers ({userOffers.length})</h2>
+        <div className="offers-grid">
+          {offersLoading ? (
+            <p>Loading offers...</p>
+          ) : userOffers.length > 0 ? (
+            userOffers.map((offer) => (
+              <div key={offer._id} className="offer-card">
+                <div className="offer-item-image">
+                  <img 
+                    src={offer.item.images?.[0] || "https://via.placeholder.com/150x150?text=No+Image"} 
+                    alt={offer.item.title} 
+                  />
+                </div>
+                <div className="offer-info">
+                  <h3>{offer.item.title}</h3>
+                  <p className="offer-item-price">€{offer.item.price}</p>
+                  <p className="offer-item-seller">Seller: {offer.item.seller?.username}</p>
+                  
+                  <div className="offer-details">
+                    <div className="offer-amount">
+                      <strong>Your Offer:</strong> €{offer.amount}
+                    </div>
+                    <div className={`offer-status ${offer.status}`}>
+                      {offer.status}
+                    </div>
+                    <div className="offer-date">
+                      {new Date(offer.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                  
+                  <div className="offer-actions">
+                    <Link 
+                      to={`/items/${offer.item._id}`} 
+                      className="view-item-profile"
+                    >
+                      View Item
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No offers made yet</p>
           )}
         </div>
       </section>

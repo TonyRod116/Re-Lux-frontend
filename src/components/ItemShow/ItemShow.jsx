@@ -32,7 +32,7 @@ const ItemShow = () => {
   const { itemId } = useParams()
   const navigate = useNavigate()
 
-  //Fetch data
+  // Fetch data
   useEffect(() => {
     const getItem = async () => {
       setLoading(true)
@@ -122,7 +122,7 @@ const ItemShow = () => {
     try {
       await createOffer(itemId, offerPrice)
 
-      // Mostrar mensaje de éxito
+      // Show success message
       alert(`Offer of €${offerPrice} submitted successfully!`)
 
       // If the user is the seller, refresh the offers
@@ -184,31 +184,18 @@ const ItemShow = () => {
           <div className="item-details">
             <div className="item-header">
               <h1>{item.title}</h1>
-              <div className="item-actions">
-                {user && user._id !== item.seller._id && (
-                  <button 
-                    onClick={handleMakeOffer}
-                    className="make-offer-btn"
-                  >
-                    Make an Offer
-                  </button>
+              <button
+                onClick={handleToggleFavorite}
+                disabled={favoriteLoading}
+                className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}
+                aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                {isFavorited ? (
+                  <MdFavorite className="favorite-icon filled" />
+                ) : (
+                  <MdFavoriteBorder className="favorite-icon" />
                 )}
-                <button
-                  onClick={handleToggleFavorite}
-                  disabled={favoriteLoading}
-                  className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}
-                  aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-                >
-                  {isFavorited ? (
-                    <MdFavorite className="favorite-icon filled" />
-                  ) : (
-                    <MdFavoriteBorder className="favorite-icon" />
-                  )}
-                </button>
-                <button onClick={handleAddToCart} className="add-to-cart-btn">
-                  Add to Cart
-                </button>
-              </div>
+              </button>
             </div>
 
             <div className="item-info">
@@ -217,18 +204,34 @@ const ItemShow = () => {
               <p className="item-location">📍 {item.location}</p>
               <p className="item-seller">Seller: {item.seller?.username}</p>
               <p className="item-price">€{item.price.toLocaleString()}</p>
-            </div>
-
-            {user && user._id === item.seller._id && (
-              <div className="seller-actions">
-                <Link to={`/items/${item._id}/edit`} className="edit-btn">
-                  <MdModeEdit /> Edit
-                </Link>
-                <button onClick={handleDelete} className="delete-btn">
-                  <MdDelete /> Delete
-                </button>
+              
+              <div className="item-actions">
+                {user && user._id !== item.seller._id ? (
+                  // If NOT your item, show Make an Offer and Add to Cart
+                  <>
+                    <button 
+                      onClick={handleMakeOffer}
+                      className="make-offer-btn"
+                    >
+                      Make an Offer
+                    </button>
+                    <button onClick={handleAddToCart} className="add-to-cart-btn">
+                      Add to Cart
+                    </button>
+                  </>
+                ) : (
+                  // If IS your item, show Edit and Delete
+                  <>
+                    <Link to={`/items/${item._id}/edit`} className="edit-btn">
+                      <MdModeEdit /> Edit
+                    </Link>
+                    <button onClick={handleDelete} className="delete-btn">
+                      <MdDelete /> Delete
+                    </button>
+                  </>
+                )}
               </div>
-            )}
+            </div>
 
             {offers.length > 0 && (
               <div className="offers-section">

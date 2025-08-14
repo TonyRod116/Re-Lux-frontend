@@ -186,23 +186,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 400px;
-  max-width: 400px;
+  width: 320px;
+  max-width: 320px;
   flex: 0 0 auto;
 }
 
 /* Responsive breakpoints for profile items */
 @media (max-width: 1200px) {
   .item-card {
-    width: 380px;
-    max-width: 380px;
+    width: 300px;
+    max-width: 300px;
   }
 }
 
 @media (max-width: 768px) {
   .item-card {
-    width: 350px;
-    max-width: 350px;
+    width: 280px;
+    max-width: 280px;
   }
   .items-grid {
     gap: 1.5rem;
@@ -226,9 +226,9 @@
 
 .item-image {
   width: 100%;
-  height: 250px;  /* ✅ Aumentado de 200px a 250px para mejor proporción */
+  height: 180px;
   overflow: hidden;
-  position: relative;  /* ✅ Añadido para mejor control */
+  position: relative;
 }
 
 .item-image img {
@@ -388,22 +388,44 @@
 .item-actions {
   margin-top: 12px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.edit-item-profile {
-  background: #2c5aa0;
-  color: white;
+.view-item-profile,
+.edit-item-profile,
+.delete-item-profile,
+.make-offer-profile-btn {
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
   text-decoration: none;
-  display: inline-block;
-  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  height: 32px;
+}
+
+.view-item-profile {
+  background: #10b981;
+  color: white;
+}
+
+.view-item-profile:hover {
+  background: #059669;
+  color: white;
+}
+
+.edit-item-profile {
+  background: #2c5aa0;
+  color: white;
 }
 
 .edit-item-profile:hover {
@@ -414,17 +436,20 @@
 .delete-item-profile {
   background: #8b0000;
   color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .delete-item-profile:hover {
   background: #660000;
+}
+
+.make-offer-profile-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.make-offer-profile-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
 }
 
 .loading-container {
@@ -486,5 +511,192 @@
 
 .edit-profile-btn:hover .edit-icon {
   opacity: 1;
+}
+
+.item-action-buttons {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  justify-content: center;
+}
+
+.make-offer-btn,
+.add-to-cart-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+  height: 32px;
+}
+
+.make-offer-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.make-offer-btn:hover {
+  background: #2563eb;
+}
+
+.add-to-cart-btn {
+  background: #10b981;
+  color: white;
+}
+
+.add-to-cart-btn:hover {
+  background: #059669;
+}
+
+/* Offers Section */
+.offers-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.offer-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 350px;
+  max-width: 350px;
+  flex: 0 0 auto;
+}
+
+.offer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.offer-item-image {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+}
+
+.offer-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.offer-card:hover .offer-item-image img {
+  transform: scale(1.05);
+}
+
+.offer-info {
+  padding: 1.5rem;
+}
+
+.offer-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.offer-item-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #059669;
+  margin: 0 0 0.5rem 0;
+  line-height: 1;
+}
+
+.offer-item-seller {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+}
+
+.offer-details {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.offer-amount {
+  font-size: 1rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.offer-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+.offer-status.pending {
+  background: #fbbf24;
+  color: #92400e;
+}
+
+.offer-status.accepted {
+  background: #10b981;
+  color: #064e3b;
+}
+
+.offer-status.rejected {
+  background: #ef4444;
+  color: #7f1d1d;
+}
+
+.offer-date {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.offer-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive breakpoints for offers */
+@media (max-width: 1200px) {
+  .offer-card {
+    width: 320px;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .offer-card {
+    width: 300px;
+    max-width: 300px;
+  }
+  .offers-grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .offer-card {
+    width: 100%;
+    max-width: 100%;
+  }
+  .offers-grid {
+    gap: 1rem;
+  }
 }
 

@@ -1,12 +1,13 @@
 /* Main Navigation */
 nav {
-    background-color: white;
-    padding: 8px 16px;
+    background-color: #000000 !important;
+    padding: 8px 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     font-family: "Lato", sans-serif;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -14,47 +15,61 @@ nav {
     display: flex;
     gap: 15px;
     align-items: center;
+    padding-left: 2rem;
+    flex: 1;
+    justify-content: flex-start;
 }
 
 #user-access {
     display: flex;
     gap: 15px;
     align-items: center;
+    padding-right: 2rem;
+    flex-shrink: 0;
 }
 
-a.home-link {
-    font-family: 'Parisienne', cursive;
+/* Override global font for navbar links */
+nav a.home-link {
+    font-family: 'Parisienne', cursive !important;
     font-weight: 400;
-    color: #000;
+    color: #D4AF37 !important;
     font-size: 1.8rem;
     text-decoration: none;
 }
 
-a.home-link:hover {
-    color: grey;
+nav a.home-link:hover {
+    color: #C4D4E0 !important;
 }
 
-a.page-link {
-    color: grey;
+nav a.page-link {
+    font-family: "Lato", sans-serif !important;
+    color: #C4D4E0 !important;
     text-decoration: none;
 }
 
-a.page-link-sell {
-    color: rgb(243, 108, 108);
+nav a.page-link:hover {
+    color: #D4AF37 !important;
+}
+
+nav a.page-link-sell {
+    font-family: "Lato", sans-serif !important;
+    color: #D4AF37 !important;
     text-decoration: none;
 }
 
-a.nav-button {
+nav a.nav-button {
+    font-family: "Lato", sans-serif !important;
     padding: 0.5rem 1rem;
-    background-color: black;
-    color: white;
+    background-color: #D4AF37 !important;
+    color: #000000 !important;
     text-decoration: none;
     font-weight: 400;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 4px;
 }
 
-a.nav-button:hover {
-    color: white;
-    background-color: black;
+nav a.nav-button:hover {
+    background-color: #C4D4E0 !important;
+    color: #000000 !important;
 }

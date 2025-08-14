@@ -29,14 +29,43 @@ h1 {
     object-fit: cover;
 }
 
+.item-show {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.item-images {
+  flex: 1;
+  max-width: 50%;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-image {
+  width: 100%;
+  height: 300px;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
 .item-details {
-    display: flex;
-    flex: 1;
-    gap: 1rem;
-    flex-direction: column;
-    margin-top: 2rem;
-    text-align: left;
-    padding: 2rem;
+  flex: 1;
+  max-width: 50%;
 }
 
 .user-controls {
@@ -169,4 +198,142 @@ h1 {
 
 .cart-message {
   color: darkgoldenrod;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.item-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.item-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.make-offer-btn,
+.add-to-cart-btn,
+.edit-btn,
+.delete-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.make-offer-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.make-offer-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.add-to-cart-btn {
+  background: #10b981;
+  color: white;
+}
+
+.add-to-cart-btn:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.edit-btn {
+  background: #2c5aa0;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #1e3f6b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(44, 90, 160, 0.3);
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.favorite-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.favorite-btn:hover {
+  background: #e5e7eb;
+}
+
+.favorite-btn .favorite-icon {
+  font-size: 1.2rem;
+  transition: color 0.2s ease;
+}
+
+.favorite-btn .favorite-icon.filled {
+  color: #ef4444;
+}
+
+.favorite-btn:hover .favorite-icon.filled {
+  color: #dc2626;
+}
+
+.item-info {
+  margin-bottom: 2rem;
+}
+
+.item-info p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+.item-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #059669;
+  margin: 1rem 0;
+}
+
+.seller-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
 }
