@@ -23,26 +23,18 @@
     gap: 1rem;
 }
 
-.bag-items {
-  display: flex;
-  flex-direction: column; 
-  gap: 1rem;
-  border: 1px solid #eee;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #fafafa;
-  min-width: 400px;
+.content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    background-color: #fff;
+    min-width: 400px;
 }
 
 .order-summary {
-    display: flex;
-    flex: 1;
-    gap: 1rem;
-    flex-direction: column;
-    min-width: 400px;
-    margin-top: 0;
     text-align: left;
-    padding: 2rem;
 }
 
 
