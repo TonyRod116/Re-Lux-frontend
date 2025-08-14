@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom'
 import { IoBagOutline } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
 
+const Navbar = () => {
+  const { user, signOut } = useContext(UserContext)
+
   return (
     <nav>
       <nav id="main-pages">

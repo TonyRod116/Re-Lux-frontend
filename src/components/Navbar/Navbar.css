@@ -1,7 +1,7 @@
 /* Main Navigation */
 nav {
-    background-color: #000000 !important;
-    padding: 8px 0;
+    background-color: white;
+    padding: 8px 16px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -15,61 +15,47 @@ nav {
     display: flex;
     gap: 15px;
     align-items: center;
-    padding-left: 2rem;
-    flex: 1;
-    justify-content: flex-start;
 }
 
 #user-access {
     display: flex;
     gap: 15px;
     align-items: center;
-    padding-right: 2rem;
-    flex-shrink: 0;
 }
 
-/* Override global font for navbar links */
-nav a.home-link {
-    font-family: 'Parisienne', cursive !important;
+a.home-link {
+    font-family: 'Parisienne', cursive;
     font-weight: 400;
-    color: #D4AF37 !important;
+    color: #000;
     font-size: 1.8rem;
     text-decoration: none;
 }
 
-nav a.home-link:hover {
-    color: #C4D4E0 !important;
+a.home-link:hover {
+    color: grey;
 }
 
-nav a.page-link {
-    font-family: "Lato", sans-serif !important;
-    color: #C4D4E0 !important;
+a.page-link {
+    color: grey;
     text-decoration: none;
 }
 
-nav a.page-link:hover {
-    color: #D4AF37 !important;
-}
-
-nav a.page-link-sell {
-    font-family: "Lato", sans-serif !important;
-    color: #D4AF37 !important;
+a.page-link-sell {
+    color: #D4AF37;
     text-decoration: none;
 }
 
-nav a.nav-button {
-    font-family: "Lato", sans-serif !important;
+a.nav-button {
     padding: 0.5rem 1rem;
-    background-color: #D4AF37 !important;
-    color: #000000 !important;
+    background-color: black;
+    color: white;
     text-decoration: none;
     font-weight: 400;
     font-size: 1rem;
-    transition: all 0.3s ease;
-    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-nav a.nav-button:hover {
-    background-color: #C4D4E0 !important;
-    color: #000000 !important;
+a.nav-button:hover {
+    color: white;
+    background-color: black;
 }
