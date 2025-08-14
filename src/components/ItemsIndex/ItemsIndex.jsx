@@ -1,31 +1,35 @@
-import { useState, useEffect, useContext } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
-import { itemsIndex } from '../../services/items'
 import './ItemsIndex.css'
-import { UserContext } from '../../Contexts/UserContext'
-
-
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { itemsIndex } from '../../services/items'
+import { addToFavorites, removeFromFavorites, checkIfFavorited } from '../../services/favorites'
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 
 const ItemsIndex = () => {
-  // Context
-  const { user } = useContext(UserContext)
-  
-  // State
   const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [item, setItem] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const { itemId } = useParams()
-  const navigate = useNavigate()
+  const [favoriteStates, setFavoriteStates] = useState({})
 
-
-  // Fetch items from API
   useEffect(() => {
     const fetchItems = async () => {
       try {
         setLoading(true)
         const response = await itemsIndex()
         setItems(response.data)
+        
+        // Check favorite status for each item
+        const states = {}
+        for (const item of response.data) {
+          try {
+            const favoriteResponse = await checkIfFavorited(item._id)
+            states[item._id] = favoriteResponse.data.isFavorited
+          } catch (error) {
+            console.error(`Error checking favorite for item ${item._id}:`, error)
+            states[item._id] = false
+          }
+        }
+        setFavoriteStates(states)
       } catch (error) {
         console.error('Error fetching items:', error)
         setError('Failed to load items')
@@ -35,7 +39,23 @@ const ItemsIndex = () => {
     }
 
     fetchItems()
-  }, [itemId])
+  }, [])
+
+  const handleToggleFavorite = async (itemId) => {
+    try {
+      const isCurrentlyFavorited = favoriteStates[itemId]
+      
+      if (isCurrentlyFavorited) {
+        await removeFromFavorites(itemId)
+        setFavoriteStates(prev => ({ ...prev, [itemId]: false }))
+      } else {
+        await addToFavorites(itemId)
+        setFavoriteStates(prev => ({ ...prev, [itemId]: true }))
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error)
+    }
+  }
 
   if (loading) return <div className="loading">Loading items...</div>
   if (error) return <div className="error">Error: {error}</div>
@@ -58,6 +78,17 @@ const ItemsIndex = () => {
                 <div key={item._id} className="item-card">
                   <div className="item-image">
                     <img src={item.images?.[0]} alt={item.title} />
+                    <button
+                      className="favorite-button"
+                      onClick={() => handleToggleFavorite(item._id)}
+                      aria-label={favoriteStates[item._id] ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                      {favoriteStates[item._id] ? (
+                        <MdFavorite className="favorite-icon filled" />
+                      ) : (
+                        <MdFavoriteBorder className="favorite-icon" />
+                      )}
+                    </button>
                   </div>
                   <div className="item-info">
                     <div className="item-header">
@@ -66,7 +97,7 @@ const ItemsIndex = () => {
                     </div>
                     <p className="item-description">{item.description}</p>
                     <div className="item-details">
-                      <span className="item-seller">Seller: {item.seller.username}</span>
+                      <span className="item-seller">Seller: {item.seller?.username}</span>
                       <span className="item-location">📍 {item.location}</span>
                       <span className="item-price">€{item.price.toLocaleString()}</span>
                     </div>
