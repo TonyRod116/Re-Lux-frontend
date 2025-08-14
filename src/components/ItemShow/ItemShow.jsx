@@ -204,33 +204,6 @@ const ItemShow = () => {
               <p className="item-location">📍 {item.location}</p>
               <p className="item-seller">Seller: {item.seller?.username}</p>
               <p className="item-price">€{item.price.toLocaleString()}</p>
-              
-              {/* <div className="item-actions">
-                {user && user._id !== item.seller._id ? (
-                  // If NOT your item, show Make an Offer and Add to Cart
-                  <>
-                    <button 
-                      onClick={handleMakeOffer}
-                      className="make-offer-btn"
-                    >
-                      Make an Offer
-                    </button>
-                    <button onClick={handleAddToCart} className="add-to-cart-btn">
-                      Add to Cart
-                    </button>
-                  </>
-                ) : (
-                  // If IS your item, show Edit and Delete
-                  <>
-                    <Link to={`/items/${item._id}/edit`} className="edit-btn">
-                      <MdModeEdit /> Edit
-                    </Link>
-                    <button onClick={handleDelete} className="delete-btn">
-                      <MdDelete /> Delete
-                    </button>
-                  </>
-                )}
-              </div> */}
             </div>
 
             {offers.length > 0 && (
@@ -286,7 +259,6 @@ const ItemShow = () => {
               )}
             </div>
             {message && <p className="cart-message">{message}</p>}
-            {message && <div className="message">{message}</div>}
           </div>
         </div>
       </div>
