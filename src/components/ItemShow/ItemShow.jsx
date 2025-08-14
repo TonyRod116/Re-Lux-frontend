@@ -195,7 +195,7 @@ const ItemShow = () => {
                   </button>
                 ) : null
               ) : (
-                <Link to="/auth/sign-in">
+                <Link to="/sign-in">
                   <button className="offer-button">Make an offer</button>
                 </Link>
               )}
