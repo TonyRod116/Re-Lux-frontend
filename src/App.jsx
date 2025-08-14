@@ -1,7 +1,9 @@
 import './App.css';
 
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import { Routes, Route } from 'react-router'
+import { UserContext } from './Contexts/UserContext'
 
 // Global
 import Navbar from './components/Navbar/Navbar'
@@ -29,6 +31,8 @@ import CheckoutPage from './components/CheckoutPage/CheckoutPage'
 
 
 function App() {
+  const { user, setUser } = useContext(UserContext);
+
   return (
     <>
       <Navbar />
@@ -41,12 +45,12 @@ function App() {
         <Route path="/fashion" element={<FashionPage />} />
         <Route path="/tech" element={<TechPage />} />
         <Route path="/lifestyle" element={<LifestylePage />} />
-        <Route path="/items/new" element={<ItemCreatePage />} />
-        <Route path="/items/:itemId/edit" element={<ItemUpdatePage />} />
+        <Route path="/items/new" element={user ? <ItemCreatePage /> : <Navigate to="/sign-in" replace />} />
+        <Route path="/items/:itemId/edit" element={user ? <ItemUpdatePage /> : <Navigate to="/sign-in" replace />} />
         <Route path="/items/:itemId" element={<ItemShow />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/cart" element={user ? <Cart /> : <Navigate to="/sign-in" replace />} />
+        <Route path="/checkout" element={user ? <CheckoutPage /> : <Navigate to="/sign-in" replace />} />
       </Routes>
       <FooterBar />
     </>
