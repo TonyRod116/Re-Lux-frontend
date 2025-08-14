@@ -15,6 +15,7 @@ import ItemsIndex from './components/ItemsIndex/ItemsIndex'
 import AccessoriesPage from './components/CategoryAccessoriesPage/CategoryAccessoriesPage'
 import FashionPage from './components/CategoryFashionPage/CategoryFashionPage'
 import TechPage from './components/CategoryTechPage/CategoryTechPage'
+import LifestylePage from './components/CategoryLifestylePage/CategoryLifestylePage'
 import ItemShow from './components/ItemShow/ItemShow'
 import ItemCreatePage from './components/ItemCreatePage/ItemCreatePage'
 import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
@@ -38,6 +39,7 @@ function App() {
         <Route path="/accessories" element={<AccessoriesPage />} />
         <Route path="/fashion" element={<FashionPage />} />
         <Route path="/tech" element={<TechPage />} />
+        <Route path="/lifestyle" element={<LifestylePage />} />
         <Route path="/items/new" element={<ItemCreatePage />} />
         <Route path="/items/:itemId/edit" element={<ItemUpdatePage />} />
         <Route path="/items/:itemId" element={<ItemShow />} />
