@@ -205,7 +205,7 @@ const ItemShow = () => {
               <p className="item-seller">Seller: {item.seller?.username}</p>
               <p className="item-price">€{item.price.toLocaleString()}</p>
               
-              <div className="item-actions">
+              {/* <div className="item-actions">
                 {user && user._id !== item.seller._id ? (
                   // If NOT your item, show Make an Offer and Add to Cart
                   <>
@@ -230,7 +230,7 @@ const ItemShow = () => {
                     </button>
                   </>
                 )}
-              </div>
+              </div> */}
             </div>
 
             {offers.length > 0 && (
@@ -251,25 +251,38 @@ const ItemShow = () => {
             )}
 
             <div className="button-row">
-              {user ? (
-                <button onClick={handleAddToCart} className="purchase-button">
-                  Buy now
-                </button>
-              ) : (
-                <Link to="/sign-in">
-                  <button className="purchase-button">Buy now</button>
-                </Link>
-              )}
-              {user ? (
-                user._id !== item.seller._id ? (
+              {user && user._id !== item.seller._id ? (
+                // If NOT your item, show Buy now and Make an offer
+                <>
+                  <button onClick={handleAddToCart} className="purchase-button">
+                    Buy now
+                  </button>
                   <button className="offer-button" onClick={handleMakeOffer}>
                     Make an offer
                   </button>
-                ) : null
+                </>
+              ) : user && user._id === item.seller._id ? (
+                // If IS your item, show Edit and Delete
+                <>
+                  <Link to={`/items/${item._id}/edit`}>
+                    <button className="purchase-button">
+                      <MdModeEdit /> Edit
+                    </button>
+                  </Link>
+                  <button onClick={handleDelete} className="offer-button">
+                    <MdDelete /> Delete
+                  </button>
+                </>
               ) : (
-                <Link to="/sign-in">
-                  <button className="offer-button">Make an offer</button>
-                </Link>
+                // If not logged in, show sign in buttons
+                <>
+                  <Link to="/sign-in">
+                    <button className="purchase-button">Buy now</button>
+                  </Link>
+                  <Link to="/sign-in">
+                    <button className="offer-button">Make an offer</button>
+                  </Link>
+                </>
               )}
             </div>
             {message && <p className="cart-message">{message}</p>}

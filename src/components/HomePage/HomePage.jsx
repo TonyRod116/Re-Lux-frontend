@@ -23,8 +23,27 @@ const HomePage = () => {
       try {
         setLoading(true)
         const response = await itemsIndex()
-        // Get the 4 most recent items
-        const recent = response.data.slice(0, 4)
+                
+        // Sort items by creation date (newest first) and get the 4 most recent
+        const sortedItems = response.data.sort((a, b) => {
+          // Try createdAt first, then updatedAt, then fallback to _id (newer IDs are more recent)
+          const dateA = new Date(a.createdAt || a.updatedAt || 0)
+          const dateB = new Date(b.createdAt || b.updatedAt || 0)
+          
+          // If both dates are valid, compare them
+          if (dateA.getTime() > 0 && dateB.getTime() > 0) {
+            return dateB - dateA // Newest first
+          }
+          
+          // If dates are not available, fallback to _id comparison (newer ObjectIds are more recent)
+          if (a._id && b._id) {
+            return a._id.localeCompare(b._id) * -1 // Reverse order so newer IDs come first
+          }
+          
+          return 0
+        })
+        
+        const recent = sortedItems.slice(0, 4)
         setRecentItems(recent)
       } catch (error) {
         console.error('Error fetching recent items:', error)
