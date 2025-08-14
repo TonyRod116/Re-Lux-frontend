@@ -33,8 +33,8 @@ const Navbar = () => {
         ) 
       : (
         <>
-          <Link to="/sign-in" className="nav-button">Sign In</Link>
-          <Link to="/sign-up" className="nav-button">Sign Up</Link>
+          <Link to="/sign-in" className="nav-button">Sign in</Link>
+          <Link to="/sign-up" className="nav-button">Sign up</Link>
         </>
         )}
       </nav>
