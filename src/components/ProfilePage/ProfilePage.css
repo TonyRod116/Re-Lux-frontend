@@ -284,7 +284,8 @@
   padding: 10px;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 3px solid #2c5aa0;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .offers-title {
@@ -325,13 +326,30 @@
 }
 
 .offer-actions {
+  margin-top: 8px;
+  margin-right: 8px;
   display: flex;
   gap: 8px;
+  justify-content: center;
+}
+
+.offer-final-status {
   margin-top: 8px;
+  margin-right: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.offer-final-status .offer-status {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .accept-offer-btn {
-  background: #10b981;
+  background: #6b8e23; /* Olive green */
   color: white;
   border: none;
   padding: 4px 12px;
@@ -342,11 +360,11 @@
 }
 
 .accept-offer-btn:hover {
-  background: #059669;
+  background: #556b2f; /* Darker olive green */
 }
 
 .reject-offer-btn {
-  background: #ef4444;
+  background: #000000; /* Black */
   color: white;
   border: none;
   padding: 4px 12px;
@@ -357,7 +375,7 @@
 }
 
 .reject-offer-btn:hover {
-  background: #dc2626;
+  background: #333333; /* Dark gray on hover */
 }
 
 .offer-status {
@@ -368,18 +386,18 @@
 }
 
 .offer-status.pending {
-  background: #fbbf24;
-  color: #92400e;
+  background: #808080; /* Gray */
+  color: white;
 }
 
 .offer-status.accepted {
-  background: #10b981;
-  color: #064e3b;
+  background: #6b8e23; /* Olive green */
+  color: white;
 }
 
 .offer-status.rejected {
-  background: #ef4444;
-  color: #7f1d1d;
+  background: #000000; /* Black */
+  color: white;
 }
 
 .more-offers {
@@ -419,32 +437,33 @@
 }
 
 .view-item-profile {
-  background: #10b981;
+  background: #d4af37; /* Darker gold */
   color: white;
 }
 
 .view-item-profile:hover {
-  background: #059669;
+  background: #b8860b; /* Even darker gold on hover */
   color: white;
 }
 
 .edit-item-profile {
-  background: #2c5aa0;
+  background: #495057; /* Gray */
   color: white;
 }
 
 .edit-item-profile:hover {
-  background: #1e3f6b;
+  background: #343a40; /* Darker gray */
   color: white;
 }
 
 .delete-item-profile {
-  background: #8b0000;
+  background: #8b0000; /* Dark red */
   color: white;
 }
 
 .delete-item-profile:hover {
-  background: #660000;
+  background: #660000; /* Darker red on hover */
+  color: white;
 }
 
 .make-offer-profile-btn {
@@ -474,6 +493,47 @@
   font-size: 1.2rem;
   color: #666;
   text-align: center;
+}
+
+/* User Rating Display */
+.user-rating-display {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.rating-star {
+  font-size: 16px;
+  color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
+.rating-star.filled {
+  color: #fbbf24;
+}
+
+.rating-star.empty {
+  color: #d1d5db;
+}
+
+.rating-number {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .edit-profile-btn {
@@ -651,18 +711,18 @@
 }
 
 .offer-status.pending {
-  background: #fbbf24;
-  color: #92400e;
+  background: #808080; /* Gray */
+  color: white;
 }
 
 .offer-status.accepted {
-  background: #10b981;
-  color: #064e3b;
+  background: #6b8e23; /* Olive green */
+  color: white;
 }
 
 .offer-status.rejected {
-  background: #ef4444;
-  color: #7f1d1d;
+  background: #000000; /* Black */
+  color: white;
 }
 
 .offer-date {

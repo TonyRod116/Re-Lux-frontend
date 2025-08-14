@@ -70,6 +70,56 @@ const ItemShow = () => {
     getItem()
   }, [itemId, user])
 
+  // Load seller reviews when item is available
+  useEffect(() => {
+    if (item && item.seller && item.seller._id) {
+      console.log('Item loaded, now loading reviews for seller:', item.seller._id)
+      loadSellerReviews()
+    } else {
+      console.log('Item not ready yet:', { item: !!item, seller: !!item?.seller, sellerId: item?.seller?._id })
+    }
+  }, [item])
+
+  // Function to load seller reviews
+  const loadSellerReviews = async () => {
+    if (!item?.seller?._id) {
+      console.log('No seller ID found, skipping reviews load')
+      return
+    }
+    
+    console.log('Loading reviews for seller:', item.seller._id)
+    
+    try {
+      setReviewsLoading(true)
+      const [reviewsResponse, ratingResponse] = await Promise.all([
+        getUserReviews(item.seller._id),
+        getUserAverageRating(item.seller._id)
+      ])
+      
+      console.log('Reviews response:', reviewsResponse.data)
+      console.log('Rating response:', ratingResponse.data)
+      
+      setSellerReviews(reviewsResponse.data)
+      setSellerAverageRating(ratingResponse.data)
+      
+      // Check if current user has already reviewed this seller
+      if (user && user._id !== item.seller._id) {
+        try {
+          const checkResponse = await checkIfUserReviewed(item.seller._id)
+          console.log('Check review response:', checkResponse.data)
+          setHasReviewedSeller(checkResponse.data.hasReviewed)
+        } catch (error) {
+          console.error('Error checking if user reviewed seller:', error)
+        }
+      }
+    } catch (error) {
+      console.error('Error loading seller reviews:', error)
+      console.error('Error details:', error.response?.data)
+    } finally {
+      setReviewsLoading(false)
+    }
+  }
+
   // Check favorite status
   const checkFavoriteStatus = async () => {
     try {
@@ -87,36 +137,6 @@ const ItemShow = () => {
       setOffers(data.offers || [])
     } catch (error) {
       console.error('Error loading offers:', error)
-    }
-  }
-
-  // Function to load seller reviews
-  const loadSellerReviews = async () => {
-    if (!item?.seller?._id) return
-    
-    try {
-      setReviewsLoading(true)
-      const [reviewsResponse, ratingResponse] = await Promise.all([
-        getUserReviews(item.seller._id),
-        getUserAverageRating(item.seller._id)
-      ])
-      
-      setSellerReviews(reviewsResponse.data)
-      setSellerAverageRating(ratingResponse.data)
-      
-      // Check if current user has already reviewed this seller
-      if (user && user._id !== item.seller._id) {
-        try {
-          const checkResponse = await checkIfUserReviewed(item.seller._id)
-          setHasReviewedSeller(checkResponse.data.hasReviewed)
-        } catch (error) {
-          console.error('Error checking if user reviewed seller:', error)
-        }
-      }
-    } catch (error) {
-      console.error('Error loading seller reviews:', error)
-    } finally {
-      setReviewsLoading(false)
     }
   }
 
