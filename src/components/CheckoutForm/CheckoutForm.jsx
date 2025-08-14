@@ -49,6 +49,7 @@ const CheckoutForm = ({ clientSecret }) => {
   // Functions
 
   const handleSubmit = async (e) => {
+    console.log("Is submitting")
     e.preventDefault();
 
     if (!stripe || !elements) {
