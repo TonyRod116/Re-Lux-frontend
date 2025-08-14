@@ -5,9 +5,10 @@ import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
 import { getUserItems, itemDelete } from '../../services/items'
 import { getUserFavorites } from '../../services/favorites'
+import { updateUserProfile } from '../../services/users'
 
 const ProfilePage = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [userItems, setUserItems] = useState([])
   const [userFavorites, setUserFavorites] = useState([])
   const [userOffers, setUserOffers] = useState([])
@@ -15,6 +16,38 @@ const ProfilePage = () => {
   const [favoritesLoading, setFavoritesLoading] = useState(true)
   const [offersLoading, setOffersLoading] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+  const [isSaving, setIsSaving] = useState(false)
+
+  // Handle profile save
+  const handleSaveProfile = async (formData) => {
+    try {
+      setIsSaving(true)
+      setSaveError(null)
+      
+      const response = await updateUserProfile(user._id, formData)
+      
+      // Update token if backend returns a new one
+      if (response.data.token) {
+        localStorage.setItem('relux-token', response.data.token)
+        
+        // Update user context with new data from the new token
+        const { getUser } = await import('../../utils/auth')
+        const updatedUser = getUser()
+        setUser(updatedUser)
+      }
+      
+      // Close form and show success
+      setShowEditForm(false)
+      alert('Profile updated successfully!')
+      
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      setSaveError(error.response?.data?.message || 'Failed to update profile')
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   // Fetch user's items
   useEffect(() => {
@@ -145,6 +178,9 @@ const ProfilePage = () => {
         <ProfileForm 
           user={user} 
           onClose={() => setShowEditForm(false)}
+          onSave={handleSaveProfile}
+          isSaving={isSaving}
+          saveError={saveError}
         />
       )}
 

@@ -3,6 +3,16 @@
   font-family: 'Cormorant Garamond', serif;
 }
 
+/* Color Scheme Variables */
+:root {
+  --color-black: #000000;
+  --color-gold: #D4AF37;
+  --color-silver: #C4D4E0;
+  --color-silver-light: #E5E7EB;
+  --color-text-dark: #1F2937;
+  --color-text-light: #6B7280;
+}
+
 /* Exceptions - Keep original fonts for specific elements */
 .brand-font,
 .logo,

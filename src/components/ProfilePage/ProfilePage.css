@@ -186,23 +186,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 400px;
-  max-width: 400px;
+  width: 320px;
+  max-width: 320px;
   flex: 0 0 auto;
 }
 
 /* Responsive breakpoints for profile items */
 @media (max-width: 1200px) {
   .item-card {
-    width: 380px;
-    max-width: 380px;
+    width: 300px;
+    max-width: 300px;
   }
 }
 
 @media (max-width: 768px) {
   .item-card {
-    width: 350px;
-    max-width: 350px;
+    width: 280px;
+    max-width: 280px;
   }
   .items-grid {
     gap: 1.5rem;
@@ -226,9 +226,9 @@
 
 .item-image {
   width: 100%;
-  height: 250px;  /* ✅ Aumentado de 200px a 250px para mejor proporción */
+  height: 180px;
   overflow: hidden;
-  position: relative;  /* ✅ Añadido para mejor control */
+  position: relative;
 }
 
 .item-image img {
