@@ -67,9 +67,6 @@ const ItemsIndex = () => {
           <h1>Pre-owned luxury</h1>
           <p>Browse all the latest items for sale and grab your deal.</p>
         </div>
-        <Link to="/items/new" className="create-item-btn">
-          + Create New Item
-        </Link>
       </div>
       <div className="items-listing">
         <h2>All items</h2>

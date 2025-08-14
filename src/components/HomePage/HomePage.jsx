@@ -17,7 +17,7 @@ const HomePage = () => {
     <main>
     <section className="hero">
       <h1>The No #1 Marketplace for Luxury Goods</h1>
-      <p>Discover amazing items and experiences.</p>
+      <p>Discover your favourite designers and the latest tech.</p>
     </section>
     <section className="page-content">
       <div id="categories">
