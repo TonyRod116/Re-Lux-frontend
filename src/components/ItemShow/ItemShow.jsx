@@ -4,10 +4,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { itemShow, itemDelete } from '../../services/items.js'
 import { createOffer, getItemOffers } from '../../services/offers.js'
 import { addToFavorites, removeFromFavorites, checkIfFavorited } from '../../services/favorites.js'
+import { getUserReviews, getUserAverageRating, checkIfUserReviewed } from '../../services/reviews.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import { useCart } from '../../Contexts/CartContext'
 import MakeAnOfferFlashMsg from '../MakeAnOfferFlashMsg/MakeAnOfferFlashMsg'
+import ReviewForm from '../ReviewForm/ReviewForm'
+import ReviewList from '../ReviewList/ReviewList'
 
 import { MdModeEdit, MdDelete, MdFavorite, MdFavoriteBorder } from "react-icons/md"
 
@@ -26,6 +29,11 @@ const ItemShow = () => {
   const [message, setMessage] = useState('')
   const [isFavorited, setIsFavorited] = useState(false)
   const [favoriteLoading, setFavoriteLoading] = useState(false)
+  const [sellerReviews, setSellerReviews] = useState([])
+  const [sellerAverageRating, setSellerAverageRating] = useState(null)
+  const [reviewsLoading, setReviewsLoading] = useState(true)
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [hasReviewedSeller, setHasReviewedSeller] = useState(false)
 
   const isInCart = item ? cart.some(cartItem => cartItem.id === item._id) : false
 
@@ -50,6 +58,9 @@ const ItemShow = () => {
         if (user) {
           checkFavoriteStatus()
         }
+
+        // Load seller reviews
+        loadSellerReviews()
       } catch (error) {
         setError(error)
       } finally {
@@ -76,6 +87,36 @@ const ItemShow = () => {
       setOffers(data.offers || [])
     } catch (error) {
       console.error('Error loading offers:', error)
+    }
+  }
+
+  // Function to load seller reviews
+  const loadSellerReviews = async () => {
+    if (!item?.seller?._id) return
+    
+    try {
+      setReviewsLoading(true)
+      const [reviewsResponse, ratingResponse] = await Promise.all([
+        getUserReviews(item.seller._id),
+        getUserAverageRating(item.seller._id)
+      ])
+      
+      setSellerReviews(reviewsResponse.data)
+      setSellerAverageRating(ratingResponse.data)
+      
+      // Check if current user has already reviewed this seller
+      if (user && user._id !== item.seller._id) {
+        try {
+          const checkResponse = await checkIfUserReviewed(item.seller._id)
+          setHasReviewedSeller(checkResponse.data.hasReviewed)
+        } catch (error) {
+          console.error('Error checking if user reviewed seller:', error)
+        }
+      }
+    } catch (error) {
+      console.error('Error loading seller reviews:', error)
+    } finally {
+      setReviewsLoading(false)
     }
   }
 
@@ -121,18 +162,25 @@ const ItemShow = () => {
   const handleSubmitOffer = async (offerPrice) => {
     try {
       await createOffer(itemId, offerPrice)
-
-      // Show success message
-      alert(`Offer of €${offerPrice} submitted successfully!`)
-
-      // If the user is the seller, refresh the offers
+      setShowMakeOffer(false)
+      setMessage('Offer submitted successfully!')
+      setTimeout(() => setMessage(''), 3000)
+      // Reload offers if user is seller
       if (user && item.seller._id === user._id) {
         loadOffers()
       }
-
     } catch (error) {
-      throw error
+      console.error('Error submitting offer:', error)
+      setMessage('Failed to submit offer. Please try again.')
+      setTimeout(() => setMessage(''), 3000)
     }
+  }
+
+  const handleReviewSubmitted = () => {
+    setShowReviewForm(false)
+    setHasReviewedSeller(true)
+    // Reload seller reviews
+    loadSellerReviews()
   }
 
   const handleToggleFavorite = async () => {
@@ -261,6 +309,42 @@ const ItemShow = () => {
             {message && <p className="cart-message">{message}</p>}
           </div>
         </div>
+
+        {/* Seller Reviews Section */}
+        {item && item.seller && (
+          <div className="seller-reviews-section">
+            <div className="reviews-header">
+              <h2>Seller Reviews</h2>
+              {user && user._id !== item.seller._id && !hasReviewedSeller && (
+                <button 
+                  className="write-review-btn"
+                  onClick={() => setShowReviewForm(true)}
+                >
+                  Write a Review
+                </button>
+              )}
+            </div>
+            
+            {reviewsLoading ? (
+              <p>Loading reviews...</p>
+            ) : (
+              <ReviewList 
+                reviews={sellerReviews} 
+                averageRating={sellerAverageRating?.averageRating}
+                totalReviews={sellerReviews.length}
+              />
+            )}
+          </div>
+        )}
+
+        {showReviewForm && (
+          <ReviewForm
+            targetUserId={item.seller._id}
+            targetUsername={item.seller.username}
+            onReviewSubmitted={handleReviewSubmitted}
+            onClose={() => setShowReviewForm(false)}
+          />
+        )}
       </div>
     </>
   )

@@ -336,3 +336,54 @@ h1 {
   gap: 1rem;
   margin-top: 2rem;
 }
+
+.seller-reviews-section {
+  margin-top: 40px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.seller-reviews-section .reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.seller-reviews-section .reviews-header h2 {
+  margin: 0;
+  color: var(--color-text-dark);
+  font-size: 1.5rem;
+}
+
+.write-review-btn {
+  padding: 10px 20px;
+  background: var(--color-gold);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.write-review-btn:hover {
+  background-color: #b45309;
+}
+
+@media (max-width: 768px) {
+  .seller-reviews-section .reviews-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .seller-reviews-section {
+    padding: 20px;
+  }
+}

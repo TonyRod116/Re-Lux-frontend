@@ -3,8 +3,10 @@ import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
+import ReviewList from '../ReviewList/ReviewList'
 import { getUserItems, itemDelete } from '../../services/items'
 import { getUserFavorites } from '../../services/favorites'
+import { getUserReviews, getUserAverageRating } from '../../services/reviews'
 import { updateUserProfile } from '../../services/users'
 
 const ProfilePage = () => {
@@ -12,9 +14,12 @@ const ProfilePage = () => {
   const [userItems, setUserItems] = useState([])
   const [userFavorites, setUserFavorites] = useState([])
   const [userOffers, setUserOffers] = useState([])
+  const [userReviews, setUserReviews] = useState([])
+  const [userAverageRating, setUserAverageRating] = useState(null)
   const [itemsLoading, setItemsLoading] = useState(true)
   const [favoritesLoading, setFavoritesLoading] = useState(true)
   const [offersLoading, setOffersLoading] = useState(true)
+  const [reviewsLoading, setReviewsLoading] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
   const [saveError, setSaveError] = useState(null)
   const [isSaving, setIsSaving] = useState(false)
@@ -105,6 +110,38 @@ const ProfilePage = () => {
       }
     }
     fetchUserOffers()
+  }, [user])
+
+  // Fetch user's reviews
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      if (user?._id) {
+        try {
+          const response = await getUserReviews(user._id)
+          setUserReviews(response.data)
+        } catch (error) {
+          console.error('Error fetching user reviews:', error)
+        } finally {
+          setReviewsLoading(false)
+        }
+      }
+    }
+    fetchUserReviews()
+  }, [user])
+
+  // Fetch user's average rating
+  useEffect(() => {
+    const fetchUserAverageRating = async () => {
+      if (user?._id) {
+        try {
+          const response = await getUserAverageRating(user._id)
+          setUserAverageRating(response.data)
+        } catch (error) {
+          console.error('Error fetching user average rating:', error)
+        }
+      }
+    }
+    fetchUserAverageRating()
   }, [user])
 
   // Handle delete item
@@ -351,6 +388,19 @@ const ProfilePage = () => {
             <p>No offers made yet</p>
           )}
         </div>
+      </section>
+
+      <section>
+        <h2>Reviews ({userReviews.length})</h2>
+        {reviewsLoading ? (
+          <p>Loading reviews...</p>
+        ) : (
+          <ReviewList 
+            reviews={userReviews} 
+            averageRating={userAverageRating?.averageRating}
+            totalReviews={userReviews.length}
+          />
+        )}
       </section>
     </div>
   )
