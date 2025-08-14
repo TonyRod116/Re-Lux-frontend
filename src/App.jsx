@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router'
 // Global
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
+import FooterBar from './components/FooterBar/FooterBar'
 
 // Pages
 import HomePage from './components/HomePage/HomePage'
@@ -47,7 +48,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
-      <Footer />
+      <FooterBar />
     </>
   )
 }

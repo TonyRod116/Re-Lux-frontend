@@ -3,7 +3,7 @@ import './Footer.css'
 export default function Footer(){
   return (
     <footer>
-      &copy; Re-Lux {new Date().getFullYear()}
+      {/* become a seller and other links here */}
     </footer>
   )
 }
