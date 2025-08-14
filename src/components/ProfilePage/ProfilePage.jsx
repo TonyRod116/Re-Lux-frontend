@@ -175,6 +175,12 @@ const ProfilePage = () => {
                   
                   <div className="item-actions">
                     <Link 
+                      to={`/items/${item._id}`} 
+                      className="view-item-profile"
+                    >
+                      View
+                    </Link>
+                    <Link 
                       to={`/items/${item._id}/edit`} 
                       className="edit-item-profile"
                     >
