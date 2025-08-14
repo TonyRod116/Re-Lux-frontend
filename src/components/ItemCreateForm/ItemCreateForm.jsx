@@ -72,8 +72,8 @@ const handleSubmit = async (e) => {
 }
 
 return (
-  <div>
-    <form  onSubmit={handleSubmit}>
+  <div className="form">
+    <form onSubmit={handleSubmit}>
 
       <label htmlFor="title">Product name</label>
       <input type="text" name="title" id="title" placeholder='Enter your product name here' value={formData.title} onChange={handleChange} />
