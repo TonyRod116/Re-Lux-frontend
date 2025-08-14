@@ -14,11 +14,10 @@ const Navbar = () => {
     <nav>
       <nav id="main-pages">
       <Link to="/" className="home-link">Re-Lux</Link>
-      <Link to="/items" className="page-link">Men</Link>
-      <Link to="/items" className="page-link">Women</Link>
-      <Link to="/items" className="page-link">Accessories</Link>
-      <Link to="/items" className="page-link">Tech</Link>
-      <Link to="/items" className="page-link">Lifestyle</Link>
+      <Link to="/fashion" className="page-link">Fashion</Link>
+      <Link to="/accessories" className="page-link">Accessories</Link>
+      <Link to="/tech" className="page-link">Tech</Link>
+      <Link to="/lifestyle" className="page-link">Lifestyle</Link>
       </nav>
       <nav id="user-access">
       {user 
@@ -27,13 +26,13 @@ const Navbar = () => {
           <Link to="/items/new" className="page-link-sell">Sell an item</Link>
           <Link to="/cart" className="page-link"><IoBagOutline /></Link>
           <Link to="/profile" className="page-link"><VscAccount /></Link>
-          <Link to="#" onClick={(e) => {e.preventDefault(); signOut()}} className="nav-button">Sign Out</Link>
+          <Link to="/" onClick={(e) => {e.preventDefault(); signOut()}} className="nav-button">Sign Out</Link>
         </>
         ) 
       : (
         <>
-          <Link to="/sign-in" className="nav-button">Sign In</Link>
-          <Link to="/sign-up" className="nav-button">Sign Up</Link>
+          <Link to="/sign-in" className="nav-button">Sign in</Link>
+          <Link to="/sign-up" className="nav-button">Sign up</Link>
         </>
         )}
       </nav>
