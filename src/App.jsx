@@ -37,6 +37,7 @@ function App() {
   return (
     <>
       <Navbar />
+        <div className="page-container">
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
@@ -54,6 +55,7 @@ function App() {
         <Route path="/checkout" element={user ? <CheckoutPage /> : <Navigate to="/sign-in" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
       <FooterBar />
     </>
   )

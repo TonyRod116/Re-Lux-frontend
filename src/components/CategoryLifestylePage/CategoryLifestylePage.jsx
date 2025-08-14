@@ -41,7 +41,7 @@ const LifestylePage = () => {
         <div className="page-content">
             <div className="page-header">
                 <h1>Lifestyle</h1>
-                <p>Discover everyting you need for luxury living.</p>
+                <p>Discover everything you need for luxury living.</p>
             </div>
             <div className="items-listings">
                 {filteredItems.length > 0 ? (
