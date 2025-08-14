@@ -39,6 +39,7 @@ const Cart = () => {
                     </div>
                 </div>
                 <div className="order-summary">
+                    <h2>Order summary</h2>
                     <CartSummary />
                     <div className="button-row">
                         <Link to="/checkout" className="page-button">Go to checkout</Link>

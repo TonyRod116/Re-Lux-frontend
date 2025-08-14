@@ -1,0 +1,38 @@
+.billing-details,
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; 
+}
+
+.checkoutform .error-message {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.checkoutform .submit-button {
+  background-color: #3b82f6; /* blue-500 */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.checkoutform .submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stripe-note {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b7280; /* gray-500 */
+}
+
+
+.checkoutform .success-message p {
+    text-align: center;
+    font-weight: 600;
+}
