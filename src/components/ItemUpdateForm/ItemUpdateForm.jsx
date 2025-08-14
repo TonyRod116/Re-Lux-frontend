@@ -70,7 +70,7 @@ const ItemUpdateForm = () => {
 
     return (
         <div>
-            <form className='form' onSubmit={handleSubmit}>
+            <form  onSubmit={handleSubmit}>
 
                 <label htmlFor="title">Product name</label>
                 <input type="text" name="title" id="title" placeholder='Enter your product name here' value={formData.title} onChange={handleChange} />
@@ -108,7 +108,7 @@ const ItemUpdateForm = () => {
                 <input type="number" name="price" id="price" placeholder='Please set your price' value={formData.price} onChange={handleChange} />
                 {errors.price && <p className='error-message'>{errors.price}</p>}
 
-                <button type='submit'>{uploading ? 'Please wait...' : 'Create listing'}</button>
+                <button type='submit'>{uploading ? 'Please wait...' : 'Update listing'}</button>
             </form>
         </div>
 
