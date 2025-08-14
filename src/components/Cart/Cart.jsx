@@ -22,7 +22,7 @@ const Cart = () => {
                 <h1>Your bag</h1>
             </div>
             <div className='bag-columns'>
-                <div className='bag-items'>
+                <div className='content-section'>
                     {cart.length > 0 ? (
                         cart.map((cartItem) => {
                             return (
@@ -38,7 +38,7 @@ const Cart = () => {
                         <Link to="/items" className="page-button">Continue shopping</Link>
                     </div>
                 </div>
-                <div className="order-summary">
+                <div className="content-section order-summary">
                     <h2>Order summary</h2>
                     <CartSummary />
                     <div className="button-row">

@@ -1,24 +1,22 @@
-/* Main Navigation */
 nav {
     background-color: white;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     font-family: "Lato", sans-serif;
-    margin: 0 auto;
 }
 
 #main-pages {
     display: flex;
-    gap: 15px;
+    gap: 1rem;
     align-items: center;
 }
 
 #user-access {
     display: flex;
-    gap: 15px;
+    gap: 1rem;
     align-items: center;
 }
 
