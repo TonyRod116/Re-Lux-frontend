@@ -247,6 +247,29 @@ const ItemShow = () => {
               </div>
             )}
 
+            <div className="button-row">
+              {user ? (
+                <button onClick={handleAddToCart} className="purchase-button">
+                  Buy now
+                </button>
+              ) : (
+                <Link to="/sign-in">
+                  <button className="purchase-button">Buy now</button>
+                </Link>
+              )}
+              {user ? (
+                user._id !== item.seller._id ? (
+                  <button className="offer-button" onClick={handleMakeOffer}>
+                    Make an offer
+                  </button>
+                ) : null
+              ) : (
+                <Link to="/sign-in">
+                  <button className="offer-button">Make an offer</button>
+                </Link>
+              )}
+            </div>
+            {message && <p className="cart-message">{message}</p>}
             {message && <div className="message">{message}</div>}
           </div>
         </div>
