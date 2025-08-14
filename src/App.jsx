@@ -25,6 +25,7 @@ import ItemUpdatePage from './components/ItemUpdatePage/ItemUpdatePage'
 import ProfilePage from './components/ProfilePage/ProfilePage'
 import Cart from './components/Cart/Cart'
 import CheckoutPage from './components/CheckoutPage/CheckoutPage'
+import NotFound from './components/404NotFound/404NotFound'
 
 // Contexts
 
@@ -51,6 +52,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/cart" element={user ? <Cart /> : <Navigate to="/sign-in" replace />} />
         <Route path="/checkout" element={user ? <CheckoutPage /> : <Navigate to="/sign-in" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <FooterBar />
     </>
