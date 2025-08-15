@@ -21,6 +21,9 @@ const CARD_ELEMENT_OPTIONS = {
   }
 }
 
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
 const CheckoutForm = () => { // { clientSecret }
   const stripe = useStripe();
   const elements = useElements();
@@ -62,7 +65,7 @@ const CheckoutForm = () => { // { clientSecret }
     const createPaymentIntent = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/create-payment-intent', {
+        const response = await fetch(`${BASE_URL}/purchase-intent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -74,8 +77,13 @@ const CheckoutForm = () => { // { clientSecret }
           }),
         });
 
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers.get('content-type'));
+
         if (!response.ok) {
-          throw new Error('Failed to create payment intent');
+          const errorData = await response.json();
+          console.error('Backend error:', errorData);
+          throw new Error(errorData.error || 'Failed to create payment intent');
         }
 
         const data = await response.json();
