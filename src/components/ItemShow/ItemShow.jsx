@@ -4,10 +4,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { itemShow, itemDelete } from '../../services/items.js'
 import { createOffer, getItemOffers } from '../../services/offers.js'
 import { addToFavorites, removeFromFavorites, checkIfFavorited } from '../../services/favorites.js'
+import { getUserReviews, getUserAverageRating, checkIfUserReviewed } from '../../services/reviews.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import { useCart } from '../../Contexts/CartContext'
 import MakeAnOfferFlashMsg from '../MakeAnOfferFlashMsg/MakeAnOfferFlashMsg'
+import ReviewForm from '../ReviewForm/ReviewForm'
+import ReviewList from '../ReviewList/ReviewList'
 
 import { MdModeEdit, MdDelete, MdFavorite, MdFavoriteBorder } from "react-icons/md"
 
@@ -26,6 +29,11 @@ const ItemShow = () => {
   const [message, setMessage] = useState('')
   const [isFavorited, setIsFavorited] = useState(false)
   const [favoriteLoading, setFavoriteLoading] = useState(false)
+  const [sellerReviews, setSellerReviews] = useState([])
+  const [sellerAverageRating, setSellerAverageRating] = useState(null)
+  const [reviewsLoading, setReviewsLoading] = useState(true)
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [hasReviewedSeller, setHasReviewedSeller] = useState(false)
 
   const isInCart = item ? cart.some(cartItem => cartItem.id === item._id) : false
 
@@ -50,6 +58,9 @@ const ItemShow = () => {
         if (user) {
           checkFavoriteStatus()
         }
+
+        // Load seller reviews
+        loadSellerReviews()
       } catch (error) {
         setError(error)
       } finally {
@@ -58,6 +69,61 @@ const ItemShow = () => {
     }
     getItem()
   }, [itemId, user])
+
+  // Load seller reviews when item is available
+  useEffect(() => {
+    if (item && item.seller && item.seller._id) {
+      console.log('Item loaded, now loading reviews for seller:', item.seller._id)
+      loadSellerReviews()
+    } else {
+      console.log('Item not ready yet:', { item: !!item, seller: !!item?.seller, sellerId: item?.seller?._id })
+    }
+  }, [item])
+
+  // Function to load seller reviews
+  const loadSellerReviews = async () => {
+    if (!item?.seller?._id) {
+      console.log('No seller ID found, skipping reviews load')
+      return
+    }
+    
+    console.log('Loading reviews for seller:', item.seller._id)
+    
+    try {
+      setReviewsLoading(true)
+      const reviewsResponse = await getUserReviews(item.seller._id)
+      
+      console.log('Reviews response:', reviewsResponse.data)
+      
+      setSellerReviews(reviewsResponse.data)
+      
+      // Calculate average rating locally instead of relying on backend
+      if (reviewsResponse.data && reviewsResponse.data.length > 0) {
+        const totalRating = reviewsResponse.data.reduce((sum, review) => sum + review.rating, 0)
+        const averageRating = totalRating / reviewsResponse.data.length
+        setSellerAverageRating({ averageRating })
+        console.log('Calculated average rating locally:', averageRating)
+      } else {
+        setSellerAverageRating({ averageRating: 0 })
+      }
+      
+      // Check if current user has already reviewed this seller
+      if (user && user._id !== item.seller._id) {
+        try {
+          const checkResponse = await checkIfUserReviewed(item.seller._id)
+          console.log('Check review response:', checkResponse.data)
+          setHasReviewedSeller(checkResponse.data.hasReviewed)
+        } catch (error) {
+          console.error('Error checking if user reviewed seller:', error)
+        }
+      }
+    } catch (error) {
+      console.error('Error loading seller reviews:', error)
+      console.error('Error details:', error.response?.data)
+    } finally {
+      setReviewsLoading(false)
+    }
+  }
 
   // Check favorite status
   const checkFavoriteStatus = async () => {
@@ -121,18 +187,25 @@ const ItemShow = () => {
   const handleSubmitOffer = async (offerPrice) => {
     try {
       await createOffer(itemId, offerPrice)
-
-      // Show success message
-      alert(`Offer of €${offerPrice} submitted successfully!`)
-
-      // If the user is the seller, refresh the offers
+      setShowMakeOffer(false)
+      setMessage('Offer submitted successfully!')
+      setTimeout(() => setMessage(''), 3000)
+      // Reload offers if user is seller
       if (user && item.seller._id === user._id) {
         loadOffers()
       }
-
     } catch (error) {
-      throw error
+      console.error('Error submitting offer:', error)
+      setMessage('Failed to submit offer. Please try again.')
+      setTimeout(() => setMessage(''), 3000)
     }
+  }
+
+  const handleReviewSubmitted = () => {
+    setShowReviewForm(false)
+    setHasReviewedSeller(true)
+    // Reload seller reviews
+    loadSellerReviews()
   }
 
   const handleToggleFavorite = async () => {
@@ -261,6 +334,62 @@ const ItemShow = () => {
             {message && <p className="cart-message">{message}</p>}
           </div>
         </div>
+
+        {/* Seller Reviews Section */}
+        {item && item.seller && (
+          <div className="seller-reviews-section">
+            <div className="reviews-header">
+              <div className="reviews-title-section">
+                <h2>Seller Reviews</h2>
+                {!reviewsLoading && sellerReviews.length > 0 && (
+                  <div className="rating-summary-inline">
+                    <span className="rating-number">{sellerAverageRating?.averageRating?.toFixed(1) || '0.0'}</span>
+                    <div className="rating-stars-inline">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`rating-star ${star <= (sellerAverageRating?.averageRating || 0) ? 'filled' : 'empty'}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <span className="total-reviews-inline">
+                      ({sellerReviews.length})
+                    </span>
+                  </div>
+                )}
+              </div>
+              {user && user._id !== item.seller._id && !hasReviewedSeller && (
+                <button 
+                  className="write-review-btn"
+                  onClick={() => setShowReviewForm(true)}
+                >
+                  Write a Review
+                </button>
+              )}
+            </div>
+            
+            {reviewsLoading ? (
+              <p>Loading reviews...</p>
+            ) : (
+              <ReviewList 
+                reviews={sellerReviews} 
+                averageRating={sellerAverageRating?.averageRating}
+                totalReviews={sellerReviews.length}
+              />
+            )}
+          </div>
+        )}
+
+        {showReviewForm && (
+          <ReviewForm
+            targetUserId={item.seller._id}
+            targetUsername={item.seller.username}
+            onReviewSubmitted={handleReviewSubmitted}
+            onClose={() => setShowReviewForm(false)}
+          />
+        )}
       </div>
     </>
   )

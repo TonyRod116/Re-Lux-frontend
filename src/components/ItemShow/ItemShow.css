@@ -153,7 +153,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.0rem;
   background: white;
   border-radius: 6px;
   border: 1px solid #e5e7eb;
@@ -180,7 +180,7 @@ h1 {
 
 .offer-status.accepted {
   background: #d1fae5;
-  color: #065f46;
+  color: #09271e;
 }
 
 .offer-status.rejected {
@@ -335,4 +335,128 @@ h1 {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.seller-reviews-section {
+  margin-top: 40px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.seller-reviews-section .reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.seller-reviews-section .reviews-header h2 {
+  margin: 0;
+  color: var(--color-text-dark);
+  font-size: 1.5rem;
+}
+
+.reviews-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.rating-summary-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-left: auto;
+}
+
+.rating-number {
+  font-weight: 700;
+  color: #059669;
+  font-size: 1.4rem;
+}
+
+.rating-stars-inline {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-star {
+  font-size: 1.3rem;
+  color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
+.rating-star.filled {
+  color: #fbbf24;
+}
+
+.rating-star.empty {
+  color: #d1d5db;
+}
+
+.total-reviews-inline {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.write-review-btn {
+  padding: 10px 20px;
+  background: var(--color-gold);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.write-review-btn:hover {
+  background-color: #b45309;
+}
+
+@media (max-width: 768px) {
+  .seller-reviews-section .reviews-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .reviews-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .rating-summary-inline {
+    margin-left: 0;
+    font-size: 1rem;
+    gap: 10px;
+  }
+  
+  .rating-number {
+    font-size: 1.2rem;
+  }
+  
+  .rating-star {
+    font-size: 1.1rem;
+  }
+  
+  .total-reviews-inline {
+    font-size: 0.9rem;
+  }
+  
+  .seller-reviews-section {
+    padding: 20px;
+  }
 }
