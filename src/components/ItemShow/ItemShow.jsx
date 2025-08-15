@@ -1,10 +1,8 @@
 import './ItemShow.css'
 
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { itemShow, itemDelete } from '../../services/items.js'
+import { itemShow, itemDelete, toggleFavorite } from '../../services/items.js'
 import { createOffer, getItemOffers } from '../../services/offers.js'
-import { addToFavorites, removeFromFavorites, checkIfFavorited } from '../../services/favorites.js'
-import { getUserReviews, getUserAverageRating, checkIfUserReviewed } from '../../services/reviews.js'
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../Contexts/UserContext'
 import { useCart } from '../../Contexts/CartContext'
@@ -49,14 +47,12 @@ const ItemShow = () => {
         console.log("API response:", data);
         setItem(data)
 
+        // Set favorite status from item data
+        setIsFavorited(data.isFavorited || false)
+
         // If the user is the seller, load the offers
         if (user && data.seller._id === user._id) {
           loadOffers()
-        }
-
-        // Check if item is favorited by current user
-        if (user) {
-          checkFavoriteStatus()
         }
 
         // Load seller reviews
@@ -122,16 +118,6 @@ const ItemShow = () => {
       console.error('Error details:', error.response?.data)
     } finally {
       setReviewsLoading(false)
-    }
-  }
-
-  // Check favorite status
-  const checkFavoriteStatus = async () => {
-    try {
-      const response = await checkIfFavorited(itemId)
-      setIsFavorited(response.data.isFavorited)
-    } catch (error) {
-      console.error('Error checking favorite status:', error)
     }
   }
 
@@ -213,15 +199,20 @@ const ItemShow = () => {
     
     setFavoriteLoading(true)
     try {
-      if (isFavorited) {
-        await removeFromFavorites(itemId)
-        setIsFavorited(false)
-      } else {
-        await addToFavorites(itemId)
-        setIsFavorited(true)
-      }
+      // Optimistic update for better UX
+      setIsFavorited(!isFavorited)
+      
+      // Call backend to toggle favorite
+      await toggleFavorite(itemId)
+      
+      // Note: We don't need to update the state again since we already did it optimistically
+      // The backend will confirm the change on the next page refresh
+      
     } catch (error) {
       console.error('Error toggling favorite:', error)
+      
+      // Revert optimistic update on error
+      setIsFavorited(!isFavorited)
     } finally {
       setFavoriteLoading(false)
     }
