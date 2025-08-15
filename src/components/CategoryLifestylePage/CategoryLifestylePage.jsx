@@ -15,7 +15,7 @@ const LifestylePage = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const allowedTypes = ["home decor", "furniture", "kitchen", "bathroom", "bedroom", "living room", "garden", "outdoor", "wellness", "sports"]
+    const allowedTypes = ["candle", "fragrance", "vase", "side table", "candle holder", "tray", "lamp", "trunk", "towel", "bathrobe", "rug", "soft furnishing", "coffee table"]
 
     // Fetch items from API
     useEffect(() => {
