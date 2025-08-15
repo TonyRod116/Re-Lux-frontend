@@ -1,19 +1,21 @@
 import './CategoryAccessoriesPage.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import { itemsIndex } from '../../services/items'
+import { useState, useEffect, useContext } from 'react'
+import { itemsIndex, toggleFavorite } from '../../services/items'
+import { UserContext } from '../../Contexts/UserContext'
+import { MdFavorite, MdFavoriteBorder } from 'react-icons/md'
 
 const AccessoriesPage = () => {
+    // Context
+    const { user } = useContext(UserContext)
 
     // State
     const [items, setItems] = useState([])
     const [error, setError] = useState(null)
-    const [item, setItem] = useState(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const allowedTypes = ["handbag", "shoes", "watch", "jewelry", "scarf", "belt", "sunglasses", "wallet", "purse", "clutch"]
-
+    const allowedTypes = ["handbag", "wallet", "belt", "scarf", "sunglasses", "jewelry", "watch", "hat", "gloves", "umbrella"]
 
     // Fetch items from API
     useEffect(() => {
@@ -32,17 +34,49 @@ const AccessoriesPage = () => {
         fetchItems()
     }, [])
 
+    const handleToggleFavorite = async (itemId) => {
+        if (!user) {
+            navigate('/sign-in')
+            return
+        }
+
+        try {
+            // Optimistic update for better UX
+            setItems(prevItems => 
+                prevItems.map(item => 
+                    item._id === itemId 
+                        ? { ...item, isFavorited: !item.isFavorited }
+                        : item
+                )
+            )
+
+            // Call backend to toggle favorite
+            await toggleFavorite(itemId)
+            
+        } catch (error) {
+            console.error('Error toggling favorite:', error)
+            
+            // Revert optimistic update on error
+            setItems(prevItems => 
+                prevItems.map(item => 
+                    item._id === itemId 
+                        ? { ...item, isFavorited: !item.isFavorited }
+                        : item
+                )
+            )
+        }
+    }
+
     if (loading) return <div className="loading">Loading items...</div>
     if (error) return <div className="error">Error: {error}</div>
 
     const filteredItems = items.filter(item => allowedTypes.includes(item.type))
 
-
     return (
         <div className="page-content">
             <div className="page-header">
                 <h1>Accessories</h1>
-                <p>Discover pieces from all your favorite designers.</p>
+                <p>Discover luxury accessories and fashion items.</p>
             </div>
             <div className="items-listings">
                 {filteredItems.length > 0 ? (
@@ -52,6 +86,19 @@ const AccessoriesPage = () => {
                                 <div key={item._id} className="item-card">
                                     <div className="item-image">
                                         <img src={item.images?.[0]} alt={item.title} />
+                                        {user && (
+                                            <button
+                                                className="favorite-button"
+                                                onClick={() => handleToggleFavorite(item._id)}
+                                                aria-label={item.isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+                                            >
+                                                {item.isFavorited ? (
+                                                    <MdFavorite className="favorite-icon filled" />
+                                                ) : (
+                                                    <MdFavoriteBorder className="favorite-icon" />
+                                                )}
+                                            </button>
+                                        )}
                                     </div>
                                     <div className="item-info">
                                         <div className="item-header">
