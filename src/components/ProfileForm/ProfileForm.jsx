@@ -50,12 +50,11 @@ const ProfileForm = ({ user, onSave, onCancel, isLoading, error }) => {
 
     try {
       setUploading(true)
-      const { data } = await uploadImage(file)
-      setFormData(prev => ({
-        ...prev,
-        profilePic: data.secure_url
-      }))
-      console.log('Profile image uploaded successfully:', data.secure_url)
+              const { data } = await uploadImage(file)
+        setFormData(prev => ({
+          ...prev,
+          profilePic: data.secure_url
+        }))
     } catch (error) {
       console.error('Error uploading profile image:', error)
       setImageError('Failed to upload image. Please try again.')

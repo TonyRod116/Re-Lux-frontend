@@ -11,8 +11,6 @@ const ReviewForm = ({ targetUserId, targetUsername, onReviewSubmitted, onClose }
   const handleSubmit = async (e) => {
     e.preventDefault()
     
-    console.log('🔍 Submitting review:', { targetUserId, rating, description })
-
     setIsSubmitting(true)
     setError('')
 
@@ -23,11 +21,7 @@ const ReviewForm = ({ targetUserId, targetUsername, onReviewSubmitted, onClose }
         description: description.trim()
       }
 
-      console.log('🔍 Review data being sent:', reviewData)
-
       const response = await createReview(reviewData)
-      
-      console.log('🔍 Review submitted successfully:', response.data)
       
       // Reset form
       setRating(5)
@@ -45,7 +39,6 @@ const ReviewForm = ({ targetUserId, targetUsername, onReviewSubmitted, onClose }
       
     } catch (err) {
       console.error('❌ Error submitting review:', err)
-      console.error('❌ Error response:', err.response?.data)
       setError(err.response?.data?.message || 'Failed to submit review')
     } finally {
       setIsSubmitting(false)

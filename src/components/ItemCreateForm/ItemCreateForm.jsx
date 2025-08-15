@@ -60,11 +60,9 @@ const handleSubmit = async (e) => {
       seller: user._id, // Add seller ID
       sellerUsername: user.username // Add seller username
     }
-    console.log('🔍 Creating item with data:', itemData)
     const { data } = await itemCreate(itemData)
     navigate(`/items/${data._id}`)
   } catch (error) {
-    console.log(error)
     setErrors(error.response?.data || { general: 'Something went wrong' })
   } finally {
     setUploading(false)

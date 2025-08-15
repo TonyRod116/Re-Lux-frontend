@@ -77,8 +77,7 @@ const CheckoutForm = () => { // { clientSecret }
           }),
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers.get('content-type'));
+
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -102,7 +101,6 @@ const CheckoutForm = () => { // { clientSecret }
 
 
   const handleSubmit = async (e) => {
-    console.log("Is submitting")
     e.preventDefault();
 
     if (!stripe || !elements || !clientSecret) {

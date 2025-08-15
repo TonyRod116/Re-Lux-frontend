@@ -10,14 +10,10 @@ export const createReview = async (reviewData) => {
     throw new Error('No authentication token found')
   }
   
-  console.log('🔍 createReview - Data:', reviewData)
-  console.log('🔍 createReview - Token exists:', !!token)
-  
   const response = await axios.post(BASE_URL, reviewData, {
     headers: { Authorization: `Bearer ${token}` }
   })
   
-  console.log('🔍 createReview - Response:', response.data)
   return response
 }
 
@@ -28,11 +24,9 @@ export const getUserReviews = async (userId) => {
     throw new Error('No authentication token found')
   }
   
-  console.log('🔍 getUserReviews - User ID:', userId)
   const response = await axios.get(`${BASE_URL}/user/${userId}`, {
     headers: { Authorization: `Bearer ${token}` }
   })
-  console.log('🔍 getUserReviews - Response:', response.data)
   return response
 }
 
@@ -43,11 +37,9 @@ export const getUserAverageRating = async (userId) => {
     throw new Error('No authentication token found')
   }
   
-  console.log('🔍 getUserAverageRating - User ID:', userId)
   const response = await axios.get(`${BASE_URL}/user/${userId}/average`, {
     headers: { Authorization: `Bearer ${token}` }
   })
-  console.log('🔍 getUserAverageRating - Response:', response.data)
   return response
 }
 

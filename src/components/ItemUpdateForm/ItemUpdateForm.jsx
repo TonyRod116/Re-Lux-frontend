@@ -54,14 +54,13 @@ const ItemUpdateForm = () => {
         setUploading(true)
         setErrors({})
         try {
-            const { data } = await itemUpdate(itemId, formData)
-            navigate(`/items/${data._id}`)
-        } catch (error) {
-            console.log(error)
-            setErrors(error.response.data)
-        } finally {
-            setUploading(false)
-        }
+                    const { data } = await itemUpdate(itemId, formData)
+        navigate(`/items/${data._id}`)
+      } catch (error) {
+        setErrors(error.response.data)
+      } finally {
+        setUploading(false)
+      }
     }
 
     const handleChange = (e) => {

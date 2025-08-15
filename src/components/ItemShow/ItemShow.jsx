@@ -45,7 +45,6 @@ const ItemShow = () => {
       setLoading(true)
       try {
         const { data } = await itemShow(itemId)
-        console.log("API response:", data);
         setItem(data)
 
         // Set favorite status from item data
@@ -70,27 +69,19 @@ const ItemShow = () => {
   // Load seller reviews when item is available
   useEffect(() => {
     if (item && item.seller && item.seller._id) {
-      console.log('Item loaded, now loading reviews for seller:', item.seller._id)
       loadSellerReviews()
-    } else {
-      console.log('Item not ready yet:', { item: !!item, seller: !!item?.seller, sellerId: item?.seller?._id })
     }
   }, [item])
 
   // Function to load seller reviews
   const loadSellerReviews = async () => {
     if (!item?.seller?._id) {
-      console.log('No seller ID found, skipping reviews load')
       return
     }
-    
-    console.log('Loading reviews for seller:', item.seller._id)
     
     try {
       setReviewsLoading(true)
       const reviewsResponse = await getUserReviews(item.seller._id)
-      
-      console.log('Reviews response:', reviewsResponse.data)
       
       setSellerReviews(reviewsResponse.data)
       
@@ -99,7 +90,6 @@ const ItemShow = () => {
         const totalRating = reviewsResponse.data.reduce((sum, review) => sum + review.rating, 0)
         const averageRating = totalRating / reviewsResponse.data.length
         setSellerAverageRating({ averageRating })
-        console.log('Calculated average rating locally:', averageRating)
       } else {
         setSellerAverageRating({ averageRating: 0 })
       }
@@ -108,7 +98,6 @@ const ItemShow = () => {
       if (user && user._id !== item.seller._id) {
         try {
           const checkResponse = await checkIfUserReviewed(item.seller._id)
-          console.log('Check review response:', checkResponse.data)
           setHasReviewedSeller(checkResponse.data.hasReviewed)
         } catch (error) {
           console.error('Error checking if user reviewed seller:', error)
@@ -116,7 +105,6 @@ const ItemShow = () => {
       }
     } catch (error) {
       console.error('Error loading seller reviews:', error)
-      console.error('Error details:', error.response?.data)
     } finally {
       setReviewsLoading(false)
     }
@@ -138,13 +126,11 @@ const ItemShow = () => {
       await itemDelete(itemId)
       navigate('/items')
     } catch (error) {
-      console.log(error)
       setError(error)
     }
   }
 
   const handleAddToCart = () => {
-    console.log('Adding to cart', item, cart);
     if (!item) return; // safeguard
 
     if (isInCart) {

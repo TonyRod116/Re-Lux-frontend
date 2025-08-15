@@ -10,7 +10,6 @@ export default function SignUpImgForm({ labelText = 'Profile Image', fieldName =
       
       const { data } = await uploadImage(file)
       setImage(data.secure_url)
-      console.log('Image uploaded successfully:', data.secure_url)
     } catch (error) {
       console.error('Error uploading image:', error)
     }

@@ -116,19 +116,14 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserReviews = async () => {
       if (user?._id) {
-        console.log('ProfilePage: Fetching reviews for user:', user._id)
         try {
           const response = await getUserReviews(user._id)
-          console.log('ProfilePage: Reviews response:', response.data)
           setUserReviews(response.data)
         } catch (error) {
           console.error('ProfilePage: Error fetching user reviews:', error)
-          console.error('ProfilePage: Error details:', error.response?.data)
         } finally {
           setReviewsLoading(false)
         }
-      } else {
-        console.log('ProfilePage: No user ID available')
       }
     }
     fetchUserReviews()
@@ -138,14 +133,11 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserAverageRating = async () => {
       if (user?._id) {
-        console.log('ProfilePage: Fetching average rating for user:', user._id)
         try {
           const response = await getUserAverageRating(user._id)
-          console.log('ProfilePage: Average rating response:', response.data)
           setUserAverageRating(response.data)
         } catch (error) {
           console.error('ProfilePage: Error fetching user average rating:', error)
-          console.error('ProfilePage: Error details:', error.response?.data)
         }
       }
     }
