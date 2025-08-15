@@ -264,8 +264,8 @@ const ItemShow = () => {
             </div>
 
             <div className="item-info">
-              <p className="item-type">Type: {item.type}</p>
               <p className="item-description">{item.description}</p>
+              <p className="item-type">Type: {item.type}</p>
               <p className="item-location">📍 {item.location}</p>
               <p className="item-seller">Seller: {item.seller?.username}</p>
               <p className="item-price">€{item.price.toLocaleString()}</p>
