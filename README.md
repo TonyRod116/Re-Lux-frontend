@@ -10,7 +10,7 @@ Re-Lux is a luxury marketplace platform built during my time at Ironhack's Web D
 
 ## Deployment Link
 
-**Frontend:** [https://re-lux-frontend.netlify.app/](https://re-lux-frontend.netlify.app/) - Live marketplace application  
+**Frontend:** [https://re-lux.netlify.app/](https://re-lux.netlify.app/) - Live marketplace application  
 **Backend:** [https://re-lux-backend.netlify.app/](https://re-lux-backend.netlify.app/) - API currently running and responding
 
 ## Getting Started/Code Installation
