@@ -1,5 +1,9 @@
 # Re-Lux Frontend - Luxury Marketplace
 
+![Re-Lux Homepage](src/assets/deployed.png)
+
+*Live marketplace application showcasing luxury goods marketplace with modern UI/UX design*
+
 ## Description
 
 Re-Lux is a luxury marketplace platform built during my time at Ironhack's Web Development Bootcamp. This project showcases my skills in building a full-stack e-commerce application with React, focusing on user authentication, item management, reviews system, and a sophisticated favorites system. The platform allows users to buy, sell, and trade luxury items across multiple categories including fashion, tech, accessories, and lifestyle.
