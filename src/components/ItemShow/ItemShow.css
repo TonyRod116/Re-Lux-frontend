@@ -91,8 +91,9 @@ h1 {
 .button-row {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 0.2rem;
     align-items: center;
+    justify-content: center;
 }
 
 .purchase-button {
@@ -315,20 +316,32 @@ h1 {
 }
 
 .item-info {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .item-info p {
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
   font-size: 1.1rem;
   color: #374151;
 }
 
+.item-description {
+  margin-bottom: 1rem !important;
+  padding-bottom: 0.8rem;
+}
+
 .item-price {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #059669;
-  margin: 1rem 0;
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: #059669 !important;
+  margin: 1rem 0 !important;
+  line-height: 1.2 !important;
+}
+
+.item-seller {
+  margin-bottom: 1rem !important;
+  font-size: 1.1rem !important;
+  color: #6b7280 !important;
 }
 
 .seller-actions {
