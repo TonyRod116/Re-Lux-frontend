@@ -3,8 +3,10 @@ import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../Contexts/UserContext'
 import ProfileForm from '../ProfileForm/ProfileForm'
+import ReviewList from '../ReviewList/ReviewList'
 import { getUserItems, itemDelete } from '../../services/items'
 import { getUserFavorites } from '../../services/favorites'
+import { getUserReviews, getUserAverageRating } from '../../services/reviews'
 import { updateUserProfile } from '../../services/users'
 
 const ProfilePage = () => {
@@ -12,9 +14,12 @@ const ProfilePage = () => {
   const [userItems, setUserItems] = useState([])
   const [userFavorites, setUserFavorites] = useState([])
   const [userOffers, setUserOffers] = useState([])
+  const [userReviews, setUserReviews] = useState([])
+  const [userAverageRating, setUserAverageRating] = useState(null)
   const [itemsLoading, setItemsLoading] = useState(true)
   const [favoritesLoading, setFavoritesLoading] = useState(true)
   const [offersLoading, setOffersLoading] = useState(true)
+  const [reviewsLoading, setReviewsLoading] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
   const [saveError, setSaveError] = useState(null)
   const [isSaving, setIsSaving] = useState(false)
@@ -107,6 +112,46 @@ const ProfilePage = () => {
     fetchUserOffers()
   }, [user])
 
+  // Fetch user's reviews
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      if (user?._id) {
+        console.log('ProfilePage: Fetching reviews for user:', user._id)
+        try {
+          const response = await getUserReviews(user._id)
+          console.log('ProfilePage: Reviews response:', response.data)
+          setUserReviews(response.data)
+        } catch (error) {
+          console.error('ProfilePage: Error fetching user reviews:', error)
+          console.error('ProfilePage: Error details:', error.response?.data)
+        } finally {
+          setReviewsLoading(false)
+        }
+      } else {
+        console.log('ProfilePage: No user ID available')
+      }
+    }
+    fetchUserReviews()
+  }, [user])
+
+  // Fetch user's average rating
+  useEffect(() => {
+    const fetchUserAverageRating = async () => {
+      if (user?._id) {
+        console.log('ProfilePage: Fetching average rating for user:', user._id)
+        try {
+          const response = await getUserAverageRating(user._id)
+          console.log('ProfilePage: Average rating response:', response.data)
+          setUserAverageRating(response.data)
+        } catch (error) {
+          console.error('ProfilePage: Error fetching user average rating:', error)
+          console.error('ProfilePage: Error details:', error.response?.data)
+        }
+      }
+    }
+    fetchUserAverageRating()
+  }, [user])
+
   // Handle delete item
   const handleDeleteItem = async (itemId) => {
     try {
@@ -166,6 +211,31 @@ const ProfilePage = () => {
           <p className="profile-bio">{user.bio || 'No bio yet'}</p>
           <p className="profile-location">{user.location || 'No location set'}</p>
         </div>
+        
+        {/* User Rating Display */}
+        <div className="user-rating-display">
+          <div className="rating-stars">
+            {[1, 2, 3, 4, 5].map((star) => {
+              // Calculate average rating from actual reviews
+              const averageRating = userReviews.length > 0 
+                ? userReviews.reduce((sum, review) => sum + review.rating, 0) / userReviews.length 
+                : 0;
+              
+              return (
+                <span
+                  key={star}
+                  className={`rating-star ${star <= averageRating ? 'filled' : 'empty'}`}
+                >
+                  ★
+                </span>
+              );
+            })}
+          </div>
+          <span className="rating-number">
+            ({userReviews.length})
+          </span>
+        </div>
+        
         <button 
           onClick={() => setShowEditForm(!showEditForm)}
           className="edit-profile-btn"
@@ -212,9 +282,8 @@ const ProfilePage = () => {
                           <div className="offer-info">
                             <span className="offer-buyer">{offer.buyer?.username || 'Unknown'}</span>
                             <span className="offer-amount">€{offer.amount}</span>
-                            <span className={`offer-status ${offer.status}`}>{offer.status}</span>
                           </div>
-                          {offer.status === 'pending' && (
+                          {offer.status === 'pending' ? (
                             <div className="offer-actions">
                               <button 
                                 onClick={() => handleOfferAction(item._id, offer._id, 'accepted')}
@@ -228,6 +297,12 @@ const ProfilePage = () => {
                               >
                                 Reject
                               </button>
+                            </div>
+                          ) : (
+                            <div className="offer-final-status">
+                              <span className={`offer-status ${offer.status}`}>
+                                {offer.status}
+                              </span>
                             </div>
                           )}
                         </div>
@@ -320,16 +395,20 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div className="offer-info">
-                  <h3>{offer.item.title}</h3>
-                  <p className="offer-item-price">€{offer.item.price}</p>
+                  <div className="offer-header">
+                    <div className="offer-title-price">
+                      <h3>{offer.item.title}</h3>
+                      <p className="offer-item-price">€{offer.item.price}</p>
+                    </div>
+                    <div className={`offer-status ${offer.status}`}>
+                      {offer.status}
+                    </div>
+                  </div>
                   <p className="offer-item-seller">Seller: {offer.item.seller?.username}</p>
                   
                   <div className="offer-details">
                     <div className="offer-amount">
                       <strong>Your Offer:</strong> €{offer.amount}
-                    </div>
-                    <div className={`offer-status ${offer.status}`}>
-                      {offer.status}
                     </div>
                     <div className="offer-date">
                       {new Date(offer.createdAt).toLocaleDateString()}
@@ -351,6 +430,21 @@ const ProfilePage = () => {
             <p>No offers made yet</p>
           )}
         </div>
+      </section>
+
+      <section>
+        <h2>Reviews ({userReviews.length})</h2>
+        {reviewsLoading ? (
+          <p>Loading reviews...</p>
+        ) : userReviews.length > 0 ? (
+          <ReviewList 
+            reviews={userReviews} 
+            averageRating={userAverageRating?.averageRating || 0}
+            totalReviews={userReviews.length}
+          />
+        ) : (
+          <p>No reviews yet</p>
+        )}
       </section>
     </div>
   )
