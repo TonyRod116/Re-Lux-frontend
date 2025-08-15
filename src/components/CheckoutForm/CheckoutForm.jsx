@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from 'react'
-import { itemUpdate, itemShow, getItemTypes } from '../../services/items'
-import { useNavigate, useParams } from 'react-router'
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useCart } from '../../Contexts/CartContext';
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -22,15 +21,21 @@ const CARD_ELEMENT_OPTIONS = {
   }
 }
 
-const CheckoutForm = ({ clientSecret }) => {
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+
+const CheckoutForm = () => { // { clientSecret }
   const stripe = useStripe();
   const elements = useElements();
+  const { cart, setCart } = useCart(); // added
 
   // State
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   const [cardComplete, setCardComplete] = useState(false)
+   const [clientSecret, setClientSecret] = useState(''); // added
+  const [paymentIntentId, setPaymentIntentId] = useState(''); // added
 
   const [billingDetails, setBillingDetails] = useState({
     name: '',
@@ -48,11 +53,59 @@ const CheckoutForm = ({ clientSecret }) => {
 
   // Functions
 
+  // Calculate total (matching your CartSummary logic)
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + item.price, 0);
+  };
+
+  // Create payment intent when component mounts or cart changes
+  useEffect(() => {
+    if (cart.length === 0) return;
+
+    const createPaymentIntent = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/purchase-intent`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: Math.round(calculateTotal() * 100), // Convert to cents
+            cartItems: cart,
+            currency: 'eur',
+          }),
+        });
+
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers.get('content-type'));
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Backend error:', errorData);
+          throw new Error(errorData.error || 'Failed to create payment intent');
+        }
+
+        const data = await response.json();
+        setClientSecret(data.clientSecret);
+        setPaymentIntentId(data.paymentIntentId);
+      } catch (err) {
+        setError('Failed to initialize payment. Please try again.');
+        console.error('Payment intent creation failed:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    createPaymentIntent();
+  }, [cart]);
+
+
   const handleSubmit = async (e) => {
     console.log("Is submitting")
     e.preventDefault();
 
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !clientSecret) {
       return;
     }
 
@@ -69,12 +122,11 @@ const CheckoutForm = ({ clientSecret }) => {
       })
 
       if (error) {
-        // Displays the stripe error messages for network error/payment declined etc.
         setError(error.message);
       } else if (paymentIntent && paymentIntent.status === 'succeeded') {
         setSuccess(true);
+        setCart([]); // clears cart on successful payment
       } else if (paymentIntent && paymentIntent.status === 'requires_payment_method') {
-        // Declined card but no explicit error object
         setError('Your payment was declined. Please try a different card.');
       }
     } catch (err) {
@@ -94,16 +146,28 @@ const CheckoutForm = ({ clientSecret }) => {
     }
   };
 
+    // Show empty cart message
+  if (cart.length === 0 && !success) {
+    return (
+      <div className="empty-cart-message">
+        <h2>Your bag is empty</h2>
+        <p>Add some items to your bag before checkout.</p>
+      </div>
+    );
+  }
+
   if (success) {
     return (
       <div className="success-message">
         <h2>Payment Successful!</h2>
         <p>Thank you for your purchase.</p>
+        <p>Payment ID: {paymentIntentId}</p>
       </div>
     );
   }
 
   return (
+    <div className="checkout-container">
 <div className="form">
   <form onSubmit={handleSubmit}>
         <div className="billing-details">
@@ -196,7 +260,7 @@ const CheckoutForm = ({ clientSecret }) => {
         disabled={!stripe || loading || !cardComplete || !clientSecret}
         className="submit-button"
       >
-        {loading ? "Processing..." : "Pay Now"}
+        {loading ? "Processing..." : `Pay €${calculateTotal().toFixed(2)}`}
       </button>
     </div>
 
@@ -205,6 +269,7 @@ const CheckoutForm = ({ clientSecret }) => {
   <div className="stripe-note">
     Secured by <span className="font-semibold">Stripe</span>
   </div>
+</div>
 </div>
 
   );

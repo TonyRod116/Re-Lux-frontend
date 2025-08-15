@@ -67,10 +67,16 @@ const HomePage = () => {
       <p>Browse the latest items for sale in each category.</p>
       <button className="page-button" onClick={gotoDiscoverAll}>Discover all</button>
       <div className="image-row">
-    <img src={accessoriesImg} alt="A black luxury watch with a grey background" />
-    <img src={heroImg} alt="Temporary img placeholder" />
-    <img src={techImg} alt="A woman sitting down wearing a virtual reality headset" />
-  </div>
+        <Link to="/tech">
+          <img src={accessoriesImg} alt="A black luxury watch with a grey background" />
+        </Link>
+        <Link to="/fashion">
+          <img src={heroImg} alt="Temporary img placeholder" />
+        </Link>
+        <Link to="/tech">
+          <img src={techImg} alt="A woman sitting down wearing a virtual reality headset" />
+        </Link>
+      </div>
       </div>
           <div id="recent-items">
         <h2>Recent Items</h2>
