@@ -360,6 +360,54 @@ h1 {
   font-size: 1.5rem;
 }
 
+.reviews-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.rating-summary-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-left: auto;
+}
+
+.rating-number {
+  font-weight: 700;
+  color: #059669;
+  font-size: 1.4rem;
+}
+
+.rating-stars-inline {
+  display: flex;
+  gap: 4px;
+}
+
+.rating-star {
+  font-size: 1.3rem;
+  color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
+.rating-star.filled {
+  color: #fbbf24;
+}
+
+.rating-star.empty {
+  color: #d1d5db;
+}
+
+.total-reviews-inline {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 .write-review-btn {
   padding: 10px 20px;
   background: var(--color-gold);
@@ -381,6 +429,31 @@ h1 {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
+  }
+  
+  .reviews-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .rating-summary-inline {
+    margin-left: 0;
+    font-size: 1rem;
+    gap: 10px;
+  }
+  
+  .rating-number {
+    font-size: 1.2rem;
+  }
+  
+  .rating-star {
+    font-size: 1.1rem;
+  }
+  
+  .total-reviews-inline {
+    font-size: 0.9rem;
   }
   
   .seller-reviews-section {

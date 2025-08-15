@@ -2,12 +2,26 @@ import React from 'react'
 import './ReviewList.css'
 
 const ReviewList = ({ reviews, averageRating, totalReviews }) => {
+  // Ensure averageRating is always a valid number
+  const validAverageRating = typeof averageRating === 'number' && !isNaN(averageRating) ? averageRating : 0
+  
   if (!reviews || reviews.length === 0) {
     return (
       <div className="reviews-section">
         <h3>Reviews</h3>
         <div className="no-reviews">
           <p>No reviews yet</p>
+          {validAverageRating > 0 && (
+            <div className="rating-summary">
+              <div className="average-rating">
+                <span className="rating-number">{validAverageRating.toFixed(1)}</span>
+                {renderStars(Math.round(validAverageRating))}
+              </div>
+              <span className="total-reviews">
+                {totalReviews} review{totalReviews !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     )
@@ -39,21 +53,6 @@ const ReviewList = ({ reviews, averageRating, totalReviews }) => {
 
   return (
     <div className="reviews-section">
-      <div className="reviews-header">
-        <h3>Reviews</h3>
-        {averageRating && (
-          <div className="rating-summary">
-            <div className="average-rating">
-              <span className="rating-number">{averageRating.toFixed(1)}</span>
-              {renderStars(Math.round(averageRating))}
-            </div>
-            <span className="total-reviews">
-              {totalReviews} review{totalReviews !== 1 ? 's' : ''}
-            </span>
-          </div>
-        )}
-      </div>
-      
       <div className="reviews-list">
         {reviews.map((review) => (
           <div key={review._id} className="review-item">

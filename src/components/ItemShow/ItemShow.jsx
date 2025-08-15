@@ -91,16 +91,21 @@ const ItemShow = () => {
     
     try {
       setReviewsLoading(true)
-      const [reviewsResponse, ratingResponse] = await Promise.all([
-        getUserReviews(item.seller._id),
-        getUserAverageRating(item.seller._id)
-      ])
+      const reviewsResponse = await getUserReviews(item.seller._id)
       
       console.log('Reviews response:', reviewsResponse.data)
-      console.log('Rating response:', ratingResponse.data)
       
       setSellerReviews(reviewsResponse.data)
-      setSellerAverageRating(ratingResponse.data)
+      
+      // Calculate average rating locally instead of relying on backend
+      if (reviewsResponse.data && reviewsResponse.data.length > 0) {
+        const totalRating = reviewsResponse.data.reduce((sum, review) => sum + review.rating, 0)
+        const averageRating = totalRating / reviewsResponse.data.length
+        setSellerAverageRating({ averageRating })
+        console.log('Calculated average rating locally:', averageRating)
+      } else {
+        setSellerAverageRating({ averageRating: 0 })
+      }
       
       // Check if current user has already reviewed this seller
       if (user && user._id !== item.seller._id) {
@@ -334,7 +339,27 @@ const ItemShow = () => {
         {item && item.seller && (
           <div className="seller-reviews-section">
             <div className="reviews-header">
-              <h2>Seller Reviews</h2>
+              <div className="reviews-title-section">
+                <h2>Seller Reviews</h2>
+                {!reviewsLoading && sellerReviews.length > 0 && (
+                  <div className="rating-summary-inline">
+                    <span className="rating-number">{sellerAverageRating?.averageRating?.toFixed(1) || '0.0'}</span>
+                    <div className="rating-stars-inline">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`rating-star ${star <= (sellerAverageRating?.averageRating || 0) ? 'filled' : 'empty'}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <span className="total-reviews-inline">
+                      ({sellerReviews.length})
+                    </span>
+                  </div>
+                )}
+              </div>
               {user && user._id !== item.seller._id && !hasReviewedSeller && (
                 <button 
                   className="write-review-btn"
